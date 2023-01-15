@@ -1,6 +1,7 @@
 //import required library
 const rclnodejs = require('rclnodejs');
 const  = require('');
+import MotionCtrl from motion_msgs
 
 
 // command to move robot related to serial port
@@ -20,4 +21,9 @@ const CMD_PITCH_MODE = 0x13;
 const CMD_SPEED_MODE = 0x05;
 
 console.log("node started");
+rclnodejs.init().then(() => {
+    const node = new rclnodejs.Node("diablo_teleop_node");
+    const publisher = node.createPublisher("motion_msg");
+
+});
 
