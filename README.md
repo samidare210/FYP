@@ -1,2 +1,3 @@
-# fyp
+# FYP
+
 Diablo Robot
