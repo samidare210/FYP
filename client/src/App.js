@@ -9,7 +9,7 @@ import { Joystick } from 'react-joystick-component';
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
 */
-const socket = io.connect('http://192.168.1.107:3001') // Connect to the URL of the backend server
+const socket = io.connect('http://192.168.189.77:3001') // Connect to the URL of the backend server
 
 export default function App() {
   const [message, setMessage] = useState('')
