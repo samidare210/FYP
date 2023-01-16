@@ -17,19 +17,6 @@ const io = new Server(server, {
 
 const rclnodejs = require('rclnodejs')
 
-// rclnodejs.init().then(() => {
-//     const node = rclnodejs.createNode('test_node')
-//     const pub = node.createPublisher('std_msgs/msg/String', 'test_topic')
-//     msg = `Hello`
-
-//     setInterval(function() {
-//         pub.publish(msg)
-//         // console.log('Published message: ' + msg)
-//     }, 1000)
-    
-//     rclnodejs.spin(node)
-// })
-
 // Original Ctrl ID
 const CMD_GO_FORWARD = 0x08
 const CMD_GO_LEFT = 0x04
