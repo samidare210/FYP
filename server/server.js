@@ -61,7 +61,7 @@ const TURN_RIGHT = {cmd_id: 0x04, value: -1.0}
 var motion_data
 
 rclnodejs.init().then(() => {
-    const node = rclnodejs.createNode('test_node')
+    const node = new rclnodejs.Node('test_node')
     const pub = node.createPublisher('motion_msgs/msg/MotionCtrl', 'diablo/MotionCmd')
     
     motion_data = STATIONARY

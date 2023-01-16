@@ -38,9 +38,9 @@ export default function App() {
 
   const onMouseDown = (param) => {
     setIsPressed(true)
-    intervalId.current = setInterval(() => {
-      socket.emit('msg_send', )
-    }, 50)
+    // intervalId.current = setInterval(() => {
+    //   socket.emit('msg_send', param)
+    // }, 50)
   }
 
   const onMouseUp = () => {
@@ -54,26 +54,22 @@ export default function App() {
   return (
     <>
       <div className='btn-container'>
-        <Button variant='contained' 
-          onMouseDown={ sendMsgStand }
-        >STAND UP</Button>
-        <Button variant='contained' 
-          onMouseDown={ sendMsgCrouch }
-        >CROUCH DOWN</Button>
+        <Button variant='contained' onMouseDown={ sendMsgStand }>STAND UP</Button>
+        <Button variant='contained' onMouseDown={ sendMsgCrouch }>CROUCH DOWN</Button>
         <Button variant='contained'
-          onMouseDown={ onMouseDown('move_forward') } 
+          onMouseDown={ e => onMouseDown('move_forward') } 
           onMouseUp={ onMouseUp }
         >MOVE FORWARD</Button>
         <Button variant='contained'
-          onMouseDown={ onMouseDown('move_backward') } 
+          onMouseDown={ e => onMouseDown('move_backward') } 
           onMouseUp= { onMouseUp }
         >MOVE BACKWORD</Button>
         <Button variant='contained'
-          onMouseDown={ onMouseDown('turn_left') } 
+          onMouseDown={ e => onMouseDown('turn_left') } 
           onMouseUp={ onMouseUp}
         >TURN LEFT</Button>
         <Button variant='contained' 
-          onMouseDown={ onMouseDown('turn_right') } 
+          onMouseDown={ e => onMouseDown('turn_right') } 
           onMouseUp={ onMouseUp }
         >TURN RIGHT</Button>
       </div>
