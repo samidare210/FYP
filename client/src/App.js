@@ -36,7 +36,7 @@ export default function App() {
 
   var intervalId = useRef(null)
 
-  const onMouseDown = () => {
+  const onMouseDown = (param) => {
     setIsPressed(true)
     intervalId.current = setInterval(() => {
       socket.emit('msg_send', )
@@ -54,19 +54,27 @@ export default function App() {
   return (
     <>
       <div className='btn-container'>
-        <Button variant="contained" onMouseDown={ sendMsgStand }>STAND UP</Button>
-        <Button variant="contained" onMouseDown={ sendMsgCrouch }>CROUCH DOWN</Button>
-        <Button variant="contained" 
-          onMouseDown={ onMouseDown } onMouseUp={ onMouseUp }
+        <Button variant='contained' 
+          onMouseDown={ sendMsgStand }
+        >STAND UP</Button>
+        <Button variant='contained' 
+          onMouseDown={ sendMsgCrouch }
+        >CROUCH DOWN</Button>
+        <Button variant='contained'
+          onMouseDown={ onMouseDown('move_forward') } 
+          onMouseUp={ onMouseUp }
         >MOVE FORWARD</Button>
-        <Button variant="contained" 
-          onMouseDown={ onMouseDown } onMouseUp= { onMouseUp }
+        <Button variant='contained'
+          onMouseDown={ onMouseDown('move_backward') } 
+          onMouseUp= { onMouseUp }
         >MOVE BACKWORD</Button>
-        <Button variant="contained" 
-          onMouseDown={ onMouseDown } onMouseUp={ onMouseUp }
+        <Button variant='contained'
+          onMouseDown={ onMouseDown('turn_left') } 
+          onMouseUp={ onMouseUp}
         >TURN LEFT</Button>
-        <Button variant="contained" 
-          onMouseDown={ onMouseDown } onMouseUp={ onMouseUp }
+        <Button variant='contained' 
+          onMouseDown={ onMouseDown('turn_right') } 
+          onMouseUp={ onMouseUp }
         >TURN RIGHT</Button>
       </div>
       <Joystick 
