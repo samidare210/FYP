@@ -56,36 +56,18 @@ export default function App() {
       <div className='btn-container'>
         <Button variant="contained" onMouseDown={ sendMsgStand }>STAND UP</Button>
         <Button variant="contained" onMouseDown={ sendMsgCrouch }>CROUCH DOWN</Button>
-
-        <Button 
-          variant="contained" 
-          onMouseDown={ onMouseDown } 
-          onMouseUp={ onMouseUp }
-        >
-          MOVE FORWARD
-        </Button>
-
-        <Button 
-          variant="contained"
-          onMouseDown={ onMouseUp }
-          onMouseUp= { onMouseUp }
-        >
-          MOVE BACKWORD
-        </Button>
-
-        <Button 
-          variant="contained" 
-          onMouseDown={ sendMsgLeft }
-        >
-          TURN LEFT
-        </Button>
-
-        <Button 
-          variant="contained" 
-          onMouseDown={ sendMsgRight }
-        >
-          TURN RIGHT
-        </Button>
+        <Button variant="contained" 
+          onMouseDown={ onMouseDown } onMouseUp={ onMouseUp }
+        >MOVE FORWARD</Button>
+        <Button variant="contained" 
+          onMouseDown={ onMouseDown } onMouseUp= { onMouseUp }
+        >MOVE BACKWORD</Button>
+        <Button variant="contained" 
+          onMouseDown={ onMouseDown } onMouseUp={ onMouseUp }
+        >TURN LEFT</Button>
+        <Button variant="contained" 
+          onMouseDown={ onMouseDown } onMouseUp={ onMouseUp }
+        >TURN RIGHT</Button>
       </div>
       <Joystick 
         size={120}
