@@ -38,8 +38,6 @@ export default function App() {
 
   const onMouseDown = () => {
     setIsPressed(true)
-    var msg = this.props.value
-    socket.emit('msg_send', this.props.value)
     intervalId.current = setInterval(() => {
       socket.emit('msg_send', )
     }, 50)
@@ -48,15 +46,10 @@ export default function App() {
   const onMouseUp = () => {
     setIsPressed(false)
     clearInterval(intervalId.current)
-    socket.emit('msg_send', intervalId.current)
   }
 
   const sendMsgStand = () => { socket.emit('msg_send', {msg: 'stand'}) }
   const sendMsgCrouch = () => { socket.emit('msg_send', {msg: 'crouch'}) }
-  const sendMsgForward = () => { socket.emit('msg_send', {msg: 'forward'}) }
-  const sendMsgBackward = () => { socket.emit('msg_send', {msg: 'backward'}) }
-  const sendMsgLeft = () => { socket.emit('msg_send', {msg: 'left'}) }
-  const sendMsgRight = () => { socket.emit('msg_send', {msg: 'right'}) }
 
   return (
     <>
