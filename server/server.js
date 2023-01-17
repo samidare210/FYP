@@ -1,21 +1,39 @@
 const express = require('express')
 const app = express()
-const http = require('http')
+const server = require('http').createServer(app)
 const { Server } = require('socket.io')
 
 const cors = require('cors')
 app.use(cors())
 
-const server = http.createServer(app)
+const host = '192.168.1.106'
+const port_client = '3000'
+const port_server = '3001'
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://192.168.189.77:3000',    // Frontend URL
-        methods: ['GET', 'POST']            // Request methods
+        origin: `http://${host}:${port_client}`,    // Frontend URL
+        methods: ['GET', 'POST']                    // Request methods
     }
 })
 
+// Set server to listen to port 3001
+server.listen(port_server, () => {
+    console.log(`[${host}:${port_server}] | Server is running...`)
+})
+
+// connection event
+io.on('connection', (socket) => {
+    console.log(`User connected: ${socket.id}`)
+
+    socket.on('msg_send', (data) => {
+        console.log(`Message received: ${data}`);
+        ctrl_data = data
+    })
+})
+
 const rclnodejs = require('rclnodejs')
+const { kill } = require('process')
 
 // Original Ctrl ID
 const CMD_GO_FORWARD = 0x08
@@ -39,43 +57,52 @@ const STATIONARY = {cmd_id: 0, value: 0}
 const STAND_UP = {cmd_id: 0x02, value: 0}
 const CROUCH_DOWN = {cmd_id: 0x12, value: 0}
 
-const MOVE_FORWARD = {cmd_id: 0x08, value: 1.0}
-const MOVE_BACKWARD = {cmd_id: 0x08, value: -1.0}
+const MOVE_FORWARD = {cmd_id: 0x08, value: 0.5}
+const MOVE_BACKWARD = {cmd_id: 0x08, value: -0.5}
 
-const TURN_LEFT = {cmd_id: 0x04, value: 1.0}
-const TURN_RIGHT = {cmd_id: 0x04, value: -1.0}
+const TURN_LEFT = {cmd_id: 0x04, value: 2}
+const TURN_RIGHT = {cmd_id: 0x04, value: -2}
 
+var ctrl_data
 var motion_data
 
 rclnodejs.init().then(() => {
     const node = new rclnodejs.Node('test_node')
-    const pub = node.createPublisher('motion_msgs/msg/MotionCtrl', 'diablo/MotionCmd')
+    const pub = node.createPublisher(
+        'motion_msgs/msg/MotionCtrl', 
+        'diablo/MotionCmd'
+    )
     
-    motion_data = STATIONARY
-
     setInterval(function() {
+        switch (ctrl_data) {
+            case 'kill':
+                kill(3001, 'tcp')
+                break;
+            case 'stand_up':
+                motion_data = STAND_UP
+                break;
+            case 'crouch_down':
+                motion_data = CROUCH_DOWN
+                break;
+            case 'move_forward':
+                motion_data = MOVE_FORWARD
+                break;
+            case 'move_backward':
+                motion_data = MOVE_BACKWARD
+                break;
+            case 'turn_left':
+                motion_data = TURN_LEFT
+                break
+            case 'turn_right':
+                motion_data = TURN_RIGHT
+                break
+            default:
+                ctrl_data = 'stationary'
+                motion_data = STATIONARY
+        }
         pub.publish(motion_data)
-        console.log(`Data Published: {cmd_id: ${motion_data.cmd_id}, value: ${motion_data.value}}`)
-    }, 1000)
+        console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
+    }, 20)
 
-    rclnodejs.spin(node)
-})
-
-// connection event
-io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`)
-
-    socket.on('msg_send', (data) => {
-        console.log(data);
-
-        // Emit 
-        socket.broadcast.emit('msg_receive', data)
-    })
-})
-
-const server_port = 3001
-
-// Set server to listen to port 3001
-server.listen(server_port, () => {
-    console.log("Server is running...")
+    node.spin()
 })
