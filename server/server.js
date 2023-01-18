@@ -67,8 +67,8 @@ var ctrl_data
 var motion_data
 
 rclnodejs.init().then(() => {
-    const node = new rclnodejs.Node('test_node')
-    const pub = node.createPublisher(
+    const teleop_nodejs = new rclnodejs.Node('teleop_nodejs')
+    const pub = teleop_nodejs.createPublisher(
         'motion_msgs/msg/MotionCtrl', 
         'diablo/MotionCmd'
     )
@@ -103,6 +103,7 @@ rclnodejs.init().then(() => {
         pub.publish(motion_data)
         console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
     }, 20)
+    teleop_nodejs.spin()
 
-    node.spin()
+    // const battery_nodejs = new rclnodejs.Node('')
 })
