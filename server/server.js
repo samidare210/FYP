@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`)
 
     socket.on('msg_send', (data) => {
-        console.log(`Message received: ${data}`);
+        // console.log(`Message received: ${data}`);
         ctrl_data = data
     })
 })
@@ -67,6 +67,8 @@ var ctrl_data
 var motion_data
 
 rclnodejs.init().then(() => {
+
+    // Teleop
     const teleop_nodejs = new rclnodejs.Node('teleop_nodejs')
     const pub = teleop_nodejs.createPublisher(
         'motion_msgs/msg/MotionCtrl', 
@@ -101,9 +103,43 @@ rclnodejs.init().then(() => {
                 motion_data = STATIONARY
         }
         pub.publish(motion_data)
-        console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
+        // console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
     }, 20)
     teleop_nodejs.spin()
 
-    // const battery_nodejs = new rclnodejs.Node('')
+    // Battary States
+    var states_count1 = 0;
+    const battery_nodejs = new rclnodejs.Node('battery_nodejs')
+    battery_nodejs.createSubscription(
+        'sensor_msgs/msg/BatteryState',
+        'diablo/sensor/Battery',
+        (state) => {
+            // console.log(`Received message No. ${++states_count1}`, state)
+        }
+    )
+    battery_nodejs.spin()
+
+    // Motion States
+    var states_count2 = 0;
+    const motion_nodejs = new rclnodejs.Node('motion_nodejs')
+    motion_nodejs.createSubscription(
+        'motion_msgs/msg/RobotStatus',
+        'diablo/sensor/Body_state',
+        (state) => {
+            // console.log(`Received message No. ${++states_count2}`, state)
+        }
+    )
+    motion_nodejs.spin()
+    
+    // Motor States 
+    var states_count3 = 0;
+    const motor_nodejs = new rclnodejs.Node('motor_nodejs')
+    motor_nodejs.createSubscription(
+        'motion_msgs/msg/LegMotors',
+        'diablo/sensor/Motors',
+        (state) => {
+            // console.log(`Received message No. ${++states_count2}`, state)
+        }
+    )
+    motor_nodejs.spin()
 })
