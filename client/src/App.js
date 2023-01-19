@@ -18,7 +18,10 @@ import { ListItemIcon, ListItemButton, ListItem }from '@mui/material/';
 import { List, Toolbar, IconButton, Divider, Typography, CssBaseline, Button, Grid, Container, Slider, ButtonGroup, Card, CardContent, Stack, Paper, ListItemText } from '@mui/material'
 import { Joystick } from 'react-joystick-component';
 
-
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import StarBorder from '@mui/icons-material/StarBorder';
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
@@ -205,6 +208,10 @@ export default function App() {
     exclusive: true,
   };
 
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   return (
     <>
         <CssBaseline />
@@ -234,25 +241,37 @@ export default function App() {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <List>
-            {['Home', 'Message Log', 'Robot Status', 'Remote Control'].map((text, index) => (
-              <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: open ? 'initial' : 'center',
-                    px: 2,
-                  }}
-                >
-                  <ListItemIcon>
-                    {/* First line icon is HomeIcon,second line icon is InboxIcon,third line icon is SettingsIcon and the forth icon is ControlCameraIcon */}
-                    {index % 4 === 0 ? <HomeIcon /> : index % 4 === 1 ? <InboxIcon /> : index % 4 === 2 ? <SettingsIcon /> : <ControlCameraIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
+        <List>
+          <ListItemButton>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItemButton>
+          <ListItemButton>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Message Log" />
+          </ListItemButton>
+          <ListItemButton onClick={handleClick}>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Robot Status" />
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </ListItemButton>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon>
+                  <ControlCameraIcon />
+                </ListItemIcon>
+                <ListItemText primary="Remote Control" />
+              </ListItemButton>
+            </List>
+          </Collapse>
+        </List>
           <Divider />
           <DrawerHeader />
         </Drawer>
