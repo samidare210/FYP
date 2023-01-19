@@ -3,15 +3,23 @@ import { useState, useRef } from 'react'
 
 import "./styles/App.css"
 import * as Mui from '@mui/material'
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 import MenuIcon from '@mui/icons-material/Menu'
 import ReactNipple from 'react-nipple'
-import DebugView from 'react-nipple/lib/DebugView'
+import { collapseClasses, makeStyles } from '@mui/material';
+import { ClassNames } from '@emotion/react';
+
+import { styled, useTheme } from '@mui/material/styles';
 
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
 */
-const socket = io.connect('http://192.168.1.106:3001') // Connect to the URL of the backend server
+const host = '192.168.1.106'
+const port = '3001'
+const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
+
+const drawerWidth = 240
 
 export default function App() {
   const [isSending, setIsSending] = useState(false)
@@ -36,7 +44,7 @@ export default function App() {
   }
 
   var angle 
-  const handleNipMove = (data) => {
+  const handleNipDir = (data) => {
     switch (data.direction.angle) {
       case 'up':
         socket.emit('msg_send', 'move_forward')
@@ -57,36 +65,53 @@ export default function App() {
     socket.emit('msg_send', 'stationary')
   }
 
+  const handleNipPlain = (data) => {
+    console.log(data.direction.angle)
+  }
+
   return (
     <>
-      <Mui.Box sx={{ flexGrwo: 1 }}>
-        <Mui.AppBar position="static">
-          <Mui.Toolbar>
-            <Mui.IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </Mui.IconButton>
-            <Mui.Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Robot Control
-            </Mui.Typography>
-          </Mui.Toolbar>
-        </Mui.AppBar>
-      </Mui.Box>
+      <Mui.AppBar position="static">
+        <Mui.Toolbar>
+          <Mui.IconButton
+            aria-label='menu'
+            size="large"
+            edge="start"
+            color="inherit"
+          >
+            <SmartToyIcon />
+          </Mui.IconButton>
+          <Mui.Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+            Diablo Control
+          </Mui.Typography>
+        </Mui.Toolbar>
+      </Mui.AppBar>
 
-      <div className='container'>
-        <div className='btn-container'>
+      <Mui.Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box'
+          }
+        }}
+        variant='persistent'
+        anchor='left'
+      >
+        <Mui.Typography>Test</Mui.Typography>
+      </Mui.Drawer>
+
+
+      {/* <Mui.Stack spacing={1} >
+        <Mui.Stack spacing={1} direction='row'>
           <Mui.Button variant='contained' color='error'
             onMouseDown={e => handleMouseDown(e, 'kill')} 
             onMouseUp={e => handleMouseUp(e, 'stationary') }>
             KILL
           </Mui.Button>
-        </div>
-        <div className='btn-container'>
+        </Mui.Stack>
+        <Mui.Stack spacing={1} direction='row'>
           <Mui.Button variant='contained'
             onMouseDown={e => handleMouseDown(e, 'stand_up')} 
             onMouseUp={e => handleMouseUp(e, 'stationary') }>
@@ -97,8 +122,8 @@ export default function App() {
             onMouseUp={e => handleMouseUp(e, 'stationary') }>
             CROUCH DOWN
           </Mui.Button>
-        </div>
-        <div className='btn-container'>
+        </Mui.Stack>
+        <Mui.Stack spacing={1} direction='row'>
           <Mui.Button variant='contained' 
             onMouseDown={e => handleMouseDown(e, 'move_forward')} 
             onMouseUp={e => handleMouseUp(e, 'stationary') }>
@@ -119,14 +144,13 @@ export default function App() {
             onMouseUp={e => handleMouseUp(e, 'stationary') }>
             TURN RIGHT
           </Mui.Button>
-        </div>
-        <div className='btn-container'>
+        </Mui.Stack>
+        <Mui.Stack spacing={1} direction='row'>
           <ReactNipple
             options={{
               color: "black",
               mode: "static",
               position: { top: "50%", left: "50%" },
-              lockY: true,
               multitouch: true
             }}
             style={{
@@ -135,7 +159,7 @@ export default function App() {
               height: 150,
               position: "relative"
             }}
-            onDir={(e, data) => {handleNipMove(data)}}
+            onDir={(e, data) => {handleNipDir(data)}}
             onEnd={handleNipEnd}
           />
           <ReactNipple
@@ -143,7 +167,6 @@ export default function App() {
               color: "black",
               mode: "static",
               position: { top: "50%", left: "50%" },
-              lockX: true,
               multitouch: true
             }}
             style={{
@@ -152,11 +175,11 @@ export default function App() {
               height: 150,
               position: "relative"
             }}
-            onDir={(e, data) => {handleNipMove(data)}}
+            onPlain={(e, data) => {handleNipPlain(data)}}
             onEnd={handleNipEnd}
           />
-        </div>
-      </div>
+        </Mui.Stack>
+      </Mui.Stack> */}
     </>
   )
 }
