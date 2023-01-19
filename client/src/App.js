@@ -250,9 +250,9 @@ export default function App() {
           </ListItemButton>
           <ListItemButton>
             <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary="Message Log" />
+                  <ControlCameraIcon />
+                </ListItemIcon>
+                <ListItemText primary="Remote Control" />
           </ListItemButton>
           <ListItemButton onClick={handleClick}>
             <ListItemIcon>
@@ -263,11 +263,11 @@ export default function App() {
           </ListItemButton>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <ListItemButton sx={{ pl: 4 }}>
-                <ListItemIcon>
-                  <ControlCameraIcon />
-                </ListItemIcon>
-                <ListItemText primary="Remote Control" />
+              <ListItemButton sx={{ pl: 3 }}>
+              <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary="Message Log" />
               </ListItemButton>
             </List>
           </Collapse>
