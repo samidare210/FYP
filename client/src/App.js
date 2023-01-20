@@ -29,7 +29,7 @@ const host = '192.168.1.106'
 const port = '3001'
 const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
 
-const drawerWidth = 240;
+const drawerWidth = 320;
 const Main = styled(
   'main', { shouldForwardProp: (prop) => prop !== 'open' 
 })(({ theme, open }) => ({
@@ -80,7 +80,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function App() {
   const [isSending, setIsSending] = useState(false)
-  const [drawerOpen, setDrawerOpen] = useState(false)
 
   var intervalId = useRef(null)
 
@@ -144,7 +143,10 @@ export default function App() {
               aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
-              sx={{ mr: 2, ...(open && { display: 'none' }) }}
+              sx={{ 
+                mr: 2, 
+                ...(open && { display: 'none' }) 
+              }}
             >
               <MenuIcon />
             </Mui.IconButton>
@@ -167,6 +169,15 @@ export default function App() {
           open={open}
         >
           <DrawerHeader>
+            <Mui.Typography 
+              varient='h6' 
+              sx={{
+                ml: 1.5,
+                mr: 'auto'
+              }}
+            >
+              Menu
+            </Mui.Typography>
             <Mui.IconButton onClick={handleDrawerClose}>
               {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
             </Mui.IconButton>
