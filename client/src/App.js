@@ -1,10 +1,24 @@
-import io from 'socket.io-client'
+import * as React from 'react';
 import { useState, useRef } from 'react'
-
+import io from 'socket.io-client'
 import "./styles/App.css"
+
+// Meterial UI
 import * as Mui from '@mui/material'
+import MuiAppBar from '@mui/material/AppBar';
+
+// Icons
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import MenuIcon from '@mui/icons-material/Menu'
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import InboxIcon from '@mui/icons-material/Inbox'
+import MailIcon from '@mui/icons-material/Mail'
+
+// MUI System (style, theme)
+import { styled, useTheme } from '@mui/material/styles';
+
+// React-Nipple
 import ReactNipple from 'react-nipple'
 
 /*
@@ -14,6 +28,54 @@ import ReactNipple from 'react-nipple'
 const host = '192.168.1.106'
 const port = '3001'
 const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
+
+const drawerWidth = 240;
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  }),
+);
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  ...(open && {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: `${drawerWidth}px`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  }),
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
+}));
+
+
 
 export default function App() {
   const [isSending, setIsSending] = useState(false)
@@ -38,7 +100,6 @@ export default function App() {
     }
   }
 
-  var angle 
   const handleNipDir = (data) => {
     switch (data.direction.angle) {
       case 'up':
@@ -60,47 +121,67 @@ export default function App() {
     socket.emit('msg_send', 'stationary')
   }
 
-  const handleNipPlain = (data) => {
-    console.log(data.direction.angle)
-  }
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   return (
     <>
-      <Mui.AppBar position="static">
+      <Mui.CssBaseline />
+      <AppBar position="fixed" open={open}>
         <Mui.Toolbar>
           <Mui.IconButton
-            aria-label='menu'
-            size="large"
-            edge="start"
             color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            sx={{ mr: 2, ...(open && { display: 'none' }) }}
           >
-            <SmartToyIcon />
+            <MenuIcon />
           </Mui.IconButton>
-          <Mui.Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-            Diablo Control
+          <Mui.Typography variant="h6" noWrap component="div">
+            Persistent drawer
           </Mui.Typography>
         </Mui.Toolbar>
-      </Mui.AppBar>
-
-      <Mui.IconButton 
-        aria-label='logo'
-        size='large' 
-        edge='start' 
-        color='inherit'
-        onClick={() => setDrawerOpen(true)}
+      </AppBar>
+      <Mui.Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="persistent"
+        anchor="left"
+        open={open}
       >
-        <MenuIcon />
-      </Mui.IconButton>
-      <Mui.Drawer 
-        ancher='left' 
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <Mui.Box p={2} width='250px' textAlign='center' role='prsentation'>
-          <Mui.Typography varient='h6' component='div'>
-            Side Panel
-          </Mui.Typography>
-        </Mui.Box>
+        <DrawerHeader>
+          <Mui.IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </Mui.IconButton>
+        </DrawerHeader>
+        <Mui.Divider />
+        <Mui.List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <Mui.ListItem key={text} disablePadding>
+              <Mui.ListItemButton>
+                <Mui.ListItemIcon>
+                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                </Mui.ListItemIcon>
+                <Mui.ListItemText primary={text} />
+              </Mui.ListItemButton>
+            </Mui.ListItem>
+          ))}
+        </Mui.List>
       </Mui.Drawer>
 
       <Mui.Stack spacing={1} >
@@ -160,22 +241,6 @@ export default function App() {
               position: "relative"
             }}
             onDir={(e, data) => {handleNipDir(data)}}
-            onEnd={handleNipEnd}
-          />
-          <ReactNipple
-            options={{
-              color: "black",
-              mode: "static",
-              position: { top: "50%", left: "50%" },
-              multitouch: true
-            }}
-            style={{
-              outline: "1px dashed red",
-              width: 150,
-              height: 150,
-              position: "relative"
-            }}
-            onPlain={(e, data) => {handleNipPlain(data)}}
             onEnd={handleNipEnd}
           />
         </Mui.Stack>
