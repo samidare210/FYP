@@ -6,10 +6,6 @@ import * as Mui from '@mui/material'
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import MenuIcon from '@mui/icons-material/Menu'
 import ReactNipple from 'react-nipple'
-import { collapseClasses, makeStyles } from '@mui/material';
-import { ClassNames } from '@emotion/react';
-
-import { styled, useTheme } from '@mui/material/styles';
 
 /*
   Note that the frontend is running at the port 3000
@@ -19,10 +15,9 @@ const host = '192.168.1.106'
 const port = '3001'
 const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
 
-const drawerWidth = 240
-
 export default function App() {
   const [isSending, setIsSending] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   var intervalId = useRef(null)
 
@@ -87,23 +82,28 @@ export default function App() {
         </Mui.Toolbar>
       </Mui.AppBar>
 
-      <Mui.Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box'
-          }
-        }}
-        variant='persistent'
-        anchor='left'
+      <Mui.IconButton 
+        aria-label='logo'
+        size='large' 
+        edge='start' 
+        color='inherit'
+        onClick={() => setDrawerOpen(true)}
       >
-        <Mui.Typography>Test</Mui.Typography>
+        <MenuIcon />
+      </Mui.IconButton>
+      <Mui.Drawer 
+        ancher='left' 
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
+        <Mui.Box p={2} width='250px' textAlign='center' role='prsentation'>
+          <Mui.Typography varient='h6' component='div'>
+            Side Panel
+          </Mui.Typography>
+        </Mui.Box>
       </Mui.Drawer>
 
-
-      {/* <Mui.Stack spacing={1} >
+      <Mui.Stack spacing={1} >
         <Mui.Stack spacing={1} direction='row'>
           <Mui.Button variant='contained' color='error'
             onMouseDown={e => handleMouseDown(e, 'kill')} 
@@ -179,7 +179,7 @@ export default function App() {
             onEnd={handleNipEnd}
           />
         </Mui.Stack>
-      </Mui.Stack> */}
+      </Mui.Stack>
     </>
   )
 }
