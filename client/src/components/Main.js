@@ -30,7 +30,7 @@ const Container = styled(
 
 export default function Main(props) {
     const open = useContext(Context)
-
+    
     return (
         <Container open={open}>
             <DrawerHeader />
