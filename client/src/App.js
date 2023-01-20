@@ -10,7 +10,7 @@ import * as Mui from '@mui/material'
 import ReactNipple from 'react-nipple'
 
 // Components
-import MenuContext from './components/DrawerContext'
+import DrawerContext from './components/DrawerContext'
 import AppBar from './components/Appbar'
 import Drawer from './components/Drawer'
 import Main from './components/Main'
@@ -67,7 +67,7 @@ export default function App() {
   }
 
   return (
-    <MenuContext>
+    <DrawerContext>
       <Mui.Box sx={{ display: 'flex' }}>
         <Mui.CssBaseline />
         <AppBar></AppBar>
@@ -137,6 +137,6 @@ export default function App() {
           </Mui.Stack>
         </Main>
       </Mui.Box>
-    </MenuContext>
+    </DrawerContext>
   )
 }

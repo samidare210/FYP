@@ -7,11 +7,12 @@ import { useTheme } from '@mui/material/styles'
 // Mui Icons
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import InboxIcon from '@mui/icons-material/Inbox'
-import MailIcon from '@mui/icons-material/Mail'
+import BoltIcon from '@mui/icons-material/Bolt'
+import TimelineIcon from '@mui/icons-material/Timeline'
 
 import { Context } from './DrawerContext'
 import DrawerHeader from './DrawerHeader'
+import ListItemCtrl from './ListItemCtrl'
 
 const drawerWidth = 320
 
@@ -52,18 +53,25 @@ export default function Drawer() {
           </Mui.IconButton>
         </DrawerHeader>
         <Mui.Divider />
+
         <Mui.List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <Mui.ListItem key={text} disablePadding>
-              <Mui.ListItemButton>
-                <Mui.ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </Mui.ListItemIcon>
-                <Mui.ListItemText primary={text} />
-              </Mui.ListItemButton>
-            </Mui.ListItem>
-          ))}
+          <ListItemCtrl></ListItemCtrl>
+
+          <Mui.ListItemButton>
+            <Mui.ListItemIcon>
+              <BoltIcon />
+            </Mui.ListItemIcon>
+            <Mui.ListItemText primary='Battery Status'/>
+          </Mui.ListItemButton>
+
+          <Mui.ListItemButton>
+            <Mui.ListItemIcon>
+              <TimelineIcon />
+            </Mui.ListItemIcon>
+            <Mui.ListItemText primary='Motor Status'/>
+          </Mui.ListItemButton> 
         </Mui.List>
+
       </Mui.Drawer>
     )
 }
