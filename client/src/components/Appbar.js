@@ -32,7 +32,7 @@ export default function Appbar() {
 
     const handleDrawerOpen = () => {
         setOpen(true)
-      }
+    }
 
     return (
         <AppBar position="fixed" open={open}>

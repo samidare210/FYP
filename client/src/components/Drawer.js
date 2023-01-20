@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import * as Mui from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-// Mui icons
+// Mui Icons
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import InboxIcon from '@mui/icons-material/Inbox'
@@ -26,12 +26,12 @@ export default function Drawer() {
     return (
       <Mui.Drawer
           sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-              width: drawerWidth,
-              boxSizing: 'border-box',
-          },
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+                width: drawerWidth,
+                boxSizing: 'border-box',
+            },
           }}
           variant="persistent"
           anchor="left"

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useRef } from 'react'
 import io from 'socket.io-client'
-import "./styles/App.css"
+// import "./styles/App.css"
 
 // Meterial UI
 import * as Mui from '@mui/material'

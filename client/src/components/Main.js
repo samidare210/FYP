@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-// Mui System
+// Mui
 import { styled } from '@mui/material/styles'
 
 import { Context } from './DrawerContext'
@@ -29,8 +29,8 @@ const Container = styled(
 )
 
 export default function Main(props) {
-    const open = useContext(Context)
-    
+    const { open } = useContext(Context)
+
     return (
         <Container open={open}>
             <DrawerHeader />
