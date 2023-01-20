@@ -1,25 +1,19 @@
 import * as React from 'react';
-import { useState, useRef } from 'react'
+import { useState, useRef, useContext } from 'react'
 import io from 'socket.io-client'
 import "./styles/App.css"
 
 // Meterial UI
 import * as Mui from '@mui/material'
-import MuiAppBar from '@mui/material/AppBar';
-
-// Icons
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-import MenuIcon from '@mui/icons-material/Menu'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import InboxIcon from '@mui/icons-material/Inbox'
-import MailIcon from '@mui/icons-material/Mail'
-
-// MUI System (style, theme)
-import { styled, useTheme } from '@mui/material/styles';
 
 // React-Nipple
 import ReactNipple from 'react-nipple'
+
+// Components
+import MenuContext from './components/DrawerContext'
+import AppBar from './components/Appbar'
+import Drawer from './components/Drawer'
+import Main from './components/Main'
 
 /*
   Note that the frontend is running at the port 3000
@@ -30,53 +24,23 @@ const port = '3001'
 const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
 
 const drawerWidth = 320;
-const Main = styled(
-  'main', { shouldForwardProp: (prop) => prop !== 'open' 
-})(({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
-);
 
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
-
-
+// const AppBar = styled(MuiAppBar, {
+//   shouldForwardProp: (prop) => prop !== 'open',
+// })(({ theme, open }) => ({
+//   transition: theme.transitions.create(['margin', 'width'], {
+//     easing: theme.transitions.easing.sharp,
+//     duration: theme.transitions.duration.leavingScreen,
+//   }),
+//   ...(open && {
+//     width: `calc(100% - ${drawerWidth}px)`,
+//     marginLeft: `${drawerWidth}px`,
+//     transition: theme.transitions.create(['margin', 'width'], {
+//       easing: theme.transitions.easing.easeOut,
+//       duration: theme.transitions.duration.enteringScreen,
+//     }),
+//   }),
+// }));
 
 export default function App() {
   const [isSending, setIsSending] = useState(false)
@@ -121,22 +85,12 @@ export default function App() {
     socket.emit('msg_send', 'stationary')
   }
 
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-
   return (
-    <>
+    <MenuContext>
       <Mui.Box sx={{ display: 'flex' }}>
         <Mui.CssBaseline />
-        <AppBar position="fixed" open={open}>
+
+        {/* <AppBar position="fixed" open={open}>
           <Mui.Toolbar>
             <Mui.IconButton
               color="inherit"
@@ -154,8 +108,10 @@ export default function App() {
               Diablo Control
             </Mui.Typography>
           </Mui.Toolbar>
-        </AppBar>
-        <Mui.Drawer
+        </AppBar> */}
+        <AppBar></AppBar>
+        
+        {/* <Mui.Drawer
           sx={{
             width: drawerWidth,
             flexShrink: 0,
@@ -195,10 +151,10 @@ export default function App() {
               </Mui.ListItem>
             ))}
           </Mui.List>
-        </Mui.Drawer>
+        </Mui.Drawer> */}
+        <Drawer></Drawer>
         
-        <Main open={open}>
-          <DrawerHeader />
+        <Main>
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
               <Mui.Button variant='contained' color='error'
@@ -262,6 +218,6 @@ export default function App() {
           </Mui.Stack>
         </Main>
       </Mui.Box>
-    </>
+    </MenuContext>
   )
 }
