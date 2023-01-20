@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { useState, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import io from 'socket.io-client'
-// import "./styles/App.css"
 
-// Meterial UI
+// Mui
 import * as Mui from '@mui/material'
 
 // React-Nipple
@@ -70,10 +69,11 @@ export default function App() {
     <DrawerContext>
       <Mui.Box sx={{ display: 'flex' }}>
         <Mui.CssBaseline />
-        <AppBar></AppBar>
-        <Drawer></Drawer>
+        <AppBar />
+        <Drawer />
         
         <Main>
+          <div ref={videoRef}></div>
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
               <Mui.Button variant='contained' color='error'

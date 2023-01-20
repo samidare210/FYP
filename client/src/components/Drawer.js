@@ -17,61 +17,61 @@ import ListItemCtrl from './ListItemCtrl'
 const drawerWidth = 320
 
 export default function Drawer() {
-    const theme = useTheme()
-    const { open, setOpen } = useContext(Context)
+  const theme = useTheme()
+  const { open, setOpen } = useContext(Context)
 
-    const handleDrawerClose = () => {
-      setOpen(false)
-    }
+  const handleDrawerClose = () => {
+    setOpen(false)
+  }
 
-    return (
-      <Mui.Drawer
+  return (
+    <Mui.Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }}
+      variant="persistent"
+      anchor="left"
+      open={open}
+    >
+      <DrawerHeader>
+        <Mui.Typography
+          varient='h6'
           sx={{
-            width: drawerWidth,
-            flexShrink: 0,
-            '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-            },
+            ml: 1.5,
+            mr: 'auto'
           }}
-          variant="persistent"
-          anchor="left"
-          open={open}
-      >
-        <DrawerHeader>
-          <Mui.Typography 
-            varient='h6' 
-            sx={{
-              ml: 1.5,
-              mr: 'auto'
-            }}
-          >
-            Menu
-          </Mui.Typography>
-          <Mui.IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </Mui.IconButton>
-        </DrawerHeader>
-        <Mui.Divider />
+        >
+          Menu
+        </Mui.Typography>
+        <Mui.IconButton onClick={handleDrawerClose}>
+          {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </Mui.IconButton>
+      </DrawerHeader>
+      <Mui.Divider />
 
-        <Mui.List>
-          <ListItemCtrl></ListItemCtrl>
+      <Mui.List>
+        <ListItemCtrl></ListItemCtrl>
 
-          <Mui.ListItemButton>
-            <Mui.ListItemIcon>
-              <BoltIcon />
-            </Mui.ListItemIcon>
-            <Mui.ListItemText primary='Battery Status'/>
-          </Mui.ListItemButton>
+        <Mui.ListItemButton>
+          <Mui.ListItemIcon>
+            <BoltIcon />
+          </Mui.ListItemIcon>
+          <Mui.ListItemText primary='Battery Status' />
+        </Mui.ListItemButton>
 
-          <Mui.ListItemButton>
-            <Mui.ListItemIcon>
-              <TimelineIcon />
-            </Mui.ListItemIcon>
-            <Mui.ListItemText primary='Motor Status'/>
-          </Mui.ListItemButton> 
-        </Mui.List>
+        <Mui.ListItemButton>
+          <Mui.ListItemIcon>
+            <TimelineIcon />
+          </Mui.ListItemIcon>
+          <Mui.ListItemText primary='Motor Status' />
+        </Mui.ListItemButton>
+      </Mui.List>
 
-      </Mui.Drawer>
-    )
+    </Mui.Drawer>
+  )
 }
