@@ -30,8 +30,9 @@ const port = '3001'
 const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
 
 const drawerWidth = 240;
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
+const Main = styled(
+  'main', { shouldForwardProp: (prop) => prop !== 'open' 
+})(({ theme, open }) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
     transition: theme.transitions.create('margin', {
@@ -134,117 +135,122 @@ export default function App() {
 
   return (
     <>
-      <Mui.CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Mui.Toolbar>
-          <Mui.IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </Mui.IconButton>
-          <Mui.Typography variant="h6" noWrap component="div">
-            Persistent drawer
-          </Mui.Typography>
-        </Mui.Toolbar>
-      </AppBar>
-      <Mui.Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
+      <Mui.Box sx={{ display: 'flex' }}>
+        <Mui.CssBaseline />
+        <AppBar position="fixed" open={open}>
+          <Mui.Toolbar>
+            <Mui.IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            >
+              <MenuIcon />
+            </Mui.IconButton>
+            <Mui.Typography variant="h6" noWrap component="div">
+              Diablo Control
+            </Mui.Typography>
+          </Mui.Toolbar>
+        </AppBar>
+        <Mui.Drawer
+          sx={{
             width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <Mui.IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </Mui.IconButton>
-        </DrawerHeader>
-        <Mui.Divider />
-        <Mui.List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <Mui.ListItem key={text} disablePadding>
-              <Mui.ListItemButton>
-                <Mui.ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </Mui.ListItemIcon>
-                <Mui.ListItemText primary={text} />
-              </Mui.ListItemButton>
-            </Mui.ListItem>
-          ))}
-        </Mui.List>
-      </Mui.Drawer>
-
-      <Mui.Stack spacing={1} >
-        <Mui.Stack spacing={1} direction='row'>
-          <Mui.Button variant='contained' color='error'
-            onMouseDown={e => handleMouseDown(e, 'kill')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary') }>
-            KILL
-          </Mui.Button>
-        </Mui.Stack>
-        <Mui.Stack spacing={1} direction='row'>
-          <Mui.Button variant='contained'
-            onMouseDown={e => handleMouseDown(e, 'stand_up')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary') }>
-            STAND UP
-          </Mui.Button>
-          <Mui.Button variant='contained'
-            onMouseDown={e => handleMouseDown(e, 'crouch_down')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary') }>
-            CROUCH DOWN
-          </Mui.Button>
-        </Mui.Stack>
-        <Mui.Stack spacing={1} direction='row'>
-          <Mui.Button variant='contained' 
-            onMouseDown={e => handleMouseDown(e, 'move_forward')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary') }>
-            MOVE FORWARD
-          </Mui.Button>
-          <Mui.Button variant='contained' 
-            onMouseDown={e => handleMouseDown(e, 'move_backward')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary') }>
-            MOVE BACKWARD
-          </Mui.Button>
-          <Mui.Button variant='contained' 
-            onMouseDown={e => handleMouseDown(e, 'turn_left')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary')}>
-            TURN LEFT
-          </Mui.Button>
-          <Mui.Button variant='contained' 
-            onMouseDown={e => handleMouseDown(e, 'turn_right')} 
-            onMouseUp={e => handleMouseUp(e, 'stationary') }>
-            TURN RIGHT
-          </Mui.Button>
-        </Mui.Stack>
-        <Mui.Stack spacing={1} direction='row'>
-          <ReactNipple
-            options={{
-              color: "black",
-              mode: "static",
-              position: { top: "50%", left: "50%" },
-              multitouch: true
-            }}
-            style={{
-              outline: "1px dashed red",
-              width: 150,
-              height: 150,
-              position: "relative"
-            }}
-            onDir={(e, data) => {handleNipDir(data)}}
-            onEnd={handleNipEnd}
-          />
-        </Mui.Stack>
-      </Mui.Stack>
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              width: drawerWidth,
+              boxSizing: 'border-box',
+            },
+          }}
+          variant="persistent"
+          anchor="left"
+          open={open}
+        >
+          <DrawerHeader>
+            <Mui.IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </Mui.IconButton>
+          </DrawerHeader>
+          <Mui.Divider />
+          <Mui.List>
+            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+              <Mui.ListItem key={text} disablePadding>
+                <Mui.ListItemButton>
+                  <Mui.ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </Mui.ListItemIcon>
+                  <Mui.ListItemText primary={text} />
+                </Mui.ListItemButton>
+              </Mui.ListItem>
+            ))}
+          </Mui.List>
+        </Mui.Drawer>
+        
+        <Main open={open}>
+          <DrawerHeader />
+          <Mui.Stack spacing={1} >
+            <Mui.Stack spacing={1} direction='row'>
+              <Mui.Button variant='contained' color='error'
+                onMouseDown={e => handleMouseDown(e, 'kill')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary') }>
+                KILL
+              </Mui.Button>
+            </Mui.Stack>
+            <Mui.Stack spacing={1} direction='row'>
+              <Mui.Button variant='contained'
+                onMouseDown={e => handleMouseDown(e, 'stand_up')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary') }>
+                STAND UP
+              </Mui.Button>
+              <Mui.Button variant='contained'
+                onMouseDown={e => handleMouseDown(e, 'crouch_down')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary') }>
+                CROUCH DOWN
+              </Mui.Button>
+            </Mui.Stack>
+            <Mui.Stack spacing={1} direction='row'>
+              <Mui.Button variant='contained' 
+                onMouseDown={e => handleMouseDown(e, 'move_forward')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary') }>
+                MOVE FORWARD
+              </Mui.Button>
+              <Mui.Button variant='contained' 
+                onMouseDown={e => handleMouseDown(e, 'move_backward')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary') }>
+                MOVE BACKWARD
+              </Mui.Button>
+              <Mui.Button variant='contained' 
+                onMouseDown={e => handleMouseDown(e, 'turn_left')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary')}>
+                TURN LEFT
+              </Mui.Button>
+              <Mui.Button variant='contained' 
+                onMouseDown={e => handleMouseDown(e, 'turn_right')} 
+                onMouseUp={e => handleMouseUp(e, 'stationary') }>
+                TURN RIGHT
+              </Mui.Button>
+            </Mui.Stack>
+            <Mui.Stack spacing={1} direction='row'>
+              <ReactNipple
+                options={{
+                  color: "black",
+                  mode: "static",
+                  position: { top: "50%", left: "50%" },
+                  multitouch: true
+                }}
+                style={{
+                  outline: "1px dashed red",
+                  width: 150,
+                  height: 150,
+                  position: "relative"
+                }}
+                onDir={(e, data) => {handleNipDir(data)}}
+                onEnd={handleNipEnd}
+              />
+            </Mui.Stack>
+          </Mui.Stack>
+        </Main>
+      </Mui.Box>
     </>
   )
 }
