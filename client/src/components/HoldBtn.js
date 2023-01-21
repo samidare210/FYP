@@ -14,6 +14,7 @@ export default function HoldBtn(props) {
 	const [send, setSend] = React.useState(false)
 
 	var intervalId = React.useRef(null)
+	var element = document.getElementsByClassName('HoldBtn')
 
 	const handleMouseDown = (e, param) => {
 		if (e.button === 0) {
@@ -22,6 +23,7 @@ export default function HoldBtn(props) {
 				socket.emit('msg_send', param)
 			}, 10);
 		}
+		console.log(element)
 	}
 
 	const handleMouseUp = (e, param) => {
@@ -33,10 +35,13 @@ export default function HoldBtn(props) {
 	}
 
 	return (
-		<Mui.Button
+		<Mui.Button 
+			className='HoldBtn'
 			variant='contained' color={props.color}
 			onMouseDown={e => handleMouseDown(e, props.mouseDownMsg)}
-			onMouseUp={e => handleMouseUp(e, props.mouseUpMsg)}>
+			onMouseUp={e => handleMouseUp(e, props.mouseUpMsg)}
+			ontouchstart={e => handleMouseDown(e, props.mouseDownMsg)}
+			ontouchend={e => handleMouseUp(e, props.mouseUpMsg)}>
 			{props.text}
 		</Mui.Button>
 	)
