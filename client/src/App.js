@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { useState, useEffect, useRef } from 'react'
+import React from 'react';
 
 import io from 'socket.io-client'
 
@@ -14,7 +13,6 @@ import DrawerContext from './components/DrawerContext'
 import AppBar from './components/Appbar'
 import Drawer from './components/Drawer'
 import Main from './components/Main'
-import WebcamCapture from './components/WebcamCapture';
 
 /*
   Note that the frontend is running at the port 3000
@@ -25,9 +23,9 @@ const port = '3001'
 const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
 
 export default function App() {
-  const [isSending, setIsSending] = useState(false)
+  const [isSending, setIsSending] = React.useState(false)
 
-  var intervalId = useRef(null)
+  var intervalId = React.useRef(null)
 
   const handleMouseDown = (e, param) => {
     if (e.button === 0) {
@@ -35,6 +33,7 @@ export default function App() {
       intervalId.current = setInterval(() => {
         socket.emit('msg_send', param)
       }, 10);
+      console.log('Hello')
     }
   }
 

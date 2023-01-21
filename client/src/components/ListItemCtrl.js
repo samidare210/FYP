@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Slider from '@mui/material/Slider'
 
 import * as Mui from '@mui/material'

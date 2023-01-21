@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     console.log(`User connected: ${socket.id}`)
 
     socket.on('msg_send', (data) => {
-        // console.log(`Message received: ${data}`);
+        console.log(`Message received: ${data}`);
         ctrl_data = data
     })
 })
@@ -102,8 +102,8 @@ rclnodejs.init().then(() => {
                 ctrl_data = 'stationary'
                 motion_data = STATIONARY
         }
-        pub.publish(motion_data)
-        console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
+        // pub.publish(motion_data)
+        // console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
     }, 20)
     teleop_nodejs.spin()
 
