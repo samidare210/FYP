@@ -8,7 +8,7 @@ import { styled } from '@mui/material/styles'
 import io from 'socket.io-client'
 const host = '192.168.1.106'
 const port = '3001'
-const socket = io.connect(`http:${host}//:${port}`)
+const socket = io.connect(`http://${host}:${port}`)
 
 export default function HoldBtn(props) {
 	const [send, setSend] = React.useState(false)
@@ -33,11 +33,10 @@ export default function HoldBtn(props) {
 	}
 
 	return (
-		
 		<Mui.Button
 			variant='contained' color={props.color}
-			onMouseDown={e => handleMouseDown(e, props.mouseDownSend)}
-			onMouseUp={e => handleMouseUp(e, props.mouseUpSend)}>
+			onMouseDown={e => handleMouseDown(e, props.mouseDownMsg)}
+			onMouseUp={e => handleMouseUp(e, props.mouseUpMsg)}>
 			{props.text}
 		</Mui.Button>
 	)

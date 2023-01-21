@@ -102,7 +102,7 @@ rclnodejs.init().then(() => {
                 ctrl_data = 'stationary'
                 motion_data = STATIONARY
         }
-        // pub.publish(motion_data)
+        pub.publish(motion_data)
         // console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
     }, 20)
     teleop_nodejs.spin()

@@ -13,6 +13,7 @@ import DrawerContext from './components/DrawerContext'
 import AppBar from './components/Appbar'
 import Drawer from './components/Drawer'
 import Main from './components/Main'
+import HoldBtn from './components/HoldBtn'
 
 /*
   Note that the frontend is running at the port 3000
@@ -20,7 +21,7 @@ import Main from './components/Main'
 */
 const host = '192.168.1.106'
 const port = '3001'
-const socket = io.connect(`http:${host}//:${port}`) // Connect to the URL of the backend server
+const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
 
 export default function App() {
   const [isSending, setIsSending] = React.useState(false)
@@ -78,6 +79,12 @@ export default function App() {
         <Main>
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
+              <HoldBtn
+                text='kill'
+                color='error'
+                mouseDownMsg='kill'
+                mouseUpMsg='stationary'
+              /> 
               <Mui.Button variant='contained' color='error'
                 onMouseDown={e => handleMouseDown(e, 'kill')} 
                 onMouseUp={e => handleMouseUp(e, 'stationary') }>
@@ -85,38 +92,38 @@ export default function App() {
               </Mui.Button>
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
-              <Mui.Button variant='contained'
-                onMouseDown={e => handleMouseDown(e, 'stand_up')} 
-                onMouseUp={e => handleMouseUp(e, 'stationary') }>
-                STAND UP
-              </Mui.Button>
-              <Mui.Button variant='contained'
-                onMouseDown={e => handleMouseDown(e, 'crouch_down')} 
-                onMouseUp={e => handleMouseUp(e, 'stationary') }>
-                CROUCH DOWN
-              </Mui.Button>
+              <HoldBtn
+                text='stand up'
+                mouseDownMsg='stand_up'
+                mouseUpMsg='stationary'
+              /> 
+              <HoldBtn
+                text='crouch down'
+                mouseDownMsg='crouch_down'
+                mouseUpMsg='stationary'
+              /> 
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
-              <Mui.Button variant='contained' 
-                onMouseDown={e => handleMouseDown(e, 'move_forward')} 
-                onMouseUp={e => handleMouseUp(e, 'stationary') }>
-                MOVE FORWARD
-              </Mui.Button>
-              <Mui.Button variant='contained' 
-                onMouseDown={e => handleMouseDown(e, 'move_backward')} 
-                onMouseUp={e => handleMouseUp(e, 'stationary') }>
-                MOVE BACKWARD
-              </Mui.Button>
-              <Mui.Button variant='contained' 
-                onMouseDown={e => handleMouseDown(e, 'turn_left')} 
-                onMouseUp={e => handleMouseUp(e, 'stationary')}>
-                TURN LEFT
-              </Mui.Button>
-              <Mui.Button variant='contained' 
-                onMouseDown={e => handleMouseDown(e, 'turn_right')} 
-                onMouseUp={e => handleMouseUp(e, 'stationary') }>
-                TURN RIGHT
-              </Mui.Button>
+              <HoldBtn
+                text='move forward'
+                mouseDownMsg='move_forward'
+                mouseUpMsg='stationary'
+              />
+              <HoldBtn
+                text='move backward'
+                mouseDownMsg='move_backward'
+                mouseUpMsg='stationary'
+              />
+              <HoldBtn
+                text='turn left'
+                mouseDownMsg='turn_left'
+                mouseUpMsg='stationary'
+              />
+              <HoldBtn
+                text='turn right'
+                mouseDownMsg='turn_right'
+                mouseUpMsg='stationary'
+              />
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
               <ReactNipple
