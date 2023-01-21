@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react'
+
 import io from 'socket.io-client'
 
 // Mui
@@ -13,6 +14,7 @@ import DrawerContext from './components/DrawerContext'
 import AppBar from './components/Appbar'
 import Drawer from './components/Drawer'
 import Main from './components/Main'
+import WebcamCapture from './components/WebcamCapture';
 
 /*
   Note that the frontend is running at the port 3000
@@ -28,7 +30,7 @@ export default function App() {
   var intervalId = useRef(null)
 
   const handleMouseDown = (e, param) => {
-    if (e.button == 0) {
+    if (e.button === 0) {
       setIsSending(true)
       intervalId.current = setInterval(() => {
         socket.emit('msg_send', param)
@@ -37,7 +39,7 @@ export default function App() {
   }
 
   const handleMouseUp = (e, param) => {
-    if (e.button == 0) {
+    if (e.button === 0) {
       setIsSending(false)
       clearInterval(intervalId.current)
       socket.emit('msg_send', param)
@@ -48,16 +50,18 @@ export default function App() {
     switch (data.direction.angle) {
       case 'up':
         socket.emit('msg_send', 'move_forward')
-        break;
+        break
       case 'down':
         socket.emit('msg_send', 'move_backward')
-        break;
+        break
       case 'left':
         socket.emit('msg_send', 'turn_left')
-        break;
+        break
       case 'right':
         socket.emit('msg_send', 'turn_right')
-        break;
+        break
+      default:
+        break
     }
   }
 
@@ -73,7 +77,6 @@ export default function App() {
         <Drawer />
         
         <Main>
-          <div ref={videoRef}></div>
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
               <Mui.Button variant='contained' color='error'
