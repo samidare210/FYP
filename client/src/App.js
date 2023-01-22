@@ -15,6 +15,9 @@ import Drawer from './components/Drawer'
 import Main from './components/Main'
 import HoldBtn from './components/HoldBtn'
 
+// React-Webcam
+import Webcam from 'react-webcam'
+
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
@@ -24,7 +27,7 @@ const port = '3001'
 const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
 
 export default function App() {
-
+  
   const handleNipDir = (data) => {
     switch (data.direction.angle) {
       case 'up':
@@ -56,6 +59,9 @@ export default function App() {
         <Drawer />
         
         <Main>
+          
+          <Webcam />
+
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
