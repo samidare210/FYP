@@ -1,5 +1,6 @@
 import React from 'react';
 
+// Socket.io
 import io from 'socket.io-client'
 
 // Mui
@@ -25,10 +26,12 @@ import Webcam from 'react-webcam'
 const host = '192.168.1.106'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
+// SSL
+// HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
 
 export default function App() {
   
-  const handleNipDir = (data) => {
+  const handleLHSNip = (data) => {
     switch (data.direction.angle) {
       case 'up':
         socket.emit('msg_send', 'move_forward')
@@ -41,6 +44,25 @@ export default function App() {
         break
       case 'right':
         socket.emit('msg_send', 'turn_right')
+        break
+      default:
+        break
+    }
+  }
+
+  const handleRHSNip = (data) => {
+    switch (data.direction.angle) {
+      case 'up':
+        socket.emit('msg_send', '')
+        break
+      case 'down':
+        socket.emit('msg_send', '')
+        break
+      case 'left':
+        socket.emit('msg_send', 'roll_left')
+        break
+      case 'right':
+        socket.emit('msg_send', 'roll_right')
         break
       default:
         break
@@ -67,6 +89,7 @@ export default function App() {
               <HoldBtn
                 text='kill'
                 color='error'
+                socket={socket}
                 mouseDownMsg='kill'
                 mouseUpMsg='stationary'
               />
@@ -74,11 +97,13 @@ export default function App() {
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
                 text='stand up'
+                socket={socket}
                 mouseDownMsg='stand_up'
                 mouseUpMsg='stationary'
               /> 
               <HoldBtn
                 text='crouch down'
+                socket={socket}
                 mouseDownMsg='crouch_down'
                 mouseUpMsg='stationary'
               /> 
@@ -86,21 +111,25 @@ export default function App() {
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
                 text='move forward'
+                socket={socket}
                 mouseDownMsg='move_forward'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='move backward'
+                socket={socket}
                 mouseDownMsg='move_backward'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='turn left'
+                socket={socket}
                 mouseDownMsg='turn_left'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='turn right'
+                socket={socket}
                 mouseDownMsg='turn_right'
                 mouseUpMsg='stationary'
               />
@@ -119,7 +148,23 @@ export default function App() {
                   height: 150,
                   position: "relative"
                 }}
-                onDir={(e, data) => {handleNipDir(data)}}
+                onDir={(e, data) => {handleLHSNip(data)}}
+                onEnd={handleNipEnd}
+              />
+              <ReactNipple
+                options={{
+                  color: "black",
+                  mode: "static",
+                  position: { top: "50%", left: "50%" },
+                  multitouch: true
+                }}
+                style={{
+                  outline: "1px dashed red",
+                  width: 150,
+                  height: 150,
+                  position: "relative"
+                }}
+                onDir={(e, data) => {handleRHSNip(data)}}
                 onEnd={handleNipEnd}
               />
             </Mui.Stack>

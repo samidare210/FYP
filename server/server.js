@@ -63,6 +63,10 @@ const MOVE_BACKWARD = {cmd_id: 0x08, value: -0.5}
 const TURN_LEFT = {cmd_id: 0x04, value: 2}
 const TURN_RIGHT = {cmd_id: 0x04, value: -2}
 
+const ROLL_LEFT = {cmd_id: 0x09, value: 0.1}
+const ROLL_RIGHT = {cmd_id: 0x09, value: -0.1}
+const ROLL_ORIGIN = {cmd_id: 0x09, value: 0.0}
+
 var ctrl_data
 var motion_data
 
