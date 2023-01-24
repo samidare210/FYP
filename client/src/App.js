@@ -148,43 +148,46 @@ export default function App() {
             </Mui.Stack>
 
             <Mui.Paper
-              sx={{ p: 4, width: '75%' }}
+              sx={{ width: '75%' }}
               elevation={4}
             >
               <Mui.Stack 
-                direction='row' 
-                spacing={2} 
+                direction='row'
                 divider={
-                  <Mui.Divider orientation="vertical" flexItem />
+                  <Mui.Divider orientation='vertical' flexItem />
                 }
               >
                 <ReactNipple
                   options={{
-                    color: "black",
-                    mode: "static",
-                    position: { top: "50%", left: "50%" },
+                    color: 'black',
+                    mode: 'static',
+                    position: { top: '50%', left: '50%' },
                     multitouch: true
                   }}
                   style={{
-                    width: 128,
-                    height: 128,
-                    position: "relative"
+                    width: 200,
+                    height: 200,
+                    position: 'relative'
                   }}
                   onDir={(e, data) => { handleLHSNip(data) }}
                   onEnd={handleLHSNipEnd}
                 />
-                <Mui.Box sx={{ flexGrow: 1 }}>Hello</Mui.Box>
+                <Mui.Box 
+                  sx={{ flexGrow: 1, border: 1 }}
+                >
+                  Hello
+                </Mui.Box>
                 <ReactNipple
                   options={{
-                    color: "black",
-                    mode: "static",
-                    position: { top: "50%", left: "50%" },
+                    color: 'black',
+                    mode: 'static',
+                    position: { top: '50%', left: '50%' },
                     multitouch: true
                   }}
                   style={{
-                    width: 128,
-                    height: 128,
-                    position: "relative"
+                    width: 200,
+                    height: 200,
+                    position: 'relative'
                   }}
                   onDir={(e, data) => { handleRHSNip(data) }}
                   onEnd={(e, data) => handleRHSNipEnd(data)}
