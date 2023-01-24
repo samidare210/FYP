@@ -15,6 +15,9 @@ import Main from './components/Main'
 // React-Router
 import { Link } from 'react-router-dom';
 
+// ApexCharts
+import ReactApexChart from 'react-apexcharts'
+
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
