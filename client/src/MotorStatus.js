@@ -62,7 +62,7 @@ export default function MotorStatus() {
             curve: 'smooth'
         },
         title: {
-            text: 'Motor Speed Realtime Log',
+            text: 'Motor velocity realtime Log',
             align: 'left'
         },
         markers: {
