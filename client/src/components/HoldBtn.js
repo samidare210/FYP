@@ -20,17 +20,11 @@ export default function HoldBtn(props) {
       }
   }, [isHold, props.socket, props.mouseDownMsg, props.mouseUpMsg]) 
 
-  // async function sendMsg() {
-  //   while (state) {
-  //     socket.emit('msg_send', 'Hello')
-  //     await new Promise(resolve => setTimeout(resolve, 1000));
-  //   }
-  // }
-
   return (
     <Mui.Button
       className='HoldBtn'
-      variant='contained' color={props.color}
+      variant='contained' 
+      color={props.color}
       onMouseDown={() => setIsHold(true)}
       onMouseUp={() => setIsHold(false)}
       onTouchStart={() => setIsHold(true)}

@@ -11,25 +11,25 @@ const port_client = '3000'
 const port_server = '3001'
 
 const io = new Server(server, {
-    cors: {
-        origin: `http://${host}:${port_client}`,    // Frontend URL
-        methods: ['GET', 'POST']                    // Request methods
-    }
+	cors: {
+		origin: `http://${host}:${port_client}`,    // Frontend URL
+		methods: ['GET', 'POST']                    // Request methods
+	}
 })
 
 // Set server to listen to port 3001
 server.listen(port_server, () => {
-    console.log(`[${host}:${port_server}] | Server is running...`)
+	console.log(`[${host}:${port_server}] | Server is running...`)
 })
 
 // connection event
 io.on('connection', (socket) => {
-    console.log(`User connected: ${socket.id}`)
+	console.log(`User connected: ${socket.id}`)
 
-    socket.on('msg_send', (data) => {
-        console.log(`Message received: ${data}`);
-        ctrl_data = data
-    })
+	socket.on('msg_send', (data) => {
+		console.log(`Message received: ${data}`);
+		ctrl_data = data
+	})
 })
 
 const rclnodejs = require('rclnodejs')
@@ -44,7 +44,7 @@ const CMD_HEIGH_MODE = 0x01
 const CMD_BODY_UP = 0x11
 
 const CMD_STAND_UP = 0x02
-const CMD_STAND_DOWN  =  0x12
+const CMD_STAND_DOWN = 0x12
 
 const CMD_PITCH = 0x03
 const CMD_PITCH_MODE = 0x13
@@ -52,98 +52,138 @@ const CMD_PITCH_MODE = 0x13
 const CMD_SPEED_MODE = 0x05
 
 // [NEW] Motion Objects
-const STATIONARY = {cmd_id: 0, value: 0}
+const STATIONARY = { cmd_id: 0, value: 0 }
 
-const STAND_UP = {cmd_id: 0x02, value: 0}
-const CROUCH_DOWN = {cmd_id: 0x12, value: 0}
+const STAND_UP = { cmd_id: 0x02, value: 0 }
+const CROUCH_DOWN = { cmd_id: 0x12, value: 0 }
 
-const MOVE_FORWARD = {cmd_id: 0x08, value: 0.5}
-const MOVE_BACKWARD = {cmd_id: 0x08, value: -0.5}
+const MOVE_FORWARD = { cmd_id: 0x08, value: 0.5 }
+const MOVE_BACKWARD = { cmd_id: 0x08, value: -0.5 }
 
-const TURN_LEFT = {cmd_id: 0x04, value: 2}
-const TURN_RIGHT = {cmd_id: 0x04, value: -2}
+const TURN_LEFT = { cmd_id: 0x04, value: 2 }
+const TURN_RIGHT = { cmd_id: 0x04, value: -2 }
 
-const ROLL_LEFT = {cmd_id: 0x09, value: 0.1}
-const ROLL_RIGHT = {cmd_id: 0x09, value: -0.1}
-const ROLL_ORIGIN = {cmd_id: 0x09, value: 0.0}
+const PITCH_UP = { cmd_id: 0x03, value: 1.0 }
+const PITCH_DOWN = { cmd_id: 0x03, value: -1.0 }
+const PITCH_STOP = { cmd_id: 0x03, value: 0.0 }
+
+const ROLL_LEFT = { cmd_id: 0x09, value: -0.1 }
+const ROLL_RIGHT = { cmd_id: 0x09, value: 0.1 }
+const ROLL_RESET = { cmd_id: 0x09, value: 0.0 }
 
 var ctrl_data
 var motion_data
 
 rclnodejs.init().then(() => {
 
-    // Teleop
-    const teleop_nodejs = new rclnodejs.Node('teleop_nodejs')
-    const pub = teleop_nodejs.createPublisher(
-        'motion_msgs/msg/MotionCtrl', 
-        'diablo/MotionCmd'
-    )
-    
-    setInterval(function() {
-        switch (ctrl_data) {
-            case 'kill':
-                kill(3001, 'tcp')
-                break;
-            case 'stand_up':
-                motion_data = STAND_UP
-                break;
-            case 'crouch_down':
-                motion_data = CROUCH_DOWN
-                break;
-            case 'move_forward':
-                motion_data = MOVE_FORWARD
-                break;
-            case 'move_backward':
-                motion_data = MOVE_BACKWARD
-                break;
-            case 'turn_left':
-                motion_data = TURN_LEFT
-                break
-            case 'turn_right':
-                motion_data = TURN_RIGHT
-                break
-            default:
-                ctrl_data = 'stationary'
-                motion_data = STATIONARY
-        }
-        pub.publish(motion_data)
-        // console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
-    }, 20)
-    teleop_nodejs.spin()
+	// Teleop
+	const teleop_nodejs = new rclnodejs.Node('teleop_nodejs')
+	const pub = teleop_nodejs.createPublisher(
+		'motion_msgs/msg/MotionCtrl',
+		'diablo/MotionCmd'
+	)
 
-    // Battary States
-    var states_count1 = 0;
-    const battery_nodejs = new rclnodejs.Node('battery_nodejs')
-    battery_nodejs.createSubscription(
-        'sensor_msgs/msg/BatteryState',
-        'diablo/sensor/Battery',
-        (state) => {
-            // console.log(`Received message No. ${++states_count1}`, state)
-        }
-    )
-    battery_nodejs.spin()
+	setInterval(function () {
+		switch (ctrl_data) {
+			case 'kill':
+				kill(3001, 'tcp')
+				break
+		
+		// Stand & crouch
+			case 'stand_up':
+				motion_data = STAND_UP
+				break
 
-    // Motion States
-    var states_count2 = 0;
-    const motion_nodejs = new rclnodejs.Node('motion_nodejs')
-    motion_nodejs.createSubscription(
-        'motion_msgs/msg/RobotStatus',
-        'diablo/sensor/Body_state',
-        (state) => {
-            // console.log(`Received message No. ${++states_count2}`, state)
-        }
-    )
-    motion_nodejs.spin()
-    
-    // Motor States 
-    var states_count3 = 0;
-    const motor_nodejs = new rclnodejs.Node('motor_nodejs')
-    motor_nodejs.createSubscription(
-        'motion_msgs/msg/LegMotors',
-        'diablo/sensor/Motors',
-        (state) => {
-            // console.log(`Received message No. ${++states_count2}`, state)
-        }
-    )
-    motor_nodejs.spin()
+			case 'crouch_down':
+				motion_data = CROUCH_DOWN
+				break
+
+		// Forward & backward
+			case 'move_forward':
+				motion_data = MOVE_FORWARD
+				break
+
+			case 'move_backward':
+				motion_data = MOVE_BACKWARD
+				break
+		
+		// Turn
+			case 'turn_left':
+				motion_data = TURN_LEFT
+				break
+
+			case 'turn_right':
+				motion_data = TURN_RIGHT
+				break
+
+		// Pitch
+			case 'pitch_up':
+				motion_data = PITCH_UP
+				break
+
+			case 'pitch_down':
+				motion_data = PITCH_DOWN
+				break
+			
+			case 'pitch_stop':
+				motion_data = PITCH_STOP
+				break
+
+		// Roll
+			case 'roll_left':
+				motion_data = ROLL_LEFT
+				break
+
+			case 'roll_right':
+				motion_data = ROLL_RIGHT
+				break
+
+			case 'roll_reset':
+				motion_data = ROLL_RESET
+				break
+
+			default:
+				ctrl_data = 'stationary'
+				motion_data = STATIONARY
+		}
+		pub.publish(motion_data)
+		// console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
+	}, 20)
+	teleop_nodejs.spin()
+
+	// Battary States
+	var states_count1 = 0;
+	const battery_nodejs = new rclnodejs.Node('battery_nodejs')
+	battery_nodejs.createSubscription(
+		'sensor_msgs/msg/BatteryState',
+		'diablo/sensor/Battery',
+		(state) => {
+			// console.log(`Received message No. ${++states_count1}`, state)
+		}
+	)
+	battery_nodejs.spin()
+
+	// Motion States
+	var states_count2 = 0;
+	const motion_nodejs = new rclnodejs.Node('motion_nodejs')
+	motion_nodejs.createSubscription(
+		'motion_msgs/msg/RobotStatus',
+		'diablo/sensor/Body_state',
+		(state) => {
+			// console.log(`Received message No. ${++states_count2}`, state)
+		}
+	)
+	motion_nodejs.spin()
+
+	// Motor States 
+	var states_count3 = 0;
+	const motor_nodejs = new rclnodejs.Node('motor_nodejs')
+	motor_nodejs.createSubscription(
+		'motion_msgs/msg/LegMotors',
+		'diablo/sensor/Motors',
+		(state) => {
+			// console.log(`Received message No. ${++states_count2}`, state)
+		}
+	)
+	motor_nodejs.spin()
 })
