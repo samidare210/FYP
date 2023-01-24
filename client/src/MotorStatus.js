@@ -16,7 +16,7 @@ import Main from './components/Main'
 import { Link } from 'react-router-dom';
 
 // ApexCharts
-import Chart from 'react-apexcharts'
+import ApexChart from 'react-apexcharts'
 
 /*
   Note that the frontend is running at the port 3000
@@ -63,7 +63,7 @@ export default function MotorStatus() {
                                 <Mui.Box
                                     sx={{ flexGrow: 1, border: 1 }}
                                 >
-                                    This is the motor status page.
+                                    <ApexChart type='line' series={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }]} options={{}} />
                                 </Mui.Box>
 
                             </Mui.Stack>
