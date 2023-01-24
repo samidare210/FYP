@@ -96,7 +96,7 @@ export default function Controller() {
 						height: 200,
 						position: 'relative'
 					}}
-					onDir={(e, data) => { handleLHSNip(data) }}
+					onDir={(e, data) => handleLHSNip(data)}
 					onEnd={handleLHSNipEnd}
 				/>
 				<Mui.Box sx={{ flexGrow: 1 }}>
@@ -123,7 +123,7 @@ export default function Controller() {
 						height: 200,
 						position: 'relative'
 					}}
-					onDir={(e, data) => { handleRHSNip(data) }}
+					onDir={(e, data) => handleRHSNip(data)}
 					onEnd={(e, data) => handleRHSNipEnd(data)}
 				/>
 			</Mui.Stack>
