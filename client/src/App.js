@@ -19,6 +19,9 @@ import HoldBtn from './components/HoldBtn'
 // React-Webcam
 import Webcam from 'react-webcam'
 
+// React-Router
+import { Link } from 'react-router-dom';
+
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.

@@ -10,9 +10,13 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import BoltIcon from '@mui/icons-material/Bolt'
 import TimelineIcon from '@mui/icons-material/Timeline'
 
+// Components
 import { Context } from './DrawerContext'
 import DrawerHeader from './DrawerHeader'
 import ListItemCtrl from './ListItemCtrl'
+
+// React-Router
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 320
 
@@ -61,7 +65,9 @@ export default function Drawer() {
           <Mui.ListItemIcon>
             <BoltIcon />
           </Mui.ListItemIcon>
+          <Link to="/BatteryStatus">
           <Mui.ListItemText primary='Battery Status' />
+          </Link>
         </Mui.ListItemButton>
 
         <Mui.ListItemButton>
