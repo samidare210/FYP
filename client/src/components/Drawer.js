@@ -86,7 +86,9 @@ export default function Drawer() {
           <Mui.ListItemIcon>
             <TimelineIcon />
           </Mui.ListItemIcon>
+          <Link to="/MotorStatus">
           <Mui.ListItemText primary='Motor Status' />
+          </Link>
         </Mui.ListItemButton>
       </Mui.List>
 
