@@ -16,7 +16,7 @@ import Main from './components/Main'
 import { Link } from 'react-router-dom';
 
 // ApexCharts
-import ReactApexChart from 'react-apexcharts'
+import Chart from 'react-apexcharts'
 
 /*
   Note that the frontend is running at the port 3000
@@ -29,7 +29,7 @@ const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the
 // HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
 
 export default function MotorStatus() {
-        
+
     return (
         <DrawerContext>
             <Mui.Box sx={{ display: 'flex' }}>
