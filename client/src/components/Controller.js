@@ -41,14 +41,13 @@ export default function Controller() {
     }
   }
 
-  var prevDir = ''
   const handleRHSNip = (data) => {
     switch (data.direction.angle) {
       case 'up':
-        socket.emit('msg_send', 'pitch_up')
+        socket.emit('msg_send', '')
         break
       case 'down':
-        socket.emit('msg_send', 'pitch_down')
+        socket.emit('msg_send', '')
         break
       case 'left':
         socket.emit('msg_send', 'roll_left')
@@ -59,7 +58,6 @@ export default function Controller() {
       default:
         break
     }
-    prevDir = data.direction.angle
   }
 
   const handleLHSNipEnd = () => {
@@ -67,9 +65,6 @@ export default function Controller() {
   }
 
   const handleRHSNipEnd = () => {
-    if (prevDir == 'up' || prevDir == 'down')
-      socket.emit('msg_send', 'pitch_stop')
-    else if (prevDir == 'left' || prevDir == 'right')
       socket.emit('msg_send', 'roll_reset')
   }
 
