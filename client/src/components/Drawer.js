@@ -9,6 +9,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import BoltIcon from '@mui/icons-material/Bolt'
 import TimelineIcon from '@mui/icons-material/Timeline'
+import ControlCameraIcon from '@mui/icons-material/ControlCamera'
 
 // Components
 import { Context } from './DrawerContext'
@@ -52,6 +53,7 @@ export default function Drawer() {
         >
           Menu
         </Mui.Typography>
+
         <Mui.IconButton onClick={handleDrawerClose}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </Mui.IconButton>
@@ -59,6 +61,16 @@ export default function Drawer() {
       <Mui.Divider />
 
       <Mui.List>
+
+        <Mui.ListItemButton>
+          <Mui.ListItemIcon>
+            <ControlCameraIcon />
+          </Mui.ListItemIcon>
+          <Link to="/">
+            <Mui.ListItemText primary='Remote Control' />
+          </Link>
+        </Mui.ListItemButton>
+
         <ListItemCtrl></ListItemCtrl>
 
         <Mui.ListItemButton>
@@ -66,7 +78,7 @@ export default function Drawer() {
             <BoltIcon />
           </Mui.ListItemIcon>
           <Link to="/BatteryStatus">
-          <Mui.ListItemText primary='Battery Status' />
+            <Mui.ListItemText primary='Battery Status' />
           </Link>
         </Mui.ListItemButton>
 
