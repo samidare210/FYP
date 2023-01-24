@@ -18,7 +18,6 @@ import HoldBtn from './components/HoldBtn'
 
 // React-Webcam
 import Webcam from 'react-webcam'
-import { flexbox, width } from '@mui/system';
 
 /*
   Note that the frontend is running at the port 3000
@@ -27,11 +26,11 @@ import { flexbox, width } from '@mui/system';
 const host = '192.168.1.106'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
-// SSL
+// Setup SSL in package
 // HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
 
 export default function App() {
-  
+
   const handleLHSNip = (data) => {
     switch (data.direction.angle) {
       case 'up':
@@ -81,7 +80,6 @@ export default function App() {
       socket.emit('msg_send', 'pitch_stop')
     else if (prevDir == 'left' || prevDir == 'right')
       socket.emit('msg_send', 'roll_reset')
-    
   }
 
   return (
@@ -90,7 +88,7 @@ export default function App() {
         <Mui.CssBaseline />
         <AppBar />
         <Drawer />
-        
+
         <Main>
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
@@ -108,13 +106,13 @@ export default function App() {
                 socket={socket}
                 mouseDownMsg='stand_up'
                 mouseUpMsg='stationary'
-              /> 
+              />
               <HoldBtn
                 text='crouch down'
                 socket={socket}
                 mouseDownMsg='crouch_down'
                 mouseUpMsg='stationary'
-              /> 
+              />
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
@@ -150,53 +148,50 @@ export default function App() {
             </Mui.Stack>
 
             <Mui.Paper
-              sx={{
-                diaplay: 'flex',
-                gap: 2,
-                p: 2,
-              }}
+              sx={{ p: 4, width: '75%' }}
               elevation={4}
             >
-              <Mui.Stack direction='row'>
-                <Mui.Paper>
-                  <ReactNipple
-                    options={{
-                      color: "black",
-                      mode: "static",
-                      position: { top: "50%", left: "50%" },
-                      multitouch: true
-                    }}
-                    style={{
-                      outline: "1px dashed grey",
-                      width: 128,
-                      height: 128,
-                      position: "relative"
-                    }}
-                    onDir={(e, data) => {handleLHSNip(data)}}
-                    onEnd={handleLHSNipEnd}
-                  />
-                </Mui.Paper>
-                <Mui.Paper sx={{ flexGrow: 1 }}>Hello</Mui.Paper>
-                <Mui.Paper>
-                  <ReactNipple
-                    options={{
-                      color: "black",
-                      mode: "static",
-                      position: { top: "50%", left: "50%" },
-                      multitouch: true
-                    }}
-                    style={{
-                      outline: "1px dashed grey",
-                      width: 128,
-                      height: 128,
-                      position: "relative"
-                    }}
-                    onDir={(e, data) => {handleRHSNip(data)}}
-                    onEnd={(e, data) => handleRHSNipEnd(data)}
-                  />
-                </Mui.Paper>
+              <Mui.Stack 
+                direction='row' 
+                spacing={2} 
+                divider={
+                  <Mui.Divider orientation="vertical" flexItem />
+                }
+              >
+                <ReactNipple
+                  options={{
+                    color: "black",
+                    mode: "static",
+                    position: { top: "50%", left: "50%" },
+                    multitouch: true
+                  }}
+                  style={{
+                    width: 128,
+                    height: 128,
+                    position: "relative"
+                  }}
+                  onDir={(e, data) => { handleLHSNip(data) }}
+                  onEnd={handleLHSNipEnd}
+                />
+                <Mui.Box sx={{ flexGrow: 1 }}>Hello</Mui.Box>
+                <ReactNipple
+                  options={{
+                    color: "black",
+                    mode: "static",
+                    position: { top: "50%", left: "50%" },
+                    multitouch: true
+                  }}
+                  style={{
+                    width: 128,
+                    height: 128,
+                    position: "relative"
+                  }}
+                  onDir={(e, data) => { handleRHSNip(data) }}
+                  onEnd={(e, data) => handleRHSNipEnd(data)}
+                />
               </Mui.Stack>
             </Mui.Paper>
+
           </Mui.Stack>
         </Main>
       </Mui.Box>

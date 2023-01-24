@@ -37,8 +37,28 @@ export default function ListItemCtrl() {
           subheader={<Mui.ListSubheader>Settings</Mui.ListSubheader>}
         >
           <Mui.ListItem>
-            <Mui.Stack direction='column' sx={{ width:'inherit', px: 2 }}>
-              <Mui.Typography>Hello</Mui.Typography>
+            <Mui.Stack direction='column' sx={{ width: 'inherit', px: 2 }}>
+              <Mui.Typography varient='body1'>Hello</Mui.Typography>
+              <Mui.Slider
+                aria-label="slider"
+                valueLabelDisplay="auto"
+                defaultValue={3.0}
+                marks={marks}
+                min={1.0}
+                max={5.0}
+                step={0.1}
+              />
+              <Mui.Typography varient='body1'>Hello</Mui.Typography>
+              <Mui.Slider
+                aria-label="slider"
+                valueLabelDisplay="auto"
+                defaultValue={3.0}
+                marks={marks}
+                min={1.0}
+                max={5.0}
+                step={0.1}
+              />
+              <Mui.Typography varient='body1'>Hello</Mui.Typography>
               <Mui.Slider
                 aria-label="slider"
                 valueLabelDisplay="auto"
