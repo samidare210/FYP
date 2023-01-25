@@ -22,7 +22,7 @@ server.listen(port_server, () => {
 	console.log(`[${host}:${port_server}] | Server is running...`)
 })
 
-// connection event
+// Connection event
 io.on('connection', (socket) => {
 	console.log(`User connected: ${socket.id}`)
 
@@ -31,16 +31,19 @@ io.on('connection', (socket) => {
 		ctrl_data = data
 	})
 
+	var value
 	setInterval(() => {
-		// var value = genRandomInt(10).toString()
-		// console.log(value)
-		socket.emit('msg_test', motor_state)
-		console.log(motor_state)
-	}, 20)
+		value = genRandomFloat(10)
+		socket.emit('msg_test', value)
+		console.log(value)
+
+		socket.emit('msg_batteryStatus', battery_status)
+		socket.emit('msg_motorStatus', motor_status)
+	}, 500)
 })
 
-function genRandomInt(max) {
-	return Math.floor(Math.random() * max)
+function genRandomFloat(max) {
+	return Math.random() * max
 }
 
 const rclnodejs = require('rclnodejs')
@@ -85,8 +88,8 @@ const ROLL_RESET = { cmd_id: 0x09, value: 0.0 }
 var ctrl_data
 var motion_data
 
-var battery_state = 0
-var motor_state = {}
+var battery_status = 0
+var motor_status = {}
 
 rclnodejs.init().then(() => {
 
@@ -166,29 +169,29 @@ rclnodejs.init().then(() => {
 	teleop_nodejs.spin()
 
 	// States Node
-	var state_count = 0;
-	const state_nodejs = new rclnodejs.Node('state_nodejs')
-	state_nodejs.createSubscription(
+	var status_count = 0;
+	const status_nodejs = new rclnodejs.Node('status_nodejs')
+	status_nodejs.createSubscription(
 		'sensor_msgs/msg/BatteryState',
 		'diablo/sensor/Battery',
-		(state) => {
-			// console.log(`Received message No. ${++state_count}`, state)
+		(status) => {
+			// console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
-	state_nodejs.createSubscription(
+	status_nodejs.createSubscription(
 		'motion_msgs/msg/RobotStatus',
 		'diablo/sensor/Body_state',
-		(state) => {
-			// console.log(`Received message No. ${++state_count}`, state)
+		(status) => {
+			// console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
-	state_nodejs.createSubscription(
+	status_nodejs.createSubscription(
 		'motion_msgs/msg/LegMotors',
 		'diablo/sensor/Motors',
-		(state) => {
-			// console.log(`Received message No. ${++state_count}`, state)
-			motor_state = state
+		(status) => {
+			// console.log(`Received message No. ${++status_count}`, status)
+			motor_status = status
 		}
 	)
-	state_nodejs.spin()
+	status_nodejs.spin()
 })

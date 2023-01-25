@@ -5,6 +5,7 @@ import io from 'socket.io-client'
 
 // Mui
 import * as Mui from '@mui/material'
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
 
 // Components
 import DrawerContext from './components/DrawerContext'
@@ -15,12 +16,6 @@ import HoldBtn from './components/HoldBtn'
 import Controller from './components/Controller'
 import MotorState from './components/MotorState'
 
-// React-Webcam
-import Webcam from 'react-webcam'
-
-// React-Router
-import { Link } from 'react-router-dom';
-
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
@@ -30,6 +25,8 @@ const port = '3001'
 const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
 // Setup SSL in package
 // HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
+
+const ToggleGButton = styled(Mui.ToggleButton)(({ selectedColor }))
 
 export default function App() {
 
@@ -51,10 +48,12 @@ export default function App() {
               />
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
-              <Mui.ToggleButtonGroup exclusive orientation='vertical'>
+              
+              <Mui.ToggleButtonGroup orientation='vertical' exclusive>
                 <Mui.ToggleButton onClick={() => {}}>stand up</Mui.ToggleButton>
                 <Mui.ToggleButton onClick={() => {}}>crouch down</Mui.ToggleButton>
               </Mui.ToggleButtonGroup>
+
               <HoldBtn
                 text='stand up'
                 mouseDownMsg='stand_up'
@@ -96,9 +95,9 @@ export default function App() {
             
             <Controller />
 
-            <MotorState></MotorState>
-
           </Mui.Stack>
+
+          <MotorState></MotorState>
         </Main>
       </Mui.Box>
     </DrawerContext>
