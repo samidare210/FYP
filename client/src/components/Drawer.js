@@ -15,6 +15,7 @@ import ControlCameraIcon from '@mui/icons-material/ControlCamera'
 import { Context } from './DrawerContext'
 import DrawerHeader from './DrawerHeader'
 import ListItemCtrl from './ListItemCtrl'
+import BatteryItem from './BatteryItem'
 
 // React-Router
 import { Link } from 'react-router-dom';
@@ -73,14 +74,16 @@ export default function Drawer() {
 
         <ListItemCtrl></ListItemCtrl>
 
-        <Mui.ListItemButton>
+        <BatteryItem></BatteryItem>
+
+        {/* <Mui.ListItemButton>
           <Mui.ListItemIcon>
             <BoltIcon />
           </Mui.ListItemIcon>
           <Link to="/BatteryStatus">
             <Mui.ListItemText primary='Battery Status' />
           </Link>
-        </Mui.ListItemButton>
+        </Mui.ListItemButton> */}
 
         <Mui.ListItemButton>
           <Mui.ListItemIcon>
