@@ -30,6 +30,57 @@ const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the
 
 export default function MotorStatus() {
 
+    const [data, setData] = React.useState([{ x: 0, y: 0 }])
+
+    const [series, setSeries] = React.useState([{
+        name: 'Motor Speed',
+        data: data.slice()
+    }])
+    const [options, setOptions] = React.useState({
+        chart: {
+            id: 'realtime',
+            height: 350,
+            type: 'line',
+            animations: {
+                enabled: true,
+                easing: 'linear',
+                dynamicAnimation: {
+                    speed: 1000
+                }
+            },
+            toolbar: {
+                show: false
+            },
+            zoom: {
+                enabled: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        title: {
+            text: 'Motor velocity realtime Log',
+            align: 'left'
+        },
+        markers: {
+            size: 0
+        },
+        xaxis: {
+            type: 'datetime',
+            range: 10000,
+        },
+        yaxis: {
+            max: 100,
+            min: 0
+        },
+        legend: {
+            show: false
+        }
+    })
+
     return (
         <DrawerContext>
             <Mui.Box sx={{ display: 'flex' }}>
@@ -39,15 +90,6 @@ export default function MotorStatus() {
 
                 <Main>
                     <Mui.Stack spacing={1} >
-                        <Mui.Stack spacing={1} direction='row'>
-
-                        </Mui.Stack>
-                        <Mui.Stack spacing={1} direction='row'>
-
-                        </Mui.Stack>
-                        <Mui.Stack spacing={1} direction='row'>
-
-                        </Mui.Stack>
 
                         <Mui.Paper
                             sx={{ width: '75%' }}
@@ -63,7 +105,7 @@ export default function MotorStatus() {
                                 <Mui.Box
                                     sx={{ flexGrow: 1, border: 1 }}
                                 >
-                                    <ApexChart type='line' series={[{ data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }]} options={{}} />
+                                    <ApexChart height={350} options={options} series={series} />
                                 </Mui.Box>
 
                             </Mui.Stack>
