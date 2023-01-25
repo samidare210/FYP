@@ -3,6 +3,11 @@ import React from 'react'
 // Mui
 import * as Mui from '@mui/material'
 
+import io from 'socket.io-client'
+const host = '192.168.1.106'
+const port = '3001'
+const socket = io.connect(`http://${host}:${port}`)
+
 export default function HoldBtn(props) {
   const [isHold, setIsHold] = React.useState(false)
 
@@ -12,21 +17,21 @@ export default function HoldBtn(props) {
       console.log(isHold)
       if (isHold) {
         intervalId.current = setInterval(() => {
-          props.socket.emit('msg_send', props.mouseDownMsg)
+          socket.emit('msg_send', props.mouseDownMsg)
         }, 20)
       } else {
         clearInterval(intervalId.current)
-        props.socket.emit('msg_send', props.mouseUpMsg)
+        socket.emit('msg_send', props.mouseUpMsg)
       }
-  }, [isHold, props.socket, props.mouseDownMsg, props.mouseUpMsg]) 
+  }, [isHold, props.mouseDownMsg, props.mouseUpMsg]) 
 
   return (
     <Mui.Button
       className='HoldBtn'
       variant='contained' 
       color={props.color}
-      onMouseDown={() => setIsHold(true)}
-      onMouseUp={() => setIsHold(false)}
+      onMouseDown={e => {e.button == 0 && setIsHold(true)}}
+      onMouseUp={e => {e.button == 0 && setIsHold(false)}}
       onTouchStart={() => setIsHold(true)}
       onTouchEnd={() => setIsHold(false)}
     >

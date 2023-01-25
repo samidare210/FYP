@@ -1,9 +1,5 @@
 import React from 'react';
-
-// Mui
 import * as Mui from '@mui/material'
-
-// React-Nipple
 import ReactNipple from 'react-nipple'
 
 import io from 'socket.io-client'
@@ -13,65 +9,64 @@ const socket = io.connect(`http://${host}:${port}`)
 
 export default function Controller() {
 
-	const [mode, setMode] = React.useState('')
+	const [mode, setMode] = React.useState('m1')
 	const handleModeChange = (e, newMode) => {
 		setMode(newMode)
 	}
-	
+
 	React.useEffect(() => {
 		console.log(mode)
 	}, [mode]);
 
 	const handleLHSNip = (data) => {
-    switch (data.direction.angle) {
-      case 'up':
-        socket.emit('msg_send', 'move_forward')
-        break
-      case 'down':
-        socket.emit('msg_send', 'move_backward')
-        break
-      case 'left':
-        socket.emit('msg_send', 'turn_left')
-        break
-      case 'right':
-        socket.emit('msg_send', 'turn_right')
-        break
-      default:
-        break
-    }
-  }
+		switch (data.direction.angle) {
+			case 'up':
+				socket.emit('msg_send', 'move_forward')
+				break
+			case 'down':
+				socket.emit('msg_send', 'move_backward')
+				break
+			case 'left':
+				socket.emit('msg_send', 'turn_left')
+				break
+			case 'right':
+				socket.emit('msg_send', 'turn_right')
+				break
+			default:
+				break
+		}
+	}
 
-  const handleRHSNip = (data) => {
-    switch (data.direction.angle) {
-      case 'up':
-        socket.emit('msg_send', '')
-        break
-      case 'down':
-        socket.emit('msg_send', '')
-        break
-      case 'left':
-        socket.emit('msg_send', 'roll_left')
-        break
-      case 'right':
-        socket.emit('msg_send', 'roll_right')
-        break
-      default:
-        break
-    }
-  }
+	const handleRHSNip = (data) => {
+		switch (data.direction.angle) {
+			case 'up':
+				socket.emit('msg_send', '')
+				break
+			case 'down':
+				socket.emit('msg_send', '')
+				break
+			case 'left':
+				socket.emit('msg_send', 'roll_left')
+				break
+			case 'right':
+				socket.emit('msg_send', 'roll_right')
+				break
+			default:
+				break
+		}
+	}
 
-  const handleLHSNipEnd = () => {
-    socket.emit('msg_send', 'stationary')
-  }
+	const handleLHSNipEnd = () => {
+		socket.emit('msg_send', 'stationary')
+	}
 
-  const handleRHSNipEnd = () => {
-      socket.emit('msg_send', 'roll_reset')
-  }
+	const handleRHSNipEnd = () => {
+		socket.emit('msg_send', 'roll_reset')
+	}
 
 	return (
 		<Mui.Paper
 			sx={{ width: '75%' }}
-			elevation={4}
 		>
 			<Mui.Stack
 				direction='row'
@@ -94,9 +89,14 @@ export default function Controller() {
 					onDir={(e, data) => handleLHSNip(data)}
 					onEnd={handleLHSNipEnd}
 				/>
-				<Mui.Box sx={{ flexGrow: 1 }}>
+				<Mui.Box sx={{ 
+					flexGrow: 1,
+					display: 'flex',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}>
 					<Mui.ToggleButtonGroup
-					  color="primary"
+						color="primary"
 						exclusive
 						value={mode}
 						onChange={handleModeChange}

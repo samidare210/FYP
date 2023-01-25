@@ -13,6 +13,7 @@ import Drawer from './components/Drawer'
 import Main from './components/Main'
 import HoldBtn from './components/HoldBtn'
 import Controller from './components/Controller'
+import MotorState from './components/MotorState'
 
 // React-Webcam
 import Webcam from 'react-webcam'
@@ -45,21 +46,22 @@ export default function App() {
               <HoldBtn
                 text='kill'
                 color='error'
-                socket={socket}
                 mouseDownMsg='kill'
                 mouseUpMsg='stationary'
               />
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
+              <Mui.ToggleButtonGroup exclusive orientation='vertical'>
+                <Mui.ToggleButton onClick={() => {}}>stand up</Mui.ToggleButton>
+                <Mui.ToggleButton onClick={() => {}}>crouch down</Mui.ToggleButton>
+              </Mui.ToggleButtonGroup>
               <HoldBtn
                 text='stand up'
-                socket={socket}
                 mouseDownMsg='stand_up'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='crouch down'
-                socket={socket}
                 mouseDownMsg='crouch_down'
                 mouseUpMsg='stationary'
               />
@@ -67,37 +69,34 @@ export default function App() {
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
                 text='move forward'
-                socket={socket}
                 mouseDownMsg='move_forward'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='move backward'
-                socket={socket}
                 mouseDownMsg='move_backward'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='turn left'
-                socket={socket}
                 mouseDownMsg='turn_left'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='turn right'
-                socket={socket}
                 mouseDownMsg='turn_right'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
                 text='pitch stop'
-                socket={socket}
                 mouseDownMsg='pitch_stop'
                 mouseUpMsg='pitch_stop'
               />
             </Mui.Stack>
             
             <Controller />
+
+            <MotorState></MotorState>
 
           </Mui.Stack>
         </Main>

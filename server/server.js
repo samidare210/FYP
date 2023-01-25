@@ -30,7 +30,18 @@ io.on('connection', (socket) => {
 		console.log(`Message received: ${data}`);
 		ctrl_data = data
 	})
+
+	setInterval(() => {
+		// var value = genRandomInt(10).toString()
+		// console.log(value)
+		socket.emit('msg_test', motor_state)
+		console.log(motor_state)
+	}, 20)
 })
+
+function genRandomInt(max) {
+	return Math.floor(Math.random() * max)
+}
 
 const rclnodejs = require('rclnodejs')
 const { kill } = require('process')
@@ -73,6 +84,9 @@ const ROLL_RESET = { cmd_id: 0x09, value: 0.0 }
 
 var ctrl_data
 var motion_data
+
+var battery_state = 0
+var motor_state = {}
 
 rclnodejs.init().then(() => {
 
@@ -151,39 +165,30 @@ rclnodejs.init().then(() => {
 	}, 20)
 	teleop_nodejs.spin()
 
-	// Battary States
-	var states_count1 = 0;
-	const battery_nodejs = new rclnodejs.Node('battery_nodejs')
-	battery_nodejs.createSubscription(
+	// States Node
+	var state_count = 0;
+	const state_nodejs = new rclnodejs.Node('state_nodejs')
+	state_nodejs.createSubscription(
 		'sensor_msgs/msg/BatteryState',
 		'diablo/sensor/Battery',
 		(state) => {
-			// console.log(`Received message No. ${++states_count1}`, state)
+			// console.log(`Received message No. ${++state_count}`, state)
 		}
 	)
-	battery_nodejs.spin()
-
-	// Motion States
-	var states_count2 = 0;
-	const motion_nodejs = new rclnodejs.Node('motion_nodejs')
-	motion_nodejs.createSubscription(
+	state_nodejs.createSubscription(
 		'motion_msgs/msg/RobotStatus',
 		'diablo/sensor/Body_state',
 		(state) => {
-			// console.log(`Received message No. ${++states_count2}`, state)
+			// console.log(`Received message No. ${++state_count}`, state)
 		}
 	)
-	motion_nodejs.spin()
-
-	// Motor States 
-	var states_count3 = 0;
-	const motor_nodejs = new rclnodejs.Node('motor_nodejs')
-	motor_nodejs.createSubscription(
+	state_nodejs.createSubscription(
 		'motion_msgs/msg/LegMotors',
 		'diablo/sensor/Motors',
 		(state) => {
-			// console.log(`Received message No. ${++states_count2}`, state)
+			// console.log(`Received message No. ${++state_count}`, state)
+			motor_state = state
 		}
 	)
-	motor_nodejs.spin()
+	state_nodejs.spin()
 })
