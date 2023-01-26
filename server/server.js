@@ -17,11 +17,6 @@ const io = new Server(server, {
 	}
 })
 
-// Set server to listen to port 3001
-server.listen(port_server, () => {
-	console.log(`[${host}:${port_server}] | Server is running...`)
-})
-
 // Connection event
 io.on('connection', (socket) => {
 	console.log(`User connected: ${socket.id}`)
@@ -36,16 +31,16 @@ io.on('connection', (socket) => {
 		console.log(body)
 	})
 
-	var value
 	setInterval(() => {
 		socket.emit('msg_batteryStatus', battery_status)
 		socket.emit('msg_motorStatus', motor_status)
 	}, 500)
 })
 
-function genRandomFloat(max) {
-	return Math.random() * max
-}
+// Set server to listen to port 3001
+server.listen(port_server, () => {
+	console.log(`[${host}:${port_server}] | Server is running...`)
+})
 
 const rclnodejs = require('rclnodejs')
 const { kill } = require('process')
