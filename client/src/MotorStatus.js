@@ -28,12 +28,20 @@ const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the
 
 export default function MotorStatus() {
 
-  const [data, setData] = React.useState([{ x: 0, y: 0 }])
+  const [data, setData] = React.useState([{
+    x: new Date().getTime(),
+    y: 0
+  }])
 
   const [series, setSeries] = React.useState([{
-    name: 'Motor Speed',
     data: data.slice()
   }])
+
+  socket.on('msg_motorStatus', (arg) => {
+    setData([...data, { x: new Date().getTime(), y: arg.left_knee_iq }])
+    setSeries([{ data: data.slice() }])
+  })
+
   const [options, setOptions] = React.useState({
     chart: {
       id: 'realtime',
@@ -72,7 +80,7 @@ export default function MotorStatus() {
     },
     yaxis: {
       max: 100,
-      min: 0
+      min: -100
     },
     legend: {
       show: false
