@@ -28,8 +28,11 @@ const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the
 
 export default function MotorStatus() {
 
+  const currentTime = new Date();
+  currentTime.setUTCHours(currentTime.getUTCHours() + 8);
+
   const [data, setData] = React.useState([{
-    x: new Date().getTime(),
+    x: currentTime,
     y: 0
   }])
 
@@ -77,6 +80,7 @@ export default function MotorStatus() {
     xaxis: {
       type: 'datetime',
       range: 10000,
+      offset: 8, // Add this line
     },
     yaxis: {
       max: 100,
