@@ -27,16 +27,17 @@ io.on('connection', (socket) => {
 	console.log(`User connected: ${socket.id}`)
 
 	socket.on('msg_send', (data) => {
-		console.log(`Message received: ${data}`);
 		ctrl_data = data
+		console.log(ctrl_data);
+	})
+
+	socket.on('msg_body', (data) => {
+		body['value'] = data
+		console.log(body)
 	})
 
 	var value
 	setInterval(() => {
-		value = genRandomFloat(10)
-		socket.emit('msg_test', value)
-		console.log(value)
-
 		socket.emit('msg_batteryStatus', battery_status)
 		socket.emit('msg_motorStatus', motor_status)
 	}, 500)
@@ -68,8 +69,8 @@ const CMD_SPEED_MODE = 0x05
 // [NEW] Motion Objects
 const STATIONARY = { cmd_id: 0, value: 0 }
 
-const STAND_UP = { cmd_id: 0x02, value: 0 }
-const CROUCH_DOWN = { cmd_id: 0x12, value: 0 }
+const STAND = { cmd_id: 0x02, value: 0 }
+const PRONE = { cmd_id: 0x12, value: 0 }
 
 const MOVE_FORWARD = { cmd_id: 0x08, value: 0.5 }
 const MOVE_BACKWARD = { cmd_id: 0x08, value: -0.5 }
@@ -79,17 +80,20 @@ const TURN_RIGHT = { cmd_id: 0x04, value: -2 }
 
 const PITCH_UP = { cmd_id: 0x03, value: 1.0 }
 const PITCH_DOWN = { cmd_id: 0x03, value: -1.0 }
-const PITCH_STOP = { cmd_id: 0x03, value: 0.0 }
+const PITCH_STOP = { cmd_id: 0x03, value: 0 }
 
 const ROLL_LEFT = { cmd_id: 0x09, value: -0.1 }
 const ROLL_RIGHT = { cmd_id: 0x09, value: 0.1 }
-const ROLL_RESET = { cmd_id: 0x09, value: 0.0 }
+const ROLL_RESET = { cmd_id: 0x09, value: 0 }
 
 var ctrl_data
 var motion_data
 
 var battery_status = 0
 var motor_status = {}
+
+var body = { cmd_id: 0x11, value: 0 }
+var lastValue
 
 rclnodejs.init().then(() => {
 
@@ -107,12 +111,11 @@ rclnodejs.init().then(() => {
 				break
 		
 		// Stand & crouch
-			case 'stand_up':
-				motion_data = STAND_UP
+			case 'stand':
+				motion_data = STAND
 				break
-
-			case 'crouch_down':
-				motion_data = CROUCH_DOWN
+			case 'prone':
+				motion_data = PRONE
 				break
 
 		// Forward & backward
@@ -163,6 +166,12 @@ rclnodejs.init().then(() => {
 				ctrl_data = 'stationary'
 				motion_data = STATIONARY
 		}
+
+		if (body['value'] !== lastValue) {
+			motion_data = body
+			lastValue = body['value']
+		}
+		
 		pub.publish(motion_data)
 		// console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
 	}, 20)

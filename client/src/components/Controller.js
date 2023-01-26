@@ -1,5 +1,23 @@
-import React from 'react';
+import React from 'react'
+
+// Mui
 import * as Mui from '@mui/material'
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
+
+// Mui icons
+// Mui icons
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+
+import SwipeUpAltIcon from '@mui/icons-material/SwipeUpAlt';
+import SwipeDownAltIcon from '@mui/icons-material/SwipeDownAlt';
+
+import RotateLeftIcon from '@mui/icons-material/RotateLeft'
+import RotateRightIcon from '@mui/icons-material/RotateRight'
+
+// Others
 import ReactNipple from 'react-nipple'
 
 import io from 'socket.io-client'
@@ -7,16 +25,42 @@ const host = '192.168.1.106'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`)
 
+const ToggleButton = styled(Mui.ToggleButton)(() => ({
+  '&.Mui-selected, &.Mui-selected:hover': {
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
+  }
+}))
+
+const theme = createTheme({
+  palette: {
+    text: {
+      primary: '#1976d2'
+    }
+  }
+})
+
 export default function Controller() {
 
-	const [mode, setMode] = React.useState('m1')
-	const handleModeChange = (e, newMode) => {
-		setMode(newMode)
-	}
+	const [position, setPosition] = React.useState('prone')
 
-	React.useEffect(() => {
-		console.log(mode)
-	}, [mode]);
+	const handlePosition = (e, newPosition) => {
+    if (newPosition !== null) {
+      setPosition(newPosition)
+    }
+  }
+
+  React.useEffect(() => {
+    console.log(position)
+    switch (position) {
+      case 'stand':
+        socket.emit('msg_send', 'stand')
+        break
+      case 'prone':
+        socket.emit('msg_send', 'prone')
+        break
+    }
+  }, [position])
 
 	const handleLHSNip = (data) => {
 		switch (data.direction.angle) {
@@ -64,15 +108,13 @@ export default function Controller() {
 		socket.emit('msg_send', 'roll_reset')
 	}
 
+
+
 	return (
-		<Mui.Paper
-			sx={{ width: '75%' }}
-		>
+		<Mui.Paper sx={{ width: '75%' }}>
 			<Mui.Stack
 				direction='row'
-				divider={
-					<Mui.Divider orientation='vertical' flexItem />
-				}
+				divider={ <Mui.Divider orientation='vertical' flexItem /> }
 			>
 				<ReactNipple
 					options={{
@@ -89,23 +131,37 @@ export default function Controller() {
 					onDir={(e, data) => handleLHSNip(data)}
 					onEnd={handleLHSNipEnd}
 				/>
+
 				<Mui.Box sx={{ 
 					flexGrow: 1,
 					display: 'flex',
 					justifyContent: 'center',
 					alignItems: 'center'
 				}}>
-					<Mui.ToggleButtonGroup
+
+					{/* <Mui.ToggleButtonGroup
 						color="primary"
 						exclusive
 						value={mode}
-						onChange={handleModeChange}
-					>
+						onChange={handleModeChange}>
 						<Mui.ToggleButton value='m1'>Mode 1</Mui.ToggleButton>
 						<Mui.ToggleButton value='m2'>Mode 2</Mui.ToggleButton>
 						<Mui.ToggleButton value='m3'>Mode 3</Mui.ToggleButton>
-					</Mui.ToggleButtonGroup>
+					</Mui.ToggleButtonGroup> */}
+
+					<ThemeProvider theme={theme} >
+						<Mui.ToggleButtonGroup value={position} onChange={handlePosition} orientation='vertical' exclusive>
+							<ToggleButton value='stand'>
+								<ArrowDropUpIcon />
+							</ToggleButton>
+							<ToggleButton value='prone'>
+								<ArrowDropDownIcon />
+							</ToggleButton>
+						</Mui.ToggleButtonGroup>
+					</ThemeProvider>
+					
 				</Mui.Box>
+
 				<ReactNipple
 					options={{
 						color: 'black',

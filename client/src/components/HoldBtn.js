@@ -35,7 +35,7 @@ export default function HoldBtn(props) {
       onTouchStart={() => setIsHold(true)}
       onTouchEnd={() => setIsHold(false)}
     >
-      {props.text}
+      {props.child}
     </Mui.Button>
   )
 }

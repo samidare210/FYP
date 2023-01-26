@@ -5,7 +5,21 @@ import io from 'socket.io-client'
 
 // Mui
 import * as Mui from '@mui/material'
+
+import MuiToggleButton from '@mui/material/ToggleButton'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
+
+// Mui icons
+import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+
+import SwipeUpAltIcon from '@mui/icons-material/SwipeUpAlt';
+import SwipeDownAltIcon from '@mui/icons-material/SwipeDownAlt';
+
+import RotateLeftIcon from '@mui/icons-material/RotateLeft'
+import RotateRightIcon from '@mui/icons-material/RotateRight'
 
 // Components
 import DrawerContext from './components/DrawerContext'
@@ -26,9 +40,59 @@ const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the
 // Setup SSL in package
 // HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
 
-const ToggleGButton = styled(Mui.ToggleButton)(({ selectedColor }))
+const ToggleButton = styled(Mui.ToggleButton)(() => ({
+  '&.Mui-selected, &.Mui-selected:hover': {
+    color: 'white',
+    backgroundColor: theme.palette.primary.main,
+  }
+}));
+
+const theme = createTheme({
+  palette: {
+    text: {
+      primary: '#1976d2'
+    }
+  }
+})
+
+const marks = [
+  { value: 0, label: '0.00f' },
+  { value: 0.5, label: '0.50f' },
+  { value: 1, label: '1.00f' },
+]
 
 export default function App() {
+  const [position, setPosition] = React.useState('prone')
+  const [body, setBody] = React.useState('down')
+
+  const [value, setValue] = React.useState(0)
+
+  const handlePosition = (e, newPosition) => {
+    if (newPosition !== null) {
+      setPosition(newPosition)
+    }
+  }
+
+  const handleBodySlider = (e) => {
+    setValue(e.target.value)
+  }
+
+  React.useEffect(() => {
+    console.log(value)
+    socket.emit('msg_body', value)
+  }, [value])
+
+  React.useEffect(() => {
+    console.log(position)
+    switch (position) {
+      case 'stand':
+        socket.emit('msg_send', 'stand')
+        break
+      case 'prone':
+        socket.emit('msg_send', 'prone')
+        break
+    }
+  }, [position])
 
   return (
     <DrawerContext>
@@ -41,58 +105,61 @@ export default function App() {
           <Mui.Stack spacing={1} >
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
-                text='kill'
+                child={<WarningAmberIcon />}
                 color='error'
                 mouseDownMsg='kill'
                 mouseUpMsg='stationary'
               />
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
-              
-              <Mui.ToggleButtonGroup orientation='vertical' exclusive>
-                <Mui.ToggleButton onClick={() => {}}>stand up</Mui.ToggleButton>
-                <Mui.ToggleButton onClick={() => {}}>crouch down</Mui.ToggleButton>
-              </Mui.ToggleButtonGroup>
 
-              <HoldBtn
-                text='stand up'
-                mouseDownMsg='stand_up'
-                mouseUpMsg='stationary'
-              />
-              <HoldBtn
-                text='crouch down'
-                mouseDownMsg='crouch_down'
-                mouseUpMsg='stationary'
-              />
+              <ThemeProvider theme={theme} >
+                <Mui.ToggleButtonGroup value={position} onChange={handlePosition} orientation='vertical' exclusive>
+                  <ToggleButton value='stand'>
+                    <ArrowDropUpIcon />
+                  </ToggleButton>
+                  <ToggleButton value='prone'>
+                    <ArrowDropDownIcon />
+                  </ToggleButton>
+                </Mui.ToggleButtonGroup>
+              </ThemeProvider>
+
+              <Mui.Box sx={{ height: 100 }}>
+                <Mui.Slider 
+                  onChange={handleBodySlider}
+                  orientation='vertical'
+                  defaultValue={0}
+                  max={1}
+                  min={0}
+                  step={0.01}
+                  marks={marks}
+                />
+              </Mui.Box>
+
             </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
-                text='move forward'
+                child={<SwipeUpAltIcon />}
                 mouseDownMsg='move_forward'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
-                text='move backward'
+                child={<SwipeDownAltIcon />}
                 mouseDownMsg='move_backward'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
-                text='turn left'
+                child={<RotateLeftIcon />}
                 mouseDownMsg='turn_left'
                 mouseUpMsg='stationary'
               />
               <HoldBtn
-                text='turn right'
+                child={<RotateRightIcon />}
                 mouseDownMsg='turn_right'
                 mouseUpMsg='stationary'
               />
-              <HoldBtn
-                text='pitch stop'
-                mouseDownMsg='pitch_stop'
-                mouseUpMsg='pitch_stop'
-              />
             </Mui.Stack>
-            
+
             <Controller />
 
           </Mui.Stack>
