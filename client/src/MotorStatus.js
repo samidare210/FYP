@@ -15,8 +15,6 @@ import MotorState from './components/MotorState'
 
 // ApexCharts
 import ApexChart from 'react-apexcharts'
-import { ThemeContext } from '@emotion/react';
-import { palette } from '@mui/system';
 
 /*
   Note that the frontend is running at the port 3000
@@ -33,34 +31,41 @@ export default function MotorStatus() {
   const currentTime = new Date();
   currentTime.setUTCHours(currentTime.getUTCHours() + 8);
 
-  const [data, setData] = React.useState([{
+  const [value, setValue] = React.useState([{
     x: currentTime,
-    y: 0
+    y: [
+      { data: 0 },
+      { data: 0 }
+    ]
   }])
 
   const [series, setSeries] = React.useState([{
-    data: data.slice()
+    data: value
   }])
 
-  socket.on('msg_motorStatus', (arg) => {
-    setData([...data, { x: currentTime.getTime(), y: arg.left_wheel_vel }])
-    setSeries([{ data: data.slice() }])
+  socket.on('msg_test', (arg) => {
+    setValue([
+      ...value, { 
+        x: currentTime.getTime(), 
+        y: [
+          { data: arg.left_wheel_vel.toFixed(2) },
+          { data: arg.right_wheel_vel.toFixed(2) }
+        ]
+      }
+    ])
+    setSeries([{ data: value }])
   })
-
-  React.useEffect(() => {
-
-  }, []);
 
   const [options, setOptions] = React.useState({
     chart: {
       type: 'line',
-      // animations: {
-      //   enabled: true,
-      //   easing: 'linear',
-      //   dynamicAnimation: {
-      //     speed: 1000
-      //   }
-      // },
+      animations: {
+        enabled: true,
+        easing: 'linear',
+        dynamicAnimation: {
+          speed: 1000
+        }
+      },
       toolbar: { show: false },
       zoom: { enabled: false }
     },
@@ -100,17 +105,15 @@ export default function MotorStatus() {
     series: [
       {
         name: 'Left Wheel',
-        data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
       },
       {
         name: 'Right Wheel',
-        data: [-1.8, -3, -2.3, -1.0, -1.9, -2.5, 3.3, 4.2]
       }
     ],
     xaxis: {
-      // type: 'datetime',
-      // range: 100000,
-      categories: ['13:05:24', '13:05:25', '13:05:26', '13:05:27', '13:05:28', '13:05:29', '13:05:30', '13:05:31']
+      type: 'datetime',
+      range: 100000,
+      // categories: ['13:05:24', '13:05:25', '13:05:26', '13:05:27', '13:05:28', '13:05:29', '13:05:30', '13:05:31']
     },
     yaxis: {
       max: 5,
@@ -132,8 +135,8 @@ export default function MotorStatus() {
         <Drawer />
 
         <Main>
-          <Mui.Paper elevation={4} sx={{ pt: 2 }}>
-            <ApexChart height={400} options={options} series={options.series} />
+          <Mui.Paper elevation={4} sx={{ width: 800, pt: 2 }}>
+            <ApexChart height={400} options={options} series={series} />
           </Mui.Paper>
 
           <MotorState></MotorState>

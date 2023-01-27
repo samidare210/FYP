@@ -32,10 +32,37 @@ io.on('connection', (socket) => {
 	})
 
 	setInterval(() => {
+		var max = 5
+		value = {
+			left_hip_vel: genRandomValue(max),
+			left_knee_vel: genRandomValue(max),
+			left_wheel_vel: genRandomValue(max),
+		
+			right_hip_vel: genRandomValue(max),
+			right_knee_vel: genRandomValue(max),
+			right_wheel_vel: genRandomValue(max)
+		}
+		socket.emit('msg_test', value)
+		console.log(value)
+
 		socket.emit('msg_batteryStatus', battery_status)
 		socket.emit('msg_motorStatus', motor_status)
-	}, 500)
+	}, 1000)
 })
+
+var value = {
+	left_hip_vel: 0,
+	left_knee_vel: 0,
+	left_wheel_vel: 0,
+
+	right_hip_vel: 0,
+	right_knee_vel: 0,
+	right_wheel_vel: 0
+}
+
+function genRandomValue(max) {
+	return Math.random() * max
+}
 
 // Set server to listen to port 3001
 server.listen(port_server, () => {

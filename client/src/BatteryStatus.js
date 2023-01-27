@@ -65,9 +65,7 @@ export default function BatteryStatus() {
                   }
                 >
                   
-                  <Mui.Box 
-                    sx={{ flexGrow: 1, border: 1 }}
-                  >
+                  <Mui.Box sx={{ flexGrow: 1, border: 1 }}>
                     This is the battery status page.
                   </Mui.Box>
                   

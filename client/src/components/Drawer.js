@@ -58,31 +58,32 @@ export default function Drawer() {
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </Mui.IconButton>
       </DrawerHeader>
+      
       <Mui.Divider />
 
       <Mui.List>
-
-        <Mui.ListItemButton>
-          <Mui.ListItemIcon>
-            <ControlCameraIcon />
-          </Mui.ListItemIcon>
-          <Link to="/">
-            <Mui.ListItemText primary='Remote Control' />
-          </Link>
-        </Mui.ListItemButton>
+        
+        <Link to="/" style={{ color: 'inherit', textDecoration: 'none'}}>
+          <Mui.ListItemButton>
+            <Mui.ListItemIcon>
+              <ControlCameraIcon />
+            </Mui.ListItemIcon>
+              <Mui.ListItemText primary='Remote Control' />
+          </Mui.ListItemButton>
+        </Link>
 
         <ListItemCtrl></ListItemCtrl>
 
         <BatteryItem></BatteryItem>
-
-        <Mui.ListItemButton>
-          <Mui.ListItemIcon>
-            <TimelineIcon />
-          </Mui.ListItemIcon>
-          <Link to="/MotorStatus">
-          <Mui.ListItemText primary='Motor Status' />
-          </Link>
-        </Mui.ListItemButton>
+        
+        <Link to="/MotorStatus" style={{ color: 'inherit', textDecoration: 'none'}}>
+          <Mui.ListItemButton>
+            <Mui.ListItemIcon>
+              <TimelineIcon />
+            </Mui.ListItemIcon>
+            <Mui.ListItemText primary='Motor Status' />
+          </Mui.ListItemButton>
+        </Link>
       </Mui.List>
 
     </Mui.Drawer>

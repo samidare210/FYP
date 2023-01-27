@@ -124,10 +124,22 @@ export default function App() {
                 </Mui.ToggleButtonGroup>
               </ThemeProvider>
 
-              <Mui.Box sx={{ height: 100 }}>
+              <Mui.Box sx={{ width: 200 }}>
+                <Mui.Typography variant='body2' color='text.secondary'>Body Up & Down</Mui.Typography>
                 <Mui.Slider 
                   onChange={handleBodySlider}
-                  orientation='vertical'
+                  defaultValue={0}
+                  max={1}
+                  min={0}
+                  step={0.01}
+                  marks={marks}
+                />
+              </Mui.Box>
+
+              <Mui.Box sx={{ width: 200 }}>
+                <Mui.Typography variant='body2' color='text.secondary'>Body Roll</Mui.Typography>
+                <Mui.Slider 
+                  onChange={handleBodySlider}
                   defaultValue={0}
                   max={1}
                   min={0}

@@ -49,8 +49,22 @@ export default function Appbar() {
 				>
 					<MenuIcon />
 				</Mui.IconButton>
-				<Mui.Typography variant="h6" noWrap component="div">
-					Diablo Control
+				<Mui.Typography
+					variant="h6"
+					noWrap
+					component="a"
+					href="/"
+					sx={{
+						mr: 2,
+						display: { xs: 'none', md: 'flex' },
+						fontFamily: 'monospace',
+						fontWeight: 600,
+						color: 'inherit',
+						textDecoration: 'none',
+						textTransform: 'uppercase'
+					}}
+				>
+					diablo control
 				</Mui.Typography>
 			</Mui.Toolbar>
 		</AppBar>
