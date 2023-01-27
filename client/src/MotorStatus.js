@@ -120,11 +120,9 @@ export default function MotorStatus() {
         <Drawer />
 
         <Main>
-          <Mui.Stack>
-            <Mui.Paper elevation={4}>
-              <ApexChart height={400} options={options} series={options.series} />
-            </Mui.Paper>
-          </Mui.Stack>
+          <Mui.Paper elevation={4}>
+            <ApexChart height={400} options={options} series={options.series} />
+          </Mui.Paper>
 
           <MotorState></MotorState>
         </Main>
