@@ -4,10 +4,21 @@ import * as Mui from '@mui/material'
 import BoltIcon from '@mui/icons-material/Bolt'
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import ExpandLess from '@mui/icons-material/ExpandLess';
+import io from 'socket.io-client'
 
-const percentage = 67
+const host = '192.168.1.106'
+const port = '3001'
+const socket = io.connect(`http://${host}:${port}`)
 
 export default function ListItemCtrl() {
+  const [batteryState, setBatteryState] = React.useState({})
+
+  socket.on('msg_batteryStatus', (arg) => {
+    setBatteryState(arg)
+  })
+
+  const percentage = batteryState.percentage
+
   const [open, setOpen] = React.useState(false)
 
   const handleClick = () => {
