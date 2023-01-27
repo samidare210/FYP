@@ -41,9 +41,13 @@ export default function MotorStatus() {
   }])
 
   socket.on('msg_motorStatus', (arg) => {
-    setData([...data, { x: new Date().getTime(), y: arg.left_knee_iq }])
+    setData([...data, { x: currentTime.getTime(), y: arg.left_wheel_vel }])
     setSeries([{ data: data.slice() }])
   })
+
+  React.useEffect(() => {
+    
+  }, []);
 
   const [options, setOptions] = React.useState({
     chart: {
@@ -83,8 +87,8 @@ export default function MotorStatus() {
       offset: 8, // Add this line
     },
     yaxis: {
-      max: 100,
-      min: -100
+      max: 10,
+      min: -10
     },
     legend: {
       show: false

@@ -193,7 +193,7 @@ rclnodejs.init().then(() => {
 		'motion_msgs/msg/LegMotors',
 		'diablo/sensor/Motors',
 		(status) => {
-			// console.log(`Received message No. ${++status_count}`, status)
+			console.log(`Received message No. ${++status_count}`, status)
 			motor_status = status
 		}
 	)
