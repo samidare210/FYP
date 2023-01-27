@@ -67,13 +67,24 @@ export default function MotorStatus() {
     title: {
       text: 'Motor Velocity',
       align: 'left',
-      margin: 40,
       offsetX: 20,
       style: {
         fontSize: '18px',
         fontWeight: 'bold',
         fontFamily:  'Arial',
         color: 'rgba(0, 0, 0, 1)'
+      }
+    },
+    subtitle: {
+      text: 'Left & Right Wheel',
+      align: 'left',
+      margin: 0,
+      offsetX: 20,
+      style: {
+        fontSize: '12px',
+        fontWeight: 'normal',
+        fontFamily:  'Arial',
+        color: 'rgba(0, 0, 0, 0.6)'
       }
     },
     dataLabels: { 
@@ -88,11 +99,11 @@ export default function MotorStatus() {
     colors: ['#00b0ff','#ff9800'],
     series: [
       {
-        name: 'Left Wheel Velocity',
+        name: 'Left Wheel',
         data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
       },
       {
-        name: 'Right Wheel Velocity',
+        name: 'Right Wheel',
         data: [-1.8, -3, -2.3, -1.0, -1.9, -2.5, 3.3, 4.2]
       }
     ],
@@ -109,6 +120,7 @@ export default function MotorStatus() {
     },
     legend: {
       horizontalAlign: 'left',
+      offsetX: 0
     }
   })
 
@@ -120,7 +132,7 @@ export default function MotorStatus() {
         <Drawer />
 
         <Main>
-          <Mui.Paper elevation={4}>
+          <Mui.Paper elevation={4} sx={{ pt: 2 }}>
             <ApexChart height={400} options={options} series={options.series} />
           </Mui.Paper>
 
