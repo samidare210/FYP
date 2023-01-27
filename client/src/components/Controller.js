@@ -22,18 +22,18 @@ const port = '3001'
 const socket = io.connect(`http://${host}:${port}`)
 
 const ToggleButton = styled(Mui.ToggleButton)(() => ({
-  '&.Mui-selected, &.Mui-selected:hover': {
-    color: 'white',
-    backgroundColor: theme.palette.primary.main,
-  }
+	'&.Mui-selected, &.Mui-selected:hover': {
+		color: 'white',
+		backgroundColor: theme.palette.primary.main,
+	}
 }))
 
 const theme = createTheme({
-  palette: {
-    text: {
-      primary: '#1976d2'
-    }
-  }
+	palette: {
+		text: {
+			primary: '#1976d2'
+		}
+	}
 })
 
 export default function Controller() {
@@ -41,22 +41,22 @@ export default function Controller() {
 	const [position, setPosition] = React.useState('prone')
 
 	const handlePosition = (e, newPosition) => {
-    if (newPosition !== null) {
-      setPosition(newPosition)
-    }
-  }
+		if (newPosition !== null) {
+			setPosition(newPosition)
+		}
+	}
 
-  React.useEffect(() => {
-    console.log(position)
-    switch (position) {
-      case 'stand':
-        socket.emit('msg_send', 'stand')
-        break
-      case 'prone':
-        socket.emit('msg_send', 'prone')
-        break
-    }
-  }, [position])
+	React.useEffect(() => {
+		console.log(position)
+		switch (position) {
+			case 'stand':
+				socket.emit('msg_send', 'stand')
+				break
+			case 'prone':
+				socket.emit('msg_send', 'prone')
+				break
+		}
+	}, [position])
 
 	const handleLHSNip = (data) => {
 		switch (data.direction.angle) {
@@ -125,24 +125,14 @@ export default function Controller() {
 					onDir={(e, data) => handleLHSNip(data)}
 					onEnd={handleLHSNipEnd}
 				/>
-
-				<Mui.Box sx={{ 
-					flexGrow: 1,
-					display: 'flex',
-					justifyContent: 'center',
-					alignItems: 'center'
-				}}>
-
-					{/* <Mui.ToggleButtonGroup
-						color="primary"
-						exclusive
-						value={mode}
-						onChange={handleModeChange}>
-						<Mui.ToggleButton value='m1'>Mode 1</Mui.ToggleButton>
-						<Mui.ToggleButton value='m2'>Mode 2</Mui.ToggleButton>
-						<Mui.ToggleButton value='m3'>Mode 3</Mui.ToggleButton>
-					</Mui.ToggleButtonGroup> */}
-
+				<Mui.Box
+					sx={{
+						flexGrow: 1,
+						display: 'flex',
+						justifyContent: 'center',
+						alignItems: 'center'
+					}}
+				>
 					<ThemeProvider theme={theme} >
 						<Mui.ToggleButtonGroup value={position} onChange={handlePosition} orientation='vertical' exclusive>
 							<ToggleButton value='stand'>
@@ -153,7 +143,6 @@ export default function Controller() {
 							</ToggleButton>
 						</Mui.ToggleButtonGroup>
 					</ThemeProvider>
-					
 				</Mui.Box>
 
 				<ReactNipple

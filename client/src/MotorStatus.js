@@ -15,6 +15,8 @@ import MotorState from './components/MotorState'
 
 // ApexCharts
 import ApexChart from 'react-apexcharts'
+import { ThemeContext } from '@emotion/react';
+import { palette } from '@mui/system';
 
 /*
   Note that the frontend is running at the port 3000
@@ -46,52 +48,67 @@ export default function MotorStatus() {
   })
 
   React.useEffect(() => {
-    
+
   }, []);
 
   const [options, setOptions] = React.useState({
     chart: {
-      id: 'realtime',
-      height: 350,
       type: 'line',
-      animations: {
-        enabled: true,
-        easing: 'linear',
-        dynamicAnimation: {
-          speed: 1000
-        }
-      },
-      toolbar: {
-        show: false
-      },
-      zoom: {
-        enabled: false
+      // animations: {
+      //   enabled: true,
+      //   easing: 'linear',
+      //   dynamicAnimation: {
+      //     speed: 1000
+      //   }
+      // },
+      toolbar: { show: false },
+      zoom: { enabled: false }
+    },
+    title: {
+      text: 'Motor Velocity',
+      align: 'left',
+      margin: 40,
+      offsetX: 20,
+      style: {
+        fontSize: '18px',
+        fontWeight: 'bold',
+        fontFamily:  'Arial',
+        color: 'rgba(0, 0, 0, 1)'
       }
     },
-    dataLabels: {
+    dataLabels: { 
       enabled: false
     },
     stroke: {
-      curve: 'smooth'
+      width: [2, 2]
     },
-    title: {
-      text: 'Motor velocity realtime Log',
-      align: 'left'
+    markers: { 
+      size: 0 
     },
-    markers: {
-      size: 0
-    },
+    colors: ['#00b0ff','#ff9800'],
+    series: [
+      {
+        name: 'Left Wheel Velocity',
+        data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
+      },
+      {
+        name: 'Right Wheel Velocity',
+        data: [-1.8, -3, -2.3, -1.0, -1.9, -2.5, 3.3, 4.2]
+      }
+    ],
     xaxis: {
-      type: 'datetime',
-      range: 10000,
-      offset: 8, // Add this line
+      // type: 'datetime',
+      // range: 100000,
+      categories: ['13:05:24', '13:05:25', '13:05:26', '13:05:27', '13:05:28', '13:05:29', '13:05:30', '13:05:31']
     },
     yaxis: {
-      max: 10,
-      min: -10
+      max: 5,
+      min: -5,
+      axisTicks: { show: false },
+      axisBorder: { show: true }
     },
     legend: {
-      show: false
+      horizontalAlign: 'left',
     }
   })
 
@@ -103,25 +120,13 @@ export default function MotorStatus() {
         <Drawer />
 
         <Main>
-          <Mui.Stack spacing={1} >
-            <Mui.Paper
-              sx={{ width: '75%' }}
-              elevation={4}
-            >
-              <Mui.Stack
-                direction='row'
-                divider={
-                  <Mui.Divider orientation='vertical' flexItem />
-                }
-              >
-                <Mui.Box
-                  sx={{ flexGrow: 1, border: 1 }}
-                >
-                  <ApexChart height={350} options={options} series={series} />
-                </Mui.Box>
-              </Mui.Stack>
+          <Mui.Stack>
+            <Mui.Paper elevation={4}>
+              <ApexChart height={400} options={options} series={options.series} />
             </Mui.Paper>
           </Mui.Stack>
+
+          <MotorState></MotorState>
         </Main>
       </Mui.Box>
     </DrawerContext>

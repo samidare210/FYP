@@ -56,9 +56,9 @@ const theme = createTheme({
 })
 
 const marks = [
-  { value: 0, label: '0.00f' },
-  { value: 0.5, label: '0.50f' },
-  { value: 1, label: '1.00f' },
+  { value: 0, label: '0.0f' },
+  { value: 0.5, label: '0.5f' },
+  { value: 1, label: '1.0f' },
 ]
 
 export default function App() {
@@ -163,8 +163,6 @@ export default function App() {
             <Controller />
 
           </Mui.Stack>
-
-          <MotorState></MotorState>
         </Main>
       </Mui.Box>
     </DrawerContext>

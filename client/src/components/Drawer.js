@@ -7,7 +7,6 @@ import { useTheme } from '@mui/material/styles'
 // Mui Icons
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import BoltIcon from '@mui/icons-material/Bolt'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import ControlCameraIcon from '@mui/icons-material/ControlCamera'
 
@@ -75,15 +74,6 @@ export default function Drawer() {
         <ListItemCtrl></ListItemCtrl>
 
         <BatteryItem></BatteryItem>
-
-        {/* <Mui.ListItemButton>
-          <Mui.ListItemIcon>
-            <BoltIcon />
-          </Mui.ListItemIcon>
-          <Link to="/BatteryStatus">
-            <Mui.ListItemText primary='Battery Status' />
-          </Link>
-        </Mui.ListItemButton> */}
 
         <Mui.ListItemButton>
           <Mui.ListItemIcon>
