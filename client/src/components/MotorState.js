@@ -2,7 +2,7 @@ import React from 'react';
 import * as Mui from '@mui/material'
 
 import io from 'socket.io-client'
-const host = '192.168.1.106'
+const host = '192.168.1.105'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`)
 
