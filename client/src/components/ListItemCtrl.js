@@ -34,7 +34,7 @@ export default function ListItemCtrl() {
           sx={{
             width: 'inherit'
           }}
-          subheader={<Mui.ListSubheader>Settings</Mui.ListSubheader>}
+          subheader={<Mui.ListSubheader>Parameter Settings</Mui.ListSubheader>}
         >
           <Mui.ListItem>
             <Mui.Stack 
