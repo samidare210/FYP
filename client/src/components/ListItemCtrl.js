@@ -25,12 +25,13 @@ const marks_leanSlider = [
 ]
 
 const marks_movement = [
+  { value: 0.5, label: "0.5f" },
   { value: 1, label: "1.0f" },
+  { value: 1.5, label: "1.5f" },
   { value: 2, label: "2.0f" },
-  { value: 3, label: "3.0f" },
-  { value: 4, label: "4.0f" },
-  { value: 5, label: "5.0f" },
-];
+  { value: 2.5, label: "2.5f" },
+  { value: 3, label: "3.0f" }
+]
 
 const marks_rotational = [
   { value: 1, label: "1.0f" },
@@ -38,7 +39,7 @@ const marks_rotational = [
   { value: 3, label: "3.0f" },
   { value: 4, label: "4.0f" },
   { value: 5, label: "5.0f" },
-];
+]
 
 export default function ListItemCtrl(props) {
   const [open, setOpen] = React.useState(false)
@@ -137,6 +138,7 @@ export default function ListItemCtrl(props) {
                   defaultValue={0}
                 />
               </Mui.Box>
+              
               <Mui.Box sx={{ mb: 2 }}>
                 <Mui.Typography variant="body2" color="text.secondary">
                   Movement Speed
@@ -145,10 +147,10 @@ export default function ListItemCtrl(props) {
                   valueLabelDisplay="auto"
                   onChange={handleMovementSpeed}
                   marks={marks_movement}
-                  min={1.0}
-                  max={5.0}
-                  step={0.1}
-                  defaultValue={0.5}
+                  min={0.5}
+                  max={3}
+                  step={0.25}
+                  defaultValue={0.25}
                 />
               </Mui.Box>
 
@@ -160,10 +162,10 @@ export default function ListItemCtrl(props) {
                   valueLabelDisplay="auto"
                   onChange={handleRotationalSpeed}
                   marks={marks_rotational}
-                  min={1.0}
-                  max={5.0}
+                  min={1}
+                  max={5}
                   step={0.5}
-                  defaultValue={2.0}
+                  defaultValue={2}
                 />
               </Mui.Box>
             </Mui.Stack>

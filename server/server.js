@@ -38,10 +38,12 @@ io.on('connection', (socket) => {
 		console.log(body)
 	})
 
-	socket.on('msg_lean', (data) => {
-		body['cmd_id'] = 0x09
-		body['value'] = data
-		console.log(body)
+	socket.on('msg_movementSpeed', (data) => {
+		value_movementSpeed = data
+	})
+
+	socket.on('msg_rotationalSpeed', (data) => {
+		value_rotationalSpeed= data
 	})
 
 	setInterval(() => {
@@ -119,8 +121,10 @@ const CMD_PITCH_MODE = 0x13
 const CMD_SPEED_MODE = 0x05
 
 // Default Values
-var movement = 0.5
-var rotational = 2
+var value_height, last_height = 0
+var value_lean, last_lean = 0
+var value_movementSpeed, last_movementSpeed = 0.25
+var value_rotationalSpeed = last_rotationalSpeed = 2
 
 // [NEW] Motion Objects
 const STATIONARY = { cmd_id: 0, value: 0 }
@@ -128,8 +132,8 @@ const STATIONARY = { cmd_id: 0, value: 0 }
 const STAND = { cmd_id: 0x02, value: 0 }
 const PRONE = { cmd_id: 0x12, value: 0 }
 
-const MOVE_FORWARD = { cmd_id: 0x08, value: 0.5 }
-const MOVE_BACKWARD = { cmd_id: 0x08, value: -0.5 }
+const MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
+const MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
 
 const TURN_LEFT = { cmd_id: 0x04, value: 2 }
 const TURN_RIGHT = { cmd_id: 0x04, value: -2 }
@@ -220,6 +224,22 @@ rclnodejs.init().then(() => {
 		if (body['value'] !== lastValue) {
 			motion_data = body
 			lastValue = body['value']
+		}
+
+		if (value_movementSpeed !== last_movementSpeed) {
+			MOVE_FORWARD['value'] = value_movementSpeed
+			MOVE_BACKWARD['value'] = -(value_movementSpeed)
+			last_movementSpeed = value_movementSpeed
+			console.log(MOVE_FORWARD)
+			console.log(MOVE_BACKWARD)
+		}
+
+		if (value_rotationalSpeed !== last_rotationalSpeed) {
+			TURN_LEFT['value'] = value_rotationalSpeed
+			TURN_RIGHT['value'] = -(value_rotationalSpeed)
+			last_rotationalSpeed = value_rotationalSpeed
+			console.log(TURN_LEFT)
+			console.log(TURN_RIGHT)
 		}
 		
 		pub.publish(motion_data)
