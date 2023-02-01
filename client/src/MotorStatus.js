@@ -31,29 +31,26 @@ export default function MotorStatus() {
   const currentTime = new Date();
   currentTime.setUTCHours(currentTime.getUTCHours() + 8);
 
-  const [value, setValue] = React.useState([{
+  const [data, setData] = React.useState([{
     x: currentTime,
-    y: [
-      { data: 0 },
-      { data: 0 }
-    ]
+    y: 0
   }])
 
-  const [series, setSeries] = React.useState([{
-    data: value
+  const [dataRight, setDataRight] = React.useState([{
+    x: currentTime,
+    y: 0
   }])
+
+  const [series, setSeries] = React.useState([
+    { data: data },
+    { data: dataRight }
+  ])
+
 
   socket.on('msg_test', (arg) => {
-    setValue([
-      ...value, { 
-        x: currentTime.getTime(), 
-        y: [
-          { data: arg.left_wheel_vel.toFixed(2) },
-          { data: arg.right_wheel_vel.toFixed(2) }
-        ]
-      }
-    ])
-    setSeries([{ data: value }])
+    setData([...data, { x: currentTime.getTime(), y: arg.left_wheel_vel }])
+    setDataRight([...dataRight, { x: currentTime.getTime(), y: arg.right_wheel_vel }])
+    setSeries([{ data: data }, { data: dataRight }])
   })
 
   const [options, setOptions] = React.useState({
@@ -76,7 +73,7 @@ export default function MotorStatus() {
       style: {
         fontSize: '18px',
         fontWeight: 'bold',
-        fontFamily:  'Arial',
+        fontFamily: 'Arial',
         color: 'rgba(0, 0, 0, 1)'
       }
     },
@@ -88,26 +85,26 @@ export default function MotorStatus() {
       style: {
         fontSize: '12px',
         fontWeight: 'normal',
-        fontFamily:  'Arial',
+        fontFamily: 'Arial',
         color: 'rgba(0, 0, 0, 0.6)'
       }
     },
-    dataLabels: { 
+    dataLabels: {
       enabled: false
     },
     stroke: {
       width: [2, 2]
     },
-    markers: { 
-      size: 0 
+    markers: {
+      size: 0
     },
-    colors: ['#00b0ff','#ff9800'],
+    colors: ['#00b0ff', '#ff9800'],
     series: [
       {
-        name: 'Left Wheel',
+        name: 'Left Wheel'
       },
       {
-        name: 'Right Wheel',
+        name: 'Right Wheel'
       }
     ],
     xaxis: {
@@ -136,7 +133,22 @@ export default function MotorStatus() {
 
         <Main>
           <Mui.Paper elevation={4} sx={{ width: 800, pt: 2 }}>
-            <ApexChart height={400} options={options} series={series} />
+            <ApexChart
+              height={350}
+              options={options}
+              series={[
+                {
+                  data: data, 
+                  name: "Left Wheel", 
+                  color: "#00b0ff"
+                },
+                {
+                  data: dataRight, 
+                  name: "Right Wheel", 
+                  color: "#ff9800"
+                }
+              ]}
+            />
           </Mui.Paper>
 
           <MotorState></MotorState>

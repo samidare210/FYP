@@ -37,13 +37,21 @@ io.on('connection', (socket) => {
 			left_hip_vel: genRandomValue(max),
 			left_knee_vel: genRandomValue(max),
 			left_wheel_vel: genRandomValue(max),
-		
 			right_hip_vel: genRandomValue(max),
 			right_knee_vel: genRandomValue(max),
-			right_wheel_vel: genRandomValue(max)
+			right_wheel_vel: genRandomValue(max),
+
+			left_hip_iq: genRandomValue(max),
+			left_knee_iq: genRandomValue(max),
+			left_wheel_iq: genRandomValue(max),
+			right_hip_iq: genRandomValue(max),
+			right_knee_iq: genRandomValue(max),
+			right_wheel_iq: genRandomValue(max),
+	
+			left_leg_length: genRandomValue(max),
+			right_leg_length: genRandomValue(max)
 		}
 		socket.emit('msg_test', value)
-		console.log(value)
 
 		socket.emit('msg_batteryStatus', battery_status)
 		socket.emit('msg_motorStatus', motor_status)
@@ -54,14 +62,23 @@ var value = {
 	left_hip_vel: 0,
 	left_knee_vel: 0,
 	left_wheel_vel: 0,
-
 	right_hip_vel: 0,
 	right_knee_vel: 0,
-	right_wheel_vel: 0
+	right_wheel_vel: 0,
+
+	left_hip_iq: 0,
+	left_knee_iq: 0,
+	left_wheel_iq: 0,
+	right_hip_iq: 0,
+	right_knee_iq: 0,
+	right_wheel_iq: 0,
+
+	left_leg_length: 0,
+	right_leg_length: 0
 }
 
 function genRandomValue(max) {
-	return Math.random() * max
+	return (Math.random() * max * (Math.round(Math.random()) ? 1 : -1)).toFixed(2)
 }
 
 // Set server to listen to port 3001

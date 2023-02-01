@@ -28,15 +28,7 @@ export default function MotorState() {
 	})
 
 	socket.on('msg_test', (arg) => {
-		setMotorState({
-			...arg, 
-			left_hip_vel: arg.left_hip_vel.toFixed(2),
-			left_knee_vel: arg.left_knee_vel.toFixed(2),
-			left_wheel_vel: arg.left_wheel_vel.toFixed(2),
-			right_hip_vel: arg.right_hip_vel.toFixed(2),
-			right_knee_vel: arg.right_knee_vel.toFixed(2),
-			right_wheel_vel: arg.right_wheel_vel.toFixed(2)
-		})
+		setMotorState({ ...arg })
 	})
 
 	const style = {

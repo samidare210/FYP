@@ -55,10 +55,16 @@ const theme = createTheme({
   }
 })
 
-const marks = [
+const marks1 = [
   { value: 0, label: '0.0f' },
   { value: 0.5, label: '0.5f' },
   { value: 1, label: '1.0f' },
+]
+
+const marks2 = [
+  { value: -0.1, label: '-0.1f' },
+  { value: 0, label: '0.0f' },
+  { value: 0.1, label: '0.1f' },
 ]
 
 export default function App() {
@@ -96,13 +102,40 @@ export default function App() {
 
   return (
     <DrawerContext>
-      <Mui.Box sx={{ display: 'flex' }}>
+      <Mui.Box sx={{ display: 'flex'}}>
         <Mui.CssBaseline />
         <AppBar />
         <Drawer />
 
         <Main>
           <Mui.Stack spacing={1} >
+            <Mui.Box sx={{ flexGrow: 1, height: 720, bgcolor: 'black' }} />
+            <Mui.Stack spacing={1} direction='column'>
+              <Mui.Box sx={{ width: 200 }}>
+                <Mui.Typography variant='body2' color='text.secondary'>Body Up & Down</Mui.Typography>
+                <Mui.Slider
+                  onChange={handleBodySlider}
+                  defaultValue={0}
+                  max={1}
+                  min={0}
+                  step={0.01}
+                  marks={marks1}
+                />
+              </Mui.Box>
+
+              <Mui.Box sx={{ width: 200 }}>
+                <Mui.Typography variant='body2' color='text.secondary'>Body Roll</Mui.Typography>
+                <Mui.Slider
+                  onChange={handleBodySlider}
+                  defaultValue={0}
+                  max={0.1}
+                  min={-0.1}
+                  step={0.01}
+                  marks={marks2}
+                />
+              </Mui.Box>
+
+            </Mui.Stack>
             <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
                 child={<WarningAmberIcon />}
@@ -110,46 +143,6 @@ export default function App() {
                 mouseDownMsg='kill'
                 mouseUpMsg='stationary'
               />
-            </Mui.Stack>
-            <Mui.Stack spacing={1} direction='row'>
-
-              <ThemeProvider theme={theme} >
-                <Mui.ToggleButtonGroup value={position} onChange={handlePosition} orientation='vertical' exclusive>
-                  <ToggleButton value='stand'>
-                    <ArrowDropUpIcon />
-                  </ToggleButton>
-                  <ToggleButton value='prone'>
-                    <ArrowDropDownIcon />
-                  </ToggleButton>
-                </Mui.ToggleButtonGroup>
-              </ThemeProvider>
-
-              <Mui.Box sx={{ width: 200 }}>
-                <Mui.Typography variant='body2' color='text.secondary'>Body Up & Down</Mui.Typography>
-                <Mui.Slider 
-                  onChange={handleBodySlider}
-                  defaultValue={0}
-                  max={1}
-                  min={0}
-                  step={0.01}
-                  marks={marks}
-                />
-              </Mui.Box>
-
-              <Mui.Box sx={{ width: 200 }}>
-                <Mui.Typography variant='body2' color='text.secondary'>Body Roll</Mui.Typography>
-                <Mui.Slider 
-                  onChange={handleBodySlider}
-                  defaultValue={0}
-                  max={1}
-                  min={0}
-                  step={0.01}
-                  marks={marks}
-                />
-              </Mui.Box>
-
-            </Mui.Stack>
-            <Mui.Stack spacing={1} direction='row'>
               <HoldBtn
                 child={<SwipeUpAltIcon />}
                 mouseDownMsg='move_forward'
