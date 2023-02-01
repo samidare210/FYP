@@ -134,8 +134,8 @@ const PITCH_UP = { cmd_id: 0x03, value: 1.0 }
 const PITCH_DOWN = { cmd_id: 0x03, value: -1.0 }
 const PITCH_STOP = { cmd_id: 0x03, value: 0 }
 
-const ROLL_LEFT = { cmd_id: 0x09, value: -0.1 }
-const ROLL_RIGHT = { cmd_id: 0x09, value: 0.1 }
+const ROLL_LEFT = { cmd_id: 0x09, value: -0.2 }
+const ROLL_RIGHT = { cmd_id: 0x09, value: 0.2 }
 const ROLL_RESET = { cmd_id: 0x09, value: 0 }
 
 var ctrl_data
