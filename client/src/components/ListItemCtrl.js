@@ -45,8 +45,8 @@ export default function ListItemCtrl(props) {
 
   const [height, setHeight] = React.useState(0)
   const [lean, setLean] = React.useState(0)
-  const [movementSpeed, setMovementSpeed] = React.useState(2)
-  const [rotationalSpeed, setRotationalSpeed] = React.useState(0.5)
+  const [movementSpeed, setMovementSpeed] = React.useState(0.5)
+  const [rotationalSpeed, setRotationalSpeed] = React.useState(2)
 
   const handleClick = () => {
     setOpen(!open);
@@ -60,6 +60,14 @@ export default function ListItemCtrl(props) {
     setLean(e.target.value)
   }
 
+  const handleMovementSpeed = (e) => {
+    setMovementSpeed(e.target.value)
+  }
+
+  const handleRotationalSpeed = (e) => {
+    setMovementSpeed(e.target.value)
+  }
+
   React.useEffect(() => {
     socket.emit('msg_height', height)
   }, [height])
@@ -67,6 +75,14 @@ export default function ListItemCtrl(props) {
   React.useEffect(() => {
     socket.emit('msg_lean', lean)
   }, [lean])
+
+  React.useEffect(() => {
+    socket.emit('msg_movementSpeed', movementSpeed)
+  }, [movementSpeed])
+
+  React.useEffect(() => {
+    socket.emit('msg_rotationalSpeed', rotationalSpeed)
+  }, [rotationalSpeed])
 
   return (
     <>
@@ -97,12 +113,13 @@ export default function ListItemCtrl(props) {
                   Standing Height
                 </Mui.Typography>
                 <Mui.Slider
+                  valueLabelDisplay="auto"
                   onChange={handleHeightSlider}
-                  defaultValue={height}
+                  defaultValue={0}
+                  marks={marks_heightSlider}
                   max={1}
                   min={0}
                   step={0.05}
-                  marks={marks_heightSlider}
                 />
               </Mui.Box>
 
@@ -111,12 +128,13 @@ export default function ListItemCtrl(props) {
                   Leaning Degree
                 </Mui.Typography>
                 <Mui.Slider
+                  valueLabelDisplay="auto"
                   onChange={handleLeanSlider}
-                  defaultValue={lean}
+                  marks={marks_leanSlider}
                   max={0.2}
                   min={-0.2}
                   step={0.025}
-                  marks={marks_leanSlider}
+                  defaultValue={0}
                 />
               </Mui.Box>
               <Mui.Box sx={{ mb: 2 }}>
@@ -124,13 +142,13 @@ export default function ListItemCtrl(props) {
                   Movement Speed
                 </Mui.Typography>
                 <Mui.Slider
-                  aria-label="slider"
                   valueLabelDisplay="auto"
-                  defaultValue={3.0}
+                  onChange={handleMovementSpeed}
                   marks={marks_movement}
                   min={1.0}
                   max={5.0}
                   step={0.1}
+                  defaultValue={0.5}
                 />
               </Mui.Box>
 
@@ -139,13 +157,13 @@ export default function ListItemCtrl(props) {
                   Rotational Speed
                 </Mui.Typography>
                 <Mui.Slider
-                  aria-label="slider"
                   valueLabelDisplay="auto"
-                  defaultValue={2.0}
+                  onChange={handleRotationalSpeed}
                   marks={marks_rotational}
                   min={1.0}
                   max={5.0}
                   step={0.5}
+                  defaultValue={2.0}
                 />
               </Mui.Box>
             </Mui.Stack>
