@@ -118,6 +118,9 @@ const CMD_PITCH_MODE = 0x13
 
 const CMD_SPEED_MODE = 0x05
 
+// Default Values
+var movement = 0.5
+
 // [NEW] Motion Objects
 const STATIONARY = { cmd_id: 0, value: 0 }
 

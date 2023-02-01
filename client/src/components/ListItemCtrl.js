@@ -24,7 +24,15 @@ const marks_leanSlider = [
   { value: 0.2, label: '0.2f' }
 ]
 
-const marks = [
+const marks_movement = [
+  { value: 1, label: "1.0f" },
+  { value: 2, label: "2.0f" },
+  { value: 3, label: "3.0f" },
+  { value: 4, label: "4.0f" },
+  { value: 5, label: "5.0f" },
+];
+
+const marks_rotational = [
   { value: 1, label: "1.0f" },
   { value: 2, label: "2.0f" },
   { value: 3, label: "3.0f" },
@@ -33,10 +41,11 @@ const marks = [
 ];
 
 export default function ListItemCtrl(props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   const [height, setHeight] = React.useState(0)
   const [lean, setLean] = React.useState(0)
+  const [rotate, setRotate] = React.useState(0)
 
   const handleClick = () => {
     setOpen(!open);
@@ -117,7 +126,7 @@ export default function ListItemCtrl(props) {
                   aria-label="slider"
                   valueLabelDisplay="auto"
                   defaultValue={3.0}
-                  marks={marks}
+                  marks={marks_movement}
                   min={1.0}
                   max={5.0}
                   step={0.1}
@@ -131,11 +140,11 @@ export default function ListItemCtrl(props) {
                 <Mui.Slider
                   aria-label="slider"
                   valueLabelDisplay="auto"
-                  defaultValue={3.0}
-                  marks={marks}
+                  defaultValue={2.0}
+                  marks={marks_rotational}
                   min={1.0}
                   max={5.0}
-                  step={0.1}
+                  step={0.5}
                 />
               </Mui.Box>
             </Mui.Stack>
