@@ -5,13 +5,8 @@ import * as Mui from '@mui/material'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles'
 
 // Mui icons
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import SwipeUpAltIcon from '@mui/icons-material/SwipeUpAlt';
-import SwipeDownAltIcon from '@mui/icons-material/SwipeDownAlt';
-import RotateLeftIcon from '@mui/icons-material/RotateLeft'
-import RotateRightIcon from '@mui/icons-material/RotateRight'
 
 // Others
 import ReactNipple from 'react-nipple'

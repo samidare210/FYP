@@ -17,6 +17,12 @@ const io = new Server(server, {
 	}
 })
 
+var body = { cmd_id: 0, value: 0 }
+var lastValue
+
+var battery_status = 0
+var motor_status = {}
+
 // Connection event
 io.on('connection', (socket) => {
 	console.log(`User connected: ${socket.id}`)
@@ -26,7 +32,14 @@ io.on('connection', (socket) => {
 		console.log(ctrl_data);
 	})
 
-	socket.on('msg_body', (data) => {
+	socket.on('msg_height', (data) => {
+		body['cmd_id'] = 0x11
+		body['value'] = data
+		console.log(body)
+	})
+
+	socket.on('msg_lean', (data) => {
+		body['cmd_id'] = 0x09
 		body['value'] = data
 		console.log(body)
 	})
@@ -127,12 +140,6 @@ const ROLL_RESET = { cmd_id: 0x09, value: 0 }
 
 var ctrl_data
 var motion_data
-
-var battery_status = 0
-var motor_status = {}
-
-var body = { cmd_id: 0x11, value: 0 }
-var lastValue
 
 rclnodejs.init().then(() => {
 
@@ -237,7 +244,7 @@ rclnodejs.init().then(() => {
 		'motion_msgs/msg/LegMotors',
 		'diablo/sensor/Motors',
 		(status) => {
-			console.log(`Received message No. ${++status_count}`, status)
+			// console.log(`Received message No. ${++status_count}`, status)
 			motor_status = status
 		}
 	)

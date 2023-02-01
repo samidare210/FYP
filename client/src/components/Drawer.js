@@ -21,7 +21,7 @@ import { Link } from 'react-router-dom';
 
 const drawerWidth = 320
 
-export default function Drawer() {
+export default function Drawer(props) {
   const theme = useTheme()
   const { open, setOpen } = useContext(Context)
 
@@ -72,7 +72,7 @@ export default function Drawer() {
           </Mui.ListItemButton>
         </Link>
 
-        <ListItemCtrl></ListItemCtrl>
+        <ListItemCtrl socket={props.socket}></ListItemCtrl>
 
         <BatteryItem></BatteryItem>
         
