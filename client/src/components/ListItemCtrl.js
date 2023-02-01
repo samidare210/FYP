@@ -162,9 +162,9 @@ export default function ListItemCtrl(props) {
                   valueLabelDisplay="auto"
                   onChange={handleRotationalSpeed}
                   marks={marks_rotational}
-                  min={1}
-                  max={5}
-                  step={0.5}
+                  min={0}
+                  max={3.00}
+                  step={0.25}
                   defaultValue={2}
                 />
               </Mui.Box>

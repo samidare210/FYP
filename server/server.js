@@ -33,9 +33,13 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('msg_height', (data) => {
-		body['cmd_id'] = 0x11
-		body['value'] = data
-		console.log(body)
+		value_height = data
+		console.log(value_height)
+	})
+
+	socket.on('msg_lean', (data) => {
+		value_lean = data
+		console.log(value_lean)
 	})
 
 	socket.on('msg_movementSpeed', (data) => {
@@ -135,8 +139,10 @@ const PRONE = { cmd_id: 0x12, value: 0 }
 const MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
 const MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
 
-const TURN_LEFT = { cmd_id: 0x04, value: 2 }
-const TURN_RIGHT = { cmd_id: 0x04, value: -2 }
+const TURN_LEFT = { cmd_id: 0x04, value: value_rotationalSpeed }
+const TURN_RIGHT = { cmd_id: 0x04, value: -(value_rotationalSpeed) }
+
+const HEIGHT
 
 const PITCH_UP = { cmd_id: 0x03, value: 1 }
 const PITCH_DOWN = { cmd_id: 0x03, value: -1 }
@@ -221,7 +227,7 @@ rclnodejs.init().then(() => {
 				motion_data = STATIONARY
 		}
 
-		if (body['value'] !== lastValue) {
+		if (value_height !== last_height) {
 			motion_data = body
 			lastValue = body['value']
 		}
