@@ -120,6 +120,7 @@ const CMD_SPEED_MODE = 0x05
 
 // Default Values
 var movement = 0.5
+var rotational = 2
 
 // [NEW] Motion Objects
 const STATIONARY = { cmd_id: 0, value: 0 }
@@ -133,8 +134,8 @@ const MOVE_BACKWARD = { cmd_id: 0x08, value: -0.5 }
 const TURN_LEFT = { cmd_id: 0x04, value: 2 }
 const TURN_RIGHT = { cmd_id: 0x04, value: -2 }
 
-const PITCH_UP = { cmd_id: 0x03, value: 1.0 }
-const PITCH_DOWN = { cmd_id: 0x03, value: -1.0 }
+const PITCH_UP = { cmd_id: 0x03, value: 1 }
+const PITCH_DOWN = { cmd_id: 0x03, value: -1 }
 const PITCH_STOP = { cmd_id: 0x03, value: 0 }
 
 const ROLL_LEFT = { cmd_id: 0x09, value: -0.2 }

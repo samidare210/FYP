@@ -45,7 +45,8 @@ export default function ListItemCtrl(props) {
 
   const [height, setHeight] = React.useState(0)
   const [lean, setLean] = React.useState(0)
-  const [rotate, setRotate] = React.useState(0)
+  const [movementSpeed, setMovementSpeed] = React.useState(2)
+  const [rotationalSpeed, setRotationalSpeed] = React.useState(0.5)
 
   const handleClick = () => {
     setOpen(!open);
@@ -97,7 +98,7 @@ export default function ListItemCtrl(props) {
                 </Mui.Typography>
                 <Mui.Slider
                   onChange={handleHeightSlider}
-                  defaultValue={0}
+                  defaultValue={height}
                   max={1}
                   min={0}
                   step={0.05}
@@ -111,7 +112,7 @@ export default function ListItemCtrl(props) {
                 </Mui.Typography>
                 <Mui.Slider
                   onChange={handleLeanSlider}
-                  defaultValue={0}
+                  defaultValue={lean}
                   max={0.2}
                   min={-0.2}
                   step={0.025}
