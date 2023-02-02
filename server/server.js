@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
 
 	socket.on('msg_send', (data) => {
 		ctrl_data = data
-		console.log(ctrl_data);
+		// console.log(ctrl_data);
 	})
 
 	socket.on('msg_height', (data) => {
@@ -125,10 +125,17 @@ const CMD_PITCH_MODE = 0x13
 const CMD_SPEED_MODE = 0x05
 
 // Default Values
-var value_height, last_height = 0
-var value_lean, last_lean = 0
-var value_movementSpeed, last_movementSpeed = 0.25
-var value_rotationalSpeed = last_rotationalSpeed = 2
+var value_height = 0
+var last_height = value_height
+
+var value_lean = 0
+var last_lean = value_lean
+
+var value_movementSpeed = 0.5 
+var last_movementSpeed = value_movementSpeed
+
+var value_rotationalSpeed = 2
+var last_rotationalSpeed = value_rotationalSpeed
 
 // [NEW] Motion Objects
 const STATIONARY = { cmd_id: 0, value: 0 }
@@ -136,7 +143,7 @@ const STATIONARY = { cmd_id: 0, value: 0 }
 const STAND = { cmd_id: 0x02, value: 0 }
 const PRONE = { cmd_id: 0x12, value: 0 }
 
-const MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
+ MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
 const MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
 
 const TURN_LEFT = { cmd_id: 0x04, value: value_rotationalSpeed }
@@ -232,6 +239,9 @@ rclnodejs.init().then(() => {
 			SET_HEIGHT['value'] = value_height
 			last_height = value_height
 			motion_data = SET_HEIGHT
+
+			// [DEBUG]
+			console.log(SET_HEIGHT)
 		}
 
 		if (value_lean !== last_lean) {
@@ -264,7 +274,8 @@ rclnodejs.init().then(() => {
 		}
 		
 		pub.publish(motion_data)
-		// console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
+		if (ctrl_data != 'stationary')
+			console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
 	}, 20)
 	teleop_nodejs.spin()
 

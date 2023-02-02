@@ -34,11 +34,10 @@ const marks_movement = [
 ]
 
 const marks_rotational = [
-  { value: 1, label: "1.0f" },
-  { value: 2, label: "2.0f" },
-  { value: 3, label: "3.0f" },
-  { value: 4, label: "4.0f" },
-  { value: 5, label: "5.0f" },
+  { value: 0.5, label: "0.5f" },
+  { value: 1, label: "1f" },
+  { value: 1.5, label: "1.5f" },
+  { value: 2, label: "2f" },
 ]
 
 export default function ListItemCtrl(props) {
@@ -134,7 +133,7 @@ export default function ListItemCtrl(props) {
                   marks={marks_leanSlider}
                   max={0.2}
                   min={-0.2}
-                  step={0.025}
+                  step={0.010}
                   defaultValue={0}
                 />
               </Mui.Box>
@@ -162,8 +161,8 @@ export default function ListItemCtrl(props) {
                   valueLabelDisplay="auto"
                   onChange={handleRotationalSpeed}
                   marks={marks_rotational}
-                  min={0}
-                  max={3.00}
+                  min={0.5}
+                  max={2}
                   step={0.25}
                   defaultValue={2}
                 />
