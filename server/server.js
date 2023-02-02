@@ -151,7 +151,7 @@ const ROLL_RIGHT = { cmd_id: 0x09, value: 0.2 }
 const ROLL_RESET = { cmd_id: 0x09, value: 0 }
 
 const SET_HEIGHT = { cmd_id: 0x11, value: value_height }
-const SET_LEAN = {cmd_id: 0x09, value: value_lean}
+const SET_LEAN = { cmd_id: 0x09, value: value_lean }
 
 var ctrl_data
 var motion_data
