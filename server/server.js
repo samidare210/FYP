@@ -142,8 +142,6 @@ const MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
 const TURN_LEFT = { cmd_id: 0x04, value: value_rotationalSpeed }
 const TURN_RIGHT = { cmd_id: 0x04, value: -(value_rotationalSpeed) }
 
-const HEIGHT
-
 const PITCH_UP = { cmd_id: 0x03, value: 1 }
 const PITCH_DOWN = { cmd_id: 0x03, value: -1 }
 const PITCH_STOP = { cmd_id: 0x03, value: 0 }
@@ -151,6 +149,9 @@ const PITCH_STOP = { cmd_id: 0x03, value: 0 }
 const ROLL_LEFT = { cmd_id: 0x09, value: -0.2 }
 const ROLL_RIGHT = { cmd_id: 0x09, value: 0.2 }
 const ROLL_RESET = { cmd_id: 0x09, value: 0 }
+
+const SET_HEIGHT = { cmd_id: 0x11, value: value_height }
+const SET_LEAN = {cmd_id: 0x09, value: value_lean}
 
 var ctrl_data
 var motion_data
@@ -228,14 +229,26 @@ rclnodejs.init().then(() => {
 		}
 
 		if (value_height !== last_height) {
-			motion_data = body
-			lastValue = body['value']
+			SET_HEIGHT['value'] = value_height
+			last_height = value_height
+			motion_data = SET_HEIGHT
+		}
+
+		if (value_lean !== last_lean) {
+			SET_LEAN['value'] = value_lean
+			last_lean = value_lean
+			motion_data = SET_LEAN
+
+			// [DEBUG]
+			console.log(SET_LEAN)
 		}
 
 		if (value_movementSpeed !== last_movementSpeed) {
 			MOVE_FORWARD['value'] = value_movementSpeed
 			MOVE_BACKWARD['value'] = -(value_movementSpeed)
 			last_movementSpeed = value_movementSpeed
+		
+			// [DEBUG]
 			console.log(MOVE_FORWARD)
 			console.log(MOVE_BACKWARD)
 		}
@@ -244,6 +257,8 @@ rclnodejs.init().then(() => {
 			TURN_LEFT['value'] = value_rotationalSpeed
 			TURN_RIGHT['value'] = -(value_rotationalSpeed)
 			last_rotationalSpeed = value_rotationalSpeed
+
+			// [DEBUG]
 			console.log(TURN_LEFT)
 			console.log(TURN_RIGHT)
 		}

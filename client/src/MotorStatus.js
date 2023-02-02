@@ -109,8 +109,7 @@ export default function MotorStatus() {
     ],
     xaxis: {
       type: 'datetime',
-      range: 100000,
-      // categories: ['13:05:24', '13:05:25', '13:05:26', '13:05:27', '13:05:28', '13:05:29', '13:05:30', '13:05:31']
+      range: 100000
     },
     yaxis: {
       max: 5,
