@@ -11,33 +11,39 @@ const port = '3001'
 const socket = io.connect(`http://${host}:${port}`)
 
 const marks_heightSlider = [
-  { value: 0, label: '0.0f' },
-  { value: 0.5, label: '0.5f' },
-  { value: 1, label: '1.0f' },
+  { value: 0, label: '0.0' },
+  { value: 0.25, label: '0.25' },
+  { value: 0.5, label: '0.5' },
+  { value: 0.75, label: '0.75' },
+  { value: 1, label: '1.0' },
 ]
 
 const marks_leanSlider = [
-  { value: -0.2, label: '-0.2f' },
-  { value: -0.1, label: '-0.1f' },
-  { value: 0, label: '0.0f' },
-  { value: 0.1, label: '0.1f' },
-  { value: 0.2, label: '0.2f' }
+  { value: -0.2, label: '-0.2' },
+  { value: -0.1, label: '-0.1' },
+  { value: 0, label: '0.0' },
+  { value: 0.1, label: '0.1' },
+  { value: 0.2, label: '0.2' }
 ]
 
 const marks_movement = [
-  { value: 0.5, label: "0.5f" },
-  { value: 1, label: "1.0f" },
-  { value: 1.5, label: "1.5f" },
-  { value: 2, label: "2.0f" },
-  { value: 2.5, label: "2.5f" },
-  { value: 3, label: "3.0f" }
+  { value: 0, label: "0.0" },
+  { value: 0.5, label: "0.5" },
+  { value: 1, label: "1.0" },
+  { value: 1.5, label: "1.5" },
+  { value: 2, label: "2.0" },
+  { value: 2.5, label: "2.5" },
+  { value: 3, label: "3.0" }
 ]
 
 const marks_rotational = [
-  { value: 0.5, label: "0.5f" },
-  { value: 1, label: "1f" },
-  { value: 1.5, label: "1.5f" },
-  { value: 2, label: "2f" },
+  { value: 0, label: "0.0" },
+  { value: 0.5, label: "0.5" },
+  { value: 1, label: "1.0" },
+  { value: 1.5, label: "1.5" },
+  { value: 2, label: "2.0" },
+  { value: 2.5, label: "2.5" },
+  { value: 3, label: "3.0" },
 ]
 
 export default function ListItemCtrl(props) {
@@ -46,7 +52,7 @@ export default function ListItemCtrl(props) {
   const [height, setHeight] = React.useState(0)
   const [lean, setLean] = React.useState(0)
   const [movementSpeed, setMovementSpeed] = React.useState(0.5)
-  const [rotationalSpeed, setRotationalSpeed] = React.useState(2)
+  const [rotationalSpeed, setRotationalSpeed] = React.useState(1.5)
 
   const handleClick = () => {
     setOpen(!open);
@@ -65,7 +71,7 @@ export default function ListItemCtrl(props) {
   }
 
   const handleRotationalSpeed = (e) => {
-    setMovementSpeed(e.target.value)
+    setRotationalSpeed(e.target.value)
   }
 
   React.useEffect(() => {
@@ -115,11 +121,11 @@ export default function ListItemCtrl(props) {
                 <Mui.Slider
                   valueLabelDisplay="auto"
                   onChange={handleHeightSlider}
-                  defaultValue={0}
                   marks={marks_heightSlider}
                   max={1}
                   min={0}
                   step={0.05}
+                  defaultValue={height}
                 />
               </Mui.Box>
 
@@ -134,7 +140,7 @@ export default function ListItemCtrl(props) {
                   max={0.2}
                   min={-0.2}
                   step={0.010}
-                  defaultValue={0}
+                  defaultValue={lean}
                 />
               </Mui.Box>
               
@@ -146,10 +152,10 @@ export default function ListItemCtrl(props) {
                   valueLabelDisplay="auto"
                   onChange={handleMovementSpeed}
                   marks={marks_movement}
-                  min={0.5}
+                  min={0}
                   max={3}
                   step={0.25}
-                  defaultValue={0.25}
+                  defaultValue={movementSpeed}
                 />
               </Mui.Box>
 
@@ -161,10 +167,10 @@ export default function ListItemCtrl(props) {
                   valueLabelDisplay="auto"
                   onChange={handleRotationalSpeed}
                   marks={marks_rotational}
-                  min={0.5}
-                  max={2}
+                  min={0}
+                  max={3}
                   step={0.25}
-                  defaultValue={2}
+                  defaultValue={rotationalSpeed}
                 />
               </Mui.Box>
             </Mui.Stack>

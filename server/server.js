@@ -17,94 +17,6 @@ const io = new Server(server, {
 	}
 })
 
-var body = { cmd_id: 0, value: 0 }
-var lastValue
-
-var battery_status = 0
-var motor_status = {}
-
-// Connection event
-io.on('connection', (socket) => {
-	console.log(`User connected: ${socket.id}`)
-
-	socket.on('msg_send', (data) => {
-		ctrl_data = data
-		// console.log(ctrl_data);
-	})
-
-	socket.on('msg_height', (data) => {
-		value_height = data
-		console.log(value_height)
-	})
-
-	socket.on('msg_lean', (data) => {
-		value_lean = data
-		console.log(value_lean)
-	})
-
-	socket.on('msg_movementSpeed', (data) => {
-		value_movementSpeed = data
-	})
-
-	socket.on('msg_rotationalSpeed', (data) => {
-		value_rotationalSpeed= data
-	})
-
-	setInterval(() => {
-		var max = 5
-		value = {
-			left_hip_vel: genRandomValue(max),
-			left_knee_vel: genRandomValue(max),
-			left_wheel_vel: genRandomValue(max),
-			right_hip_vel: genRandomValue(max),
-			right_knee_vel: genRandomValue(max),
-			right_wheel_vel: genRandomValue(max),
-
-			left_hip_iq: genRandomValue(max),
-			left_knee_iq: genRandomValue(max),
-			left_wheel_iq: genRandomValue(max),
-			right_hip_iq: genRandomValue(max),
-			right_knee_iq: genRandomValue(max),
-			right_wheel_iq: genRandomValue(max),
-	
-			left_leg_length: genRandomValue(max),
-			right_leg_length: genRandomValue(max)
-		}
-		socket.emit('msg_test', value)
-
-		socket.emit('msg_batteryStatus', battery_status)
-		socket.emit('msg_motorStatus', motor_status)
-	}, 1000)
-})
-
-var value = {
-	left_hip_vel: 0,
-	left_knee_vel: 0,
-	left_wheel_vel: 0,
-	right_hip_vel: 0,
-	right_knee_vel: 0,
-	right_wheel_vel: 0,
-
-	left_hip_iq: 0,
-	left_knee_iq: 0,
-	left_wheel_iq: 0,
-	right_hip_iq: 0,
-	right_knee_iq: 0,
-	right_wheel_iq: 0,
-
-	left_leg_length: 0,
-	right_leg_length: 0
-}
-
-function genRandomValue(max) {
-	return (Math.random() * max * (Math.round(Math.random()) ? 1 : -1)).toFixed(2)
-}
-
-// Set server to listen to port 3001
-server.listen(port_server, () => {
-	console.log(`[${host}:${port_server}] | Server is running...`)
-})
-
 const rclnodejs = require('rclnodejs')
 const { kill } = require('process')
 
@@ -131,23 +43,17 @@ var last_height = value_height
 var value_lean = 0
 var last_lean = value_lean
 
-var value_movementSpeed = 0.5 
-var last_movementSpeed = value_movementSpeed
-
-var value_rotationalSpeed = 2
-var last_rotationalSpeed = value_rotationalSpeed
-
 // [NEW] Motion Objects
 const STATIONARY = { cmd_id: 0, value: 0 }
 
 const STAND = { cmd_id: 0x02, value: 0 }
 const PRONE = { cmd_id: 0x12, value: 0 }
 
-var MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
-var MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
+const MOVE_FORWARD = { cmd_id: 0x08, value: 0 }
+const MOVE_BACKWARD = { cmd_id: 0x08, value: 0 }
 
-const TURN_LEFT = { cmd_id: 0x04, value: value_rotationalSpeed }
-const TURN_RIGHT = { cmd_id: 0x04, value: -(value_rotationalSpeed) }
+const TURN_LEFT = { cmd_id: 0x04, value: 0 }
+const TURN_RIGHT = { cmd_id: 0x04, value: 0 }
 
 const PITCH_UP = { cmd_id: 0x03, value: 1 }
 const PITCH_DOWN = { cmd_id: 0x03, value: -1 }
@@ -157,11 +63,58 @@ const ROLL_LEFT = { cmd_id: 0x09, value: -0.2 }
 const ROLL_RIGHT = { cmd_id: 0x09, value: 0.2 }
 const ROLL_RESET = { cmd_id: 0x09, value: 0 }
 
-var SET_HEIGHT = { cmd_id: 0x11, value: value_height }
-var SET_LEAN = { cmd_id: 0x09, value: value_lean }
+const SET_HEIGHT = { cmd_id: 0x11, value: value_height }
+const SET_LEAN = { cmd_id: 0x09, value: value_lean }
 
 var ctrl_data
 var motion_data
+
+var battery_status = 0
+var motor_status = {}
+
+var value = {
+	left_hip_vel: 0,
+	left_knee_vel: 0,
+	left_wheel_vel: 0,
+	right_hip_vel: 0,
+	right_knee_vel: 0,
+	right_wheel_vel: 0,
+
+	left_hip_iq: 0,
+	left_knee_iq: 0,
+	left_wheel_iq: 0,
+	right_hip_iq: 0,
+	right_knee_iq: 0,
+	right_wheel_iq: 0,
+
+	left_leg_length: 0,
+	right_leg_length: 0
+}
+
+// Generate random values
+function genRandomValue(max) {
+	return (Math.random() * max * (Math.round(Math.random()) ? 1 : -1)).toFixed(2)
+}
+
+io.on('connection', (socket) => {
+	socket.emit('me', socket.id)
+
+	socket.on('disconnected', () => {
+		socket.broadcast.emit('callEnded')
+	})
+
+	socket.on('callUser', (data) => {
+		io.to(data.userToCall).emit('callUser', {
+			signal: data.signalData,
+			from: data.from,
+			name: data.name
+		})
+	})
+
+	socket.on('answerCall', (data) => {
+		io.to(data.to).emit('callAccepted', data.signal)
+	})
+})
 
 rclnodejs.init().then(() => {
 
@@ -171,19 +124,95 @@ rclnodejs.init().then(() => {
 		'motion_msgs/msg/MotionCtrl',
 		'diablo/MotionCmd'
 	)
+	
+	// Connection event
+	io.on('connection', (socket) => {
+		console.log(`User connected: ${socket.id}`)
 
+		socket.on('msg_send', (data) => {
+			ctrl_data = data
+
+			// DEBUG
+			// console.log(ctrl_data)
+		})
+
+		socket.on('msg_stand', (data) => {
+			if (data) {
+				motion_data = STAND
+
+				// DEBUG
+				console.log(motion_data)
+			}
+			else {
+				motion_data = PRONE
+
+				// DEBUG
+				console.log(motion_data)
+			}
+			pub.publish(motion_data)
+		})
+
+		// Handle robot parameters' message
+		socket.on('msg_height', (data) => {
+			value_height = data
+			console.log(value_height)
+		})
+	
+		socket.on('msg_lean', (data) => {
+			value_lean = data
+			console.log(value_lean)
+		})
+	
+		socket.on('msg_movementSpeed', (data) => {
+			MOVE_FORWARD['value'] = data
+			MOVE_BACKWARD['value'] = -(data)
+	
+			// DEBUG
+			console.log(MOVE_FORWARD)
+			console.log(MOVE_BACKWARD)
+		})
+	
+		socket.on('msg_rotationalSpeed', (data) => {
+			TURN_LEFT['value'] = data
+			TURN_RIGHT['value'] = -(data)
+			
+			// DEBUG
+			console.log(TURN_LEFT)
+			console.log(TURN_RIGHT)
+		})
+	
+		setInterval(() => {
+			var max = 5
+			value = {
+				left_hip_vel: genRandomValue(max),
+				left_knee_vel: genRandomValue(max),
+				left_wheel_vel: genRandomValue(max),
+				right_hip_vel: genRandomValue(max),
+				right_knee_vel: genRandomValue(max),
+				right_wheel_vel: genRandomValue(max),
+	
+				left_hip_iq: genRandomValue(max),
+				left_knee_iq: genRandomValue(max),
+				left_wheel_iq: genRandomValue(max),
+				right_hip_iq: genRandomValue(max),
+				right_knee_iq: genRandomValue(max),
+				right_wheel_iq: genRandomValue(max),
+		
+				left_leg_length: genRandomValue(max),
+				right_leg_length: genRandomValue(max)
+			}
+			socket.emit('msg_test', value) // Test Messages
+	
+			socket.emit('msg_batteryStatus', battery_status)
+			socket.emit('msg_motorStatus', motor_status)
+		}, 1000)
+	})
+
+	// Handle locomotion
 	setInterval(function () {
 		switch (ctrl_data) {
 			case 'kill':
 				kill(3001, 'tcp')
-				break
-		
-		// Stand & crouch
-			case 'stand':
-				motion_data = STAND
-				break
-			case 'prone':
-				motion_data = PRONE
 				break
 
 		// Forward & backward
@@ -240,7 +269,7 @@ rclnodejs.init().then(() => {
 			last_height = value_height
 			motion_data = SET_HEIGHT
 
-			// [DEBUG]
+			// DEBUG
 			console.log(SET_HEIGHT)
 		}
 
@@ -249,31 +278,13 @@ rclnodejs.init().then(() => {
 			last_lean = value_lean
 			motion_data = SET_LEAN
 
-			// [DEBUG]
+			// DEBUG
 			console.log(SET_LEAN)
-		}
-
-		if (value_movementSpeed !== last_movementSpeed) {
-			MOVE_FORWARD['value'] = value_movementSpeed
-			MOVE_BACKWARD['value'] = -(value_movementSpeed)
-			last_movementSpeed = value_movementSpeed
-		
-			// [DEBUG]
-			console.log(MOVE_FORWARD)
-			console.log(MOVE_BACKWARD)
-		}
-
-		if (value_rotationalSpeed !== last_rotationalSpeed) {
-			TURN_LEFT['value'] = value_rotationalSpeed
-			TURN_RIGHT['value'] = -(value_rotationalSpeed)
-			last_rotationalSpeed = value_rotationalSpeed
-
-			// [DEBUG]
-			console.log(TURN_LEFT)
-			console.log(TURN_RIGHT)
 		}
 		
 		pub.publish(motion_data)
+
+		// DEBUG
 		if (ctrl_data != 'stationary')
 			console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
 	}, 20)
@@ -281,11 +292,13 @@ rclnodejs.init().then(() => {
 
 	// States Node
 	var status_count = 0;
+
 	const status_nodejs = new rclnodejs.Node('status_nodejs')
 	status_nodejs.createSubscription(
 		'sensor_msgs/msg/BatteryState',
 		'diablo/sensor/Battery',
 		(status) => {
+			// DEBUG
 			// console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
@@ -293,6 +306,7 @@ rclnodejs.init().then(() => {
 		'motion_msgs/msg/RobotStatus',
 		'diablo/sensor/Body_state',
 		(status) => {
+			// DEBUG
 			// console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
@@ -300,9 +314,14 @@ rclnodejs.init().then(() => {
 		'motion_msgs/msg/LegMotors',
 		'diablo/sensor/Motors',
 		(status) => {
-			// console.log(`Received message No. ${++status_count}`, status)
 			motor_status = status
+
+			// DEBUG
+			// console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
 	status_nodejs.spin()
 })
+
+// Set server to listen to port 3001
+server.listen(port_server, () => { console.log(`[${host}:${port_server}] | Server is running...`)})

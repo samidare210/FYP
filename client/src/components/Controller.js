@@ -33,25 +33,18 @@ const theme = createTheme({
 
 export default function Controller() {
 
-	const [position, setPosition] = React.useState('prone')
+	const [stand, setStand] = React.useState(false)
 
 	const handlePosition = (e, newPosition) => {
 		if (newPosition !== null) {
-			setPosition(newPosition)
+			setStand(newPosition)
 		}
 	}
 
 	React.useEffect(() => {
-		console.log(position)
-		switch (position) {
-			case 'stand':
-				socket.emit('msg_send', 'stand')
-				break
-			case 'prone':
-				socket.emit('msg_send', 'prone')
-				break
-		}
-	}, [position])
+		console.log(stand)
+		socket.emit('msg_stand', stand)
+	}, [stand])
 
 	const handleLHSNip = (data) => {
 		switch (data.direction.angle) {
@@ -129,11 +122,11 @@ export default function Controller() {
 					}}
 				>
 					<ThemeProvider theme={theme} >
-						<Mui.ToggleButtonGroup value={position} onChange={handlePosition} orientation='vertical' exclusive>
-							<ToggleButton value='stand'>
+						<Mui.ToggleButtonGroup value={stand} onChange={handlePosition} orientation='vertical' exclusive>
+							<ToggleButton value={true}>
 								<ArrowDropUpIcon />
 							</ToggleButton>
-							<ToggleButton value='prone'>
+							<ToggleButton value={false}>
 								<ArrowDropDownIcon />
 							</ToggleButton>
 						</Mui.ToggleButtonGroup>
