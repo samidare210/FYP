@@ -143,8 +143,8 @@ const STATIONARY = { cmd_id: 0, value: 0 }
 const STAND = { cmd_id: 0x02, value: 0 }
 const PRONE = { cmd_id: 0x12, value: 0 }
 
- MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
-const MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
+var MOVE_FORWARD = { cmd_id: 0x08, value: value_movementSpeed }
+var MOVE_BACKWARD = { cmd_id: 0x08, value: -(value_movementSpeed) }
 
 const TURN_LEFT = { cmd_id: 0x04, value: value_rotationalSpeed }
 const TURN_RIGHT = { cmd_id: 0x04, value: -(value_rotationalSpeed) }
@@ -157,8 +157,8 @@ const ROLL_LEFT = { cmd_id: 0x09, value: -0.2 }
 const ROLL_RIGHT = { cmd_id: 0x09, value: 0.2 }
 const ROLL_RESET = { cmd_id: 0x09, value: 0 }
 
-const SET_HEIGHT = { cmd_id: 0x11, value: value_height }
-const SET_LEAN = { cmd_id: 0x09, value: value_lean }
+var SET_HEIGHT = { cmd_id: 0x11, value: value_height }
+var SET_LEAN = { cmd_id: 0x09, value: value_lean }
 
 var ctrl_data
 var motion_data
