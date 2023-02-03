@@ -34,7 +34,7 @@ import PhoneIcon from "@mui/icons-material/Phone"
 */
 const host = "localhost";
 const port = "3001";
-const socket = io.connect(`http://${host}:${port}`); // Connect to the URL of the backend server
+const socket = io.connect(`https://${host}:${port}`)// Connect to the URL of the backend server
 // Setup SSL in package
 // HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
 
@@ -140,12 +140,12 @@ export default function App() {
           <Mui.Stack spacing={1}>
             <div>
               {stream && (
-                <video playsInline muted ref={myVideo} autoPlay style={{ width: "1920px" }} />
+                <video playsInline muted ref={myVideo} autoPlay style={{ width: "400px" }} />
               )}
             </div>
             <div className="video">
               {callAccepted && !callEnded ? (
-                <video playsInline ref={userVideo} autoPlay style={{ width: "1920px" }} />
+                <video playsInline ref={userVideo} autoPlay style={{ width: "400px" }} />
               ) : null}
             </div>
             <div>
