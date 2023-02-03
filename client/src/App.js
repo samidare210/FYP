@@ -32,7 +32,7 @@ import PhoneIcon from "@mui/icons-material/Phone"
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
 */
-const host = "192.168.1.105";
+const host = "localhost";
 const port = "3001";
 const socket = io.connect(`http://${host}:${port}`); // Connect to the URL of the backend server
 // Setup SSL in package
@@ -58,14 +58,14 @@ export default function App() {
       video: true, 
       audio: true 
     })
-    // .then((stream) => {
-    //   setStream(stream);
-    //   myVideo.current.srcObject = stream
-    // })
+    .then((stream) => {
+      setStream(stream);
+      myVideo.current.srcObject = stream
+    })
 
     socket.on("me", (id) => {
       setMe(id);
-    });
+    })
 
     socket.on("callUser", (data) => {
       setReceivingCall(true);
@@ -81,35 +81,41 @@ export default function App() {
       trickle: false,
       stream: stream,
     });
+
     peer.on("signal", (data) => {
       socket.emit("callUser", {
         userToCall: id,
         signalData: data,
         from: me,
         name: name,
-      });
-    });
+      })
+    })
+
     peer.on("stream", (stream) => {
       userVideo.current.srcObject = stream;
     });
+
     socket.on("callAccepted", (signal) => {
       setCallAccepted(true);
       peer.signal(signal);
     });
 
     connectionRef.current = peer;
-  };
+  }
 
   const answerCall = () => {
     setCallAccepted(true);
+
     const peer = new Peer({
       initiator: false,
       trickle: false,
       stream: stream,
     });
+
     peer.on("signal", (data) => {
       socket.emit("answerCall", { signal: data, to: caller });
     });
+
     peer.on("stream", (stream) => {
       userVideo.current.srcObject = stream;
     });
@@ -134,23 +140,12 @@ export default function App() {
           <Mui.Stack spacing={1}>
             <div>
               {stream && (
-                <video
-                  playsInline
-                  muted
-                  ref={myVideo}
-                  autoPlay
-                  style={{ width: "300px" }}
-                />
+                <video playsInline muted ref={myVideo} autoPlay style={{ width: "1920px" }} />
               )}
             </div>
             <div className="video">
               {callAccepted && !callEnded ? (
-                <video
-                  playsInline
-                  ref={userVideo}
-                  autoPlay
-                  style={{ width: "300px" }}
-                />
+                <video playsInline ref={userVideo} autoPlay style={{ width: "1920px" }} />
               ) : null}
             </div>
             <div>

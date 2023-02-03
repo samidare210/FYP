@@ -23,8 +23,6 @@ import ApexChart from 'react-apexcharts'
 const host = '192.168.1.105'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
-// Setup SSL in package
-// HTTPS=true SSL_CRT_FILE=./ssl/192.168.1.106.pem SSL_KEY_FILE=./ssl/192.168.1.106-key.pem
 
 export default function MotorStatus() {
 
