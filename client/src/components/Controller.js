@@ -67,10 +67,10 @@ export default function Controller() {
   const handleRHSNip = (data) => {
     switch (data.direction.angle) {
       case "up":
-        socket.emit("msg_send", "");
+        socket.emit("msg_send", "pitch_up");
         break;
       case "down":
-        socket.emit("msg_send", "");
+        socket.emit("msg_send", "pitch_down");
         break;
       case "left":
         socket.emit("msg_send", "roll_left");
@@ -88,11 +88,11 @@ export default function Controller() {
   }
 
   const handleRHSNipEnd = () => {
-    socket.emit("msg_send", "roll_reset");
+    socket.emit("msg_resetRHS", "roll_reset");
   }
 
   return (
-    <Mui.Paper sx={{ width: "75%" }}>
+    <Mui.Paper sx={{ width: 1 }}>
       <Mui.Stack
         direction="row"
         divider={<Mui.Divider orientation="vertical" flexItem />}
@@ -136,7 +136,6 @@ export default function Controller() {
             </Mui.ToggleButtonGroup>
           </ThemeProvider>
         </Mui.Box>
-
         <ReactNipple
           options={{
             color: "black",

@@ -6,7 +6,7 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 app.use(cors())
 
-const host = 'localhost'
+const host = '192.168.1.109'
 const port_client = '3000'
 const port_server = '3001'
 
@@ -96,26 +96,6 @@ function genRandomValue(max) {
 	return (Math.random() * max * (Math.round(Math.random()) ? 1 : -1)).toFixed(2)
 }
 
-io.on('connection', (socket) => {
-	socket.emit('me', socket.id)
-
-	socket.on('disconnected', () => {
-		socket.broadcast.emit('callEnded')
-	})
-
-	socket.on('callUser', (data) => {
-		io.to(data.userToCall).emit('callUser', {
-			signal: data.signalData,
-			from: data.from,
-			name: data.name
-		})
-	})
-
-	socket.on('answerCall', (data) => {
-		io.to(data.to).emit('callAccepted', data.signal)
-	})
-})
-
 rclnodejs.init().then(() => {
 
 	// Teleop
@@ -150,6 +130,17 @@ rclnodejs.init().then(() => {
 				console.log(motion_data)
 			}
 			pub.publish(motion_data)
+		})
+
+		socket.on('msg_resetRHS', (data) => {
+			motion_data = PITCH_STOP
+			motion_data = ROLL_RESET
+
+			ctrl_data = 'stationary'
+			motion_data = STATIONARY
+
+			// DEBUG
+			console.log(motion_data)
 		})
 
 		// Handle robot parameters' message
@@ -241,10 +232,6 @@ rclnodejs.init().then(() => {
 			case 'pitch_down':
 				motion_data = PITCH_DOWN
 				break
-			
-			case 'pitch_stop':
-				motion_data = PITCH_STOP
-				break
 
 		// Roll
 			case 'roll_left':
@@ -253,10 +240,6 @@ rclnodejs.init().then(() => {
 
 			case 'roll_right':
 				motion_data = ROLL_RIGHT
-				break
-
-			case 'roll_reset':
-				motion_data = ROLL_RESET
 				break
 
 			default:

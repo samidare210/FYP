@@ -26,7 +26,7 @@ const Container = styled('main', { shouldForwardProp: (prop) => prop !== 'open' 
 			marginLeft: 0,
 		}),
 	}),
-	)
+)
 
 export default function Main(props) {
 	const { open } = useContext(Context)
