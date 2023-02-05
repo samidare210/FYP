@@ -40,6 +40,7 @@ export default function App() {
         <Drawer socket={socket} />
 
         <Main>
+          <Mui.Box sx={{ width: 1, height: 720 }} />
           <Mui.Stack spacing={1}>
             <Mui.Stack spacing={1} direction="row">
               <HoldBtn
