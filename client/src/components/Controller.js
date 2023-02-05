@@ -170,7 +170,6 @@ export default function Controller() {
               mouseDownMsg="turn_right"
               mouseUpMsg="stationary"
             />
-
           </Mui.Stack>
         </Mui.Box>
         <ReactNipple
