@@ -15,15 +15,15 @@ export default function ListItemCtrl() {
 
   socket.on("msg_batteryStatus", (arg) => {
     setBatteryState(arg);
-  });
+  })
 
   const percentage = 72;
 
   const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
-    setOpen(!open);
-  };
+    setOpen(!open)
+  }
 
   return (
     <>

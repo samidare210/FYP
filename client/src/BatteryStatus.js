@@ -12,9 +12,6 @@ import AppBar from './components/Appbar'
 import Drawer from './components/Drawer'
 import Main from './components/Main'
 
-// React-Router
-import { Link } from 'react-router-dom';
-
 /*
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
@@ -23,16 +20,7 @@ const host = '192.168.1.109'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`) // Connect to the URL of the backend server
 
-export default function BatteryStatus() {
-    
-      const [batteryStatus, setBatteryStatus] = React.useState('')
-    
-      React.useEffect(() => {
-     socket.on('battery_status', (data) => {
-        setBatteryStatus(data)
-     })
-      }, [])
-    
+export default function BatteryStatus() { 
       return (
         <DrawerContext>
         <Mui.Box sx={{ display: 'flex' }}>

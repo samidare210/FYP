@@ -5,11 +5,20 @@ import * as Mui from "@mui/material";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 
 // Mui icons
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+
+import SwipeUpAltIcon from "@mui/icons-material/SwipeUpAlt";
+import SwipeDownAltIcon from "@mui/icons-material/SwipeDownAlt";
+
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import RotateRightIcon from "@mui/icons-material/RotateRight";
+
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 // Others
 import ReactNipple from "react-nipple";
+import HoldBtn from "./HoldBtn";
 
 import io from "socket.io-client";
 const host = "192.168.1.109";
@@ -19,17 +28,17 @@ const socket = io.connect(`http://${host}:${port}`)
 const ToggleButton = styled(Mui.ToggleButton)(() => ({
   "&.Mui-selected, &.Mui-selected:hover": {
     color: "white",
-    backgroundColor: theme.palette.primary.main,
-  },
-}));
+    backgroundColor: theme.palette.primary.main
+  }
+}))
 
 const theme = createTheme({
   palette: {
     text: {
-      primary: "#1976d2",
-    },
-  },
-});
+      primary: "#1976d2"
+    }
+  }
+})
 
 export default function Controller() {
   const [stand, setStand] = React.useState(false);
@@ -48,47 +57,47 @@ export default function Controller() {
   const handleLHSNip = (data) => {
     switch (data.direction.angle) {
       case "up":
-        socket.emit("msg_send", "move_forward");
-        break;
+        socket.emit("msg_send", "move_forward")
+        break
       case "down":
-        socket.emit("msg_send", "move_backward");
-        break;
+        socket.emit("msg_send", "move_backward")
+        break
       case "left":
-        socket.emit("msg_send", "turn_left");
-        break;
+        socket.emit("msg_send", "turn_left")
+        break
       case "right":
-        socket.emit("msg_send", "turn_right");
-        break;
+        socket.emit("msg_send", "turn_right")
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   const handleRHSNip = (data) => {
     switch (data.direction.angle) {
       case "up":
-        socket.emit("msg_send", "pitch_up");
-        break;
+        socket.emit("msg_send", "pitch_up")
+        break
       case "down":
-        socket.emit("msg_send", "pitch_down");
-        break;
+        socket.emit("msg_send", "pitch_down")
+        break
       case "left":
-        socket.emit("msg_send", "roll_left");
-        break;
+        socket.emit("msg_send", "roll_left")
+        break
       case "right":
-        socket.emit("msg_send", "roll_right");
-        break;
+        socket.emit("msg_send", "roll_right")
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   const handleLHSNipEnd = () => {
-    socket.emit("msg_send", "stationary");
+    socket.emit("msg_send", "stationary")
   }
 
   const handleRHSNipEnd = () => {
-    socket.emit("msg_resetRHS", "roll_reset");
+    socket.emit("msg_resetRHS", "roll_reset")
   }
 
   return (
@@ -120,21 +129,49 @@ export default function Controller() {
             alignItems: "center",
           }}
         >
-          <ThemeProvider theme={theme}>
-            <Mui.ToggleButtonGroup
-              value={stand}
-              onChange={handlePosition}
-              orientation="vertical"
-              exclusive
-            >
-              <ToggleButton value={true}>
-                <ArrowDropUpIcon />
-              </ToggleButton>
-              <ToggleButton value={false}>
-                <ArrowDropDownIcon />
-              </ToggleButton>
-            </Mui.ToggleButtonGroup>
-          </ThemeProvider>
+          <Mui.Stack spacing={1} direction="row">
+            <ThemeProvider theme={theme}>
+              <Mui.ToggleButtonGroup
+                value={stand}
+                onChange={handlePosition}
+                exclusive
+              >
+                <ToggleButton value={true}>
+                  <ArrowDropUpIcon />
+                </ToggleButton>
+                <ToggleButton value={false}>
+                  <ArrowDropDownIcon />
+                </ToggleButton>
+              </Mui.ToggleButtonGroup>
+            </ThemeProvider>
+            <HoldBtn
+              child={<WarningAmberIcon />}
+              color="error"
+              mouseDownMsg="kill"
+              mouseUpMsg="stationary"
+            />
+            <HoldBtn
+              child={<SwipeUpAltIcon />}
+              mouseDownMsg="move_forward"
+              mouseUpMsg="stationary"
+            />
+            <HoldBtn
+              child={<SwipeDownAltIcon />}
+              mouseDownMsg="move_backward"
+              mouseUpMsg="stationary"
+            />
+            <HoldBtn
+              child={<RotateLeftIcon />}
+              mouseDownMsg="turn_left"
+              mouseUpMsg="stationary"
+            />
+            <HoldBtn
+              child={<RotateRightIcon />}
+              mouseDownMsg="turn_right"
+              mouseUpMsg="stationary"
+            />
+
+          </Mui.Stack>
         </Mui.Box>
         <ReactNipple
           options={{
