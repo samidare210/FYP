@@ -2,7 +2,7 @@ import React from 'react';
 import * as Mui from '@mui/material'
 
 import io from 'socket.io-client'
-const host = '192.168.1.109'
+const host = '192.168.1.105'
 const port = '3001'
 const socket = io.connect(`http://${host}:${port}`)
 
@@ -27,7 +27,7 @@ export default function MotorState() {
 		right_leg_length: 0
 	})
 
-	socket.on('msg_test', (arg) => {
+	socket.on('msg_motorStatus', (arg) => {
 		setMotorState({ ...arg })
 	})
 
@@ -41,23 +41,23 @@ export default function MotorState() {
 				<Mui.Stack direction='row' spacing={2}>
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Hip Velocity</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_hip_vel}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_hip_vel * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Hip Velocity</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_hip_vel}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_hip_vel * 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 					<Mui.Divider orientation='vertical' flexItem />
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Knee Velocity</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_knee_vel}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_knee_vel * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Knee Velocity</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_knee_vel}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_knee_vel* 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 					<Mui.Divider orientation='vertical' flexItem />
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Wheel Velocity</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_wheel_vel}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_wheel_vel * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Wheel Velocity</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_wheel_vel}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_wheel_vel * 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 				</Mui.Stack>
 			</Mui.Paper>
@@ -66,23 +66,23 @@ export default function MotorState() {
 				<Mui.Stack direction='row' spacing={2}>
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Hip IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_hip_iq}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_hip_iq * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Hip IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_knee_iq}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_knee_iq* 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 					<Mui.Divider orientation='vertical' flexItem />
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Knee IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_knee_iq}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_knee_iq * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Knee IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_knee_iq}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_knee_iq * 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 					<Mui.Divider orientation='vertical' flexItem />
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Wheel IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_wheel_iq}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_wheel_iq * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Wheel IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_wheel_iq}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_wheel_iq * 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 				</Mui.Stack>
 			</Mui.Paper>
@@ -91,9 +91,9 @@ export default function MotorState() {
 				<Mui.Stack direction='row' spacing={2}>
 					<Mui.Stack sx={style}>
 						<Mui.Typography variant='body2' color='text.secondary'>Left Leg Length</Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.left_leg_length}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.left_leg_length * 100) / 100}</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Leg Length </Mui.Typography>
-						<Mui.Typography variant='h5'>{motorState.right_leg_length}</Mui.Typography>
+						<Mui.Typography variant='h5'>{Math.round(motorState.right_leg_length * 100) / 100}</Mui.Typography>
 					</Mui.Stack>
 				</Mui.Stack>
 			</Mui.Paper>

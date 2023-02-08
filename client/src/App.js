@@ -18,7 +18,7 @@ import Controller from "./components/Controller";
   Note that the frontend is running at the port 3000
   and the backend is running at the port 3001.
 */
-const host = "192.168.1.109";
+const host = "192.168.1.105";
 const port = "3001";
 const socket = io.connect(`http://${host}:${port}`)// Connect to the URL of the backend server
 
@@ -31,7 +31,6 @@ export default function App() {
         <Drawer socket={socket} />
 
         <Main>
-          <Mui.Box sx={{ width: 1, height: 720 }} />
           <Mui.Stack spacing={1}>
             <Controller socket={socket} />
           </Mui.Stack>

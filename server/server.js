@@ -6,7 +6,7 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 app.use(cors())
 
-const host = '192.168.1.109'
+const host = '192.168.1.105'
 const port_client = '3000'
 const port_server = '3001'
 
@@ -116,22 +116,6 @@ rclnodejs.init().then(() => {
 			// console.log(ctrl_data)
 		})
 
-		socket.on('msg_stand', (data) => {
-			if (data) {
-				motion_data = STAND
-
-				// DEBUG
-				console.log(motion_data)
-			}
-			else {
-				motion_data = PRONE
-
-				// DEBUG
-				console.log(motion_data)
-			}
-			pub.publish(motion_data)
-		})
-
 		socket.on('msg_resetRHS', (data) => {
 			motion_data = PITCH_STOP
 			motion_data = ROLL_RESET
@@ -206,6 +190,14 @@ rclnodejs.init().then(() => {
 				kill(3001, 'tcp')
 				break
 
+		// Body mode
+			case 'stand':
+				motion_data = STAND
+				break
+			case 'prone':
+				motion_data = PRONE
+				break
+
 		// Forward & backward
 			case 'move_forward':
 				motion_data = MOVE_FORWARD
@@ -231,6 +223,9 @@ rclnodejs.init().then(() => {
 
 			case 'pitch_down':
 				motion_data = PITCH_DOWN
+				break
+			case 'pitch_stop':
+				motion_data = PITCH_STOP
 				break
 
 		// Roll

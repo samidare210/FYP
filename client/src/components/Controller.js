@@ -21,7 +21,7 @@ import ReactNipple from "react-nipple";
 import HoldBtn from "./HoldBtn";
 
 import io from "socket.io-client";
-const host = "192.168.1.109";
+const host = "192.168.1.105";
 const port = "3001";
 const socket = io.connect(`http://${host}:${port}`)
 
@@ -49,10 +49,11 @@ export default function Controller() {
     }
   };
 
-  React.useEffect(() => {
-    console.log(stand);
-    socket.emit("msg_stand", stand);
-  }, [stand]);
+  if (stand == true) {
+    socket.emit("msg_send", "stand");
+  } else {
+    socket.emit("msg_send", "prone")
+  }
 
   const handleLHSNip = (data) => {
     switch (data.direction.angle) {
@@ -72,7 +73,7 @@ export default function Controller() {
         break
     }
   }
-
+  
   const handleRHSNip = (data) => {
     switch (data.direction.angle) {
       case "up":
@@ -97,7 +98,7 @@ export default function Controller() {
   }
 
   const handleRHSNipEnd = () => {
-    socket.emit("msg_resetRHS", "roll_reset")
+    socket.emit("msg_send", "pitch_stop")
   }
 
   return (
@@ -178,6 +179,7 @@ export default function Controller() {
             mode: "static",
             position: { top: "50%", left: "50%" },
             multitouch: true,
+            lockY: true
           }}
           style={{
             width: 200,
