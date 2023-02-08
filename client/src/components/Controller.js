@@ -20,10 +20,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ReactNipple from "react-nipple";
 import HoldBtn from "./HoldBtn";
 
-import io from "socket.io-client";
-const host = "192.168.1.105";
-const port = "3001";
-const socket = io.connect(`http://${host}:${port}`)
+// Socket
+import { socket } from "../Socket"
 
 const ToggleButton = styled(Mui.ToggleButton)(() => ({
   "&.Mui-selected, &.Mui-selected:hover": {

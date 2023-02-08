@@ -107,7 +107,11 @@ rclnodejs.init().then(() => {
 	
 	// Connection event
 	io.on('connection', (socket) => {
-		console.log(`User connected: ${socket.id}`)
+		console.log(`Socket connected: ${socket.id}`)
+
+		socket.on('disconnect', () => {
+			console.log(`Socket disconnected: ${socket.id}`)
+		})
 
 		socket.on('msg_send', (data) => {
 			ctrl_data = data
@@ -264,7 +268,7 @@ rclnodejs.init().then(() => {
 
 		// DEBUG
 		if (ctrl_data != 'stationary')
-			console.log(`Published data: ${ctrl_data}, ${Object.values(motion_data)}}`)
+			console.log(`Published data: {${ctrl_data}, ${Object.values(motion_data)}}`)
 	}, 20)
 	teleop_nodejs.spin()
 
@@ -277,7 +281,7 @@ rclnodejs.init().then(() => {
 		'diablo/sensor/Battery',
 		(status) => {
 			// DEBUG
-			// console.log(`Received message No. ${++status_count}`, status)
+			console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
 	status_nodejs.createSubscription(
