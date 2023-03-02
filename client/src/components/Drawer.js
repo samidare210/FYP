@@ -63,6 +63,15 @@ export default function Drawer(props) {
       <Mui.Divider />
 
       <Mui.List>
+
+      <Link to="/Chat" style={{ color: 'inherit', textDecoration: 'none'}}>
+          <Mui.ListItemButton>
+            <Mui.ListItemIcon>
+              <ChatIcon />
+            </Mui.ListItemIcon>
+            <Mui.ListItemText primary='Chat' />
+          </Mui.ListItemButton>
+        </Link>
         
         <Link to="/" style={{ color: 'inherit', textDecoration: 'none'}}>
           <Mui.ListItemButton>
@@ -83,15 +92,6 @@ export default function Drawer(props) {
               <TimelineIcon />
             </Mui.ListItemIcon>
             <Mui.ListItemText primary='Motor Status' />
-          </Mui.ListItemButton>
-        </Link>
-
-        <Link to="/Chat" style={{ color: 'inherit', textDecoration: 'none'}}>
-          <Mui.ListItemButton>
-            <Mui.ListItemIcon>
-              <ChatIcon />
-            </Mui.ListItemIcon>
-            <Mui.ListItemText primary='Chat' />
           </Mui.ListItemButton>
         </Link>
       </Mui.List>
