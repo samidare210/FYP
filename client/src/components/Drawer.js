@@ -16,7 +16,6 @@ import { Context } from './DrawerContext'
 import DrawerHeader from './DrawerHeader'
 import ListItemCtrl from './ListItemCtrl'
 import BatteryItem from './BatteryItem'
-import Chat from './Chat'
 
 // React-Router
 import { Link } from 'react-router-dom';
@@ -89,9 +88,9 @@ export default function Drawer(props) {
 
         <Link to="/Chat" style={{ color: 'inherit', textDecoration: 'none'}}>
           <Mui.ListItemButton>
-            <Mui.ChatIcon>
-              <Chat />
-            </Mui.ChatIcon>
+            <Mui.ListItemIcon>
+              <ChatIcon />
+            </Mui.ListItemIcon>
             <Mui.ListItemText primary='Chat' />
           </Mui.ListItemButton>
         </Link>
