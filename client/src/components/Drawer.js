@@ -9,12 +9,14 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import TimelineIcon from '@mui/icons-material/Timeline'
 import ControlCameraIcon from '@mui/icons-material/ControlCamera'
+import ChatIcon from '@mui/icons-material/Chat'
 
 // Components
 import { Context } from './DrawerContext'
 import DrawerHeader from './DrawerHeader'
 import ListItemCtrl from './ListItemCtrl'
 import BatteryItem from './BatteryItem'
+import Chat from './Chat'
 
 // React-Router
 import { Link } from 'react-router-dom';
@@ -82,6 +84,15 @@ export default function Drawer(props) {
               <TimelineIcon />
             </Mui.ListItemIcon>
             <Mui.ListItemText primary='Motor Status' />
+          </Mui.ListItemButton>
+        </Link>
+
+        <Link to="/Chat" style={{ color: 'inherit', textDecoration: 'none'}}>
+          <Mui.ListItemButton>
+            <Mui.ChatIcon>
+              <Chat />
+            </Mui.ChatIcon>
+            <Mui.ListItemText primary='Chat' />
           </Mui.ListItemButton>
         </Link>
       </Mui.List>
