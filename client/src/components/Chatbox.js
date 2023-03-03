@@ -32,13 +32,51 @@ const useStyles = makeStyles({
     }
   });
 
+  const style = {
+		width: 200
+	}
 
   const Chatbox = () => {
     const classes = useStyles();
   
     return (
-        <Mui.Box sx={{ display: 'inline-flex', flexDirection: 'column' }} spacing={2}>
-            </Mui.Box>
+      <Mui.Box sx={{ display: 'inline-flex', flexDirection: 'column' }} spacing={2}>
+			<Mui.Paper sx={{ display: 'inline-block', p: 2, my: 1 }} elevation={4}>
+				<Mui.Stack direction='row' spacing={2}>
+					<Mui.Stack sx={style}>
+						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Hip IQ</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.left_hip_iq }</Mui.Typography>
+						<Mui.Typography variant='body2' color='text.secondary'>Right Hip IQ</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.right_knee_iq }</Mui.Typography> */}
+					</Mui.Stack>
+					<Mui.Divider orientation='vertical' flexItem />
+					<Mui.Stack sx={style}>
+						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Knee IQ</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.left_knee_iq }</Mui.Typography>
+						<Mui.Typography variant='body2' color='text.secondary'>Right Knee IQ</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.right_knee_iq }</Mui.Typography> */}
+					</Mui.Stack>
+					<Mui.Divider orientation='vertical' flexItem />
+					<Mui.Stack sx={style}>
+						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Wheel IQ</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.left_wheel_iq }</Mui.Typography>
+						<Mui.Typography variant='body2' color='text.secondary'>Right Wheel IQ</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.right_wheel_iq }</Mui.Typography> */}
+					</Mui.Stack>
+				</Mui.Stack>
+			</Mui.Paper>
+
+			<Mui.Paper sx={{ display: 'inline-block', p: 2, my: 1 }} elevation={4}>
+				<Mui.Stack direction='row' spacing={2}>
+					<Mui.Stack sx={style}>
+						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Leg Length</Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.left_leg_length }</Mui.Typography>
+						<Mui.Typography variant='body2' color='text.secondary'>Right Leg Length </Mui.Typography>
+						<Mui.Typography variant='h5'>{ motorState.right_leg_length }</Mui.Typography> */}
+					</Mui.Stack>
+				</Mui.Stack>
+			</Mui.Paper>
+		</Mui.Box>
     );
     };
 

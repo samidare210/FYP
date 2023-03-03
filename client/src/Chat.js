@@ -9,7 +9,7 @@ import AppBar from "./components/Appbar";
 import Drawer from "./components/Drawer";
 import Main from "./components/Main";
 
-// import Chatbox from "./components/Chatbox";
+import Chatbox from "./components/Chatbox";
 
 export default function Chat() {
   return (
@@ -21,7 +21,7 @@ export default function Chat() {
 
         <Main>
           <Mui.Stack spacing={1}>
-            {/* <Chatbox /> */}
+            <Chatbox />
           </Mui.Stack>
         </Main>
       </Mui.Box>
