@@ -12,32 +12,11 @@ import { Fab } from '@mui/material';
 // Icons
 import SendIcon from '@mui/icons-material/Send';
 
-const useStyles = makeStyles({
-    table: {
-      minWidth: 650,
-    },
-    chatSection: {
-      width: '100%',
-      height: '80vh'
-    },
-    headBG: {
-        backgroundColor: '#e0e0e0'
-    },
-    borderRight500: {
-        borderRight: '1px solid #e0e0e0'
-    },
-    messageArea: {
-      height: '70vh',
-      overflowY: 'auto'
-    }
-  });
-
   const style = {
 		width: 200
 	}
 
   const Chatbox = () => {
-    const classes = useStyles();
   
     return (
       <Mui.Box sx={{ display: 'inline-flex', flexDirection: 'column' }} spacing={2}>
@@ -62,17 +41,6 @@ const useStyles = makeStyles({
 						<Mui.Typography variant='h5'>{ motorState.left_wheel_iq }</Mui.Typography>
 						<Mui.Typography variant='body2' color='text.secondary'>Right Wheel IQ</Mui.Typography>
 						<Mui.Typography variant='h5'>{ motorState.right_wheel_iq }</Mui.Typography> */}
-					</Mui.Stack>
-				</Mui.Stack>
-			</Mui.Paper>
-
-			<Mui.Paper sx={{ display: 'inline-block', p: 2, my: 1 }} elevation={4}>
-				<Mui.Stack direction='row' spacing={2}>
-					<Mui.Stack sx={style}>
-						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Leg Length</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.left_leg_length }</Mui.Typography>
-						<Mui.Typography variant='body2' color='text.secondary'>Right Leg Length </Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.right_leg_length }</Mui.Typography> */}
 					</Mui.Stack>
 				</Mui.Stack>
 			</Mui.Paper>
