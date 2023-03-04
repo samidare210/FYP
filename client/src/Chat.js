@@ -8,10 +8,10 @@ import DrawerContext from "./components/DrawerContext";
 import AppBar from "./components/Appbar";
 import Drawer from "./components/Drawer";
 import Main from "./components/Main";
-
 import Chatbox from "./components/Chatbox";
 
-export default function Chat() {
+const Chat = () => {
+
   return (
     <DrawerContext>
       <Mui.Box sx={{ display: "flex" }}>
@@ -21,10 +21,14 @@ export default function Chat() {
 
         <Main>
           <Mui.Stack spacing={1}>
-            <Chatbox />
+            <div style={{ height: "400px" }}>
+              <Chatbox />
+            </div>
           </Mui.Stack>
         </Main>
       </Mui.Box>
     </DrawerContext>
   );
-}
+};
+
+export default Chat;

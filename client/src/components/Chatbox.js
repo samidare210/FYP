@@ -1,52 +1,91 @@
-import React from "react";
-import { makeStyles } from '@mui/material/styles'
+import React, { useState, useRef, useEffect } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
-// Mui
-import * as Mui from "@mui/material";
-import { Grid, Paper, Avatar, TextField, Button } from '@mui/material';
-import { Typography } from '@mui/material';
-import { List, ListItem, ListItemText, ListItemIcon } from '@mui/material';
-import { Divider } from '@mui/material';
-import { Fab } from '@mui/material';
+import { styled } from "@mui/material/styles";
 
-// Icons
-import SendIcon from '@mui/icons-material/Send';
-
-  const style = {
-		width: 200
-	}
-
-  const Chatbox = () => {
+const ChatContainer = styled("div")({
+	display: "flex",
+	flexDirection: "column",
+	height: "100%",
+  });
   
-    return (
-      <Mui.Box sx={{ display: 'inline-flex', flexDirection: 'column' }} spacing={2}>
-			<Mui.Paper sx={{ display: 'inline-block', p: 2, my: 1 }} elevation={4}>
-				<Mui.Stack direction='row' spacing={2}>
-					<Mui.Stack sx={style}>
-						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Hip IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.left_hip_iq }</Mui.Typography>
-						<Mui.Typography variant='body2' color='text.secondary'>Right Hip IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.right_knee_iq }</Mui.Typography> */}
-					</Mui.Stack>
-					<Mui.Divider orientation='vertical' flexItem />
-					<Mui.Stack sx={style}>
-						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Knee IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.left_knee_iq }</Mui.Typography>
-						<Mui.Typography variant='body2' color='text.secondary'>Right Knee IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.right_knee_iq }</Mui.Typography> */}
-					</Mui.Stack>
-					<Mui.Divider orientation='vertical' flexItem />
-					<Mui.Stack sx={style}>
-						{/* <Mui.Typography variant='body2' color='text.secondary'>Left Wheel IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.left_wheel_iq }</Mui.Typography>
-						<Mui.Typography variant='body2' color='text.secondary'>Right Wheel IQ</Mui.Typography>
-						<Mui.Typography variant='h5'>{ motorState.right_wheel_iq }</Mui.Typography> */}
-					</Mui.Stack>
-				</Mui.Stack>
-			</Mui.Paper>
-		</Mui.Box>
-    );
-    };
+  const ChatHistory = styled("div")({
+	flex: 1,
+	overflowY: "scroll",
+	marginBottom: "10px",
+	border: "1px solid #ccc",
+  });
+  
+  const ChatMessage = styled("div")({
+	display: "flex",
+	flexDirection: (props) => props.isBotMessage ? "row-reverse" : "row",
+	alignItems: "flex-start",
+	margin: "5px",
+  });
+  
+  const ChatBubble = styled("div")({
+	backgroundColor: (props) => props.isBotMessage ? "#F1F0F0" : "#0084FF",
+	color: (props) => props.isBotMessage ? "#000" : "#FFF",
+	padding: "10px",
+	borderRadius: "10px",
+	maxWidth: "80%",
+	wordBreak: "break-word",
+  });
+  
+  const Chatbot = () => {
+	const [chatHistory, setChatHistory] = useState([]);
+	const chatEndRef = useRef(null);
+  
+	const scrollToBottom = () => {
+	  chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+	};
+  
+	useEffect(() => {
+	  scrollToBottom();
+	}, [chatHistory]);
+  
+	const handleMessageSubmit = async (e) => {
+	  e.preventDefault();
+	  const message = e.target.message.value;
+	  const response = await fetch(`/api/search?q=${message}`);
+	  const data = await response.json();
+	  setChatHistory([...chatHistory, { message, isBotMessage: false }]);
+	  setChatHistory([...chatHistory, { message: data.response, isBotMessage: true }]);
+	  e.target.reset();
+	};
 
-export default Chatbox;
+	return (
+		<ChatContainer>
+			<Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+			<Button variant="contained" endIcon={<RefreshIcon />} onClick={() => window.location.reload()}>
+					Refresh</Button>
+			</Box>
+			<ChatHistory>
+				{chatHistory.map((chat, index) => (
+					<ChatMessage key={index} isBotMessage={chat.isBotMessage}>
+						<ChatBubble isBotMessage={chat.isBotMessage}>
+							{chat.message}
+						</ChatBubble>
+					</ChatMessage>
+				))}
+				<div ref={chatEndRef} />
+			</ChatHistory>
+			<form onSubmit={handleMessageSubmit}>
+				<Grid container spacing={2} alignItems="center">
+					<Grid item xs={11}>
+						<TextField fullWidth name="message" label="Type your message" />
+					</Grid>
+					<Grid item xs={1}>
+						<Button fullWidth type="submit" variant="contained" color="primary">Send</Button>
+					</Grid>
+				</Grid>
+			</form>
+		</ChatContainer>
+	  );
+	};	
 
+export default Chatbot;
