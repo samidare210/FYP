@@ -23,7 +23,7 @@ const Chat = () => {
         <Main>
           <Mui.Stack spacing={1}>
             <div style={{ height: "400px" }}>
-              <Chatbox />
+              <Chatbot />
             </div>
           </Mui.Stack>
         </Main>
