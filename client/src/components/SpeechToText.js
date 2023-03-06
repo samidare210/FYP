@@ -27,12 +27,12 @@ const languages = [
 
 const theme = {
     background: '#f5f8fb',
-    fontFamily: 'Helvetica Neue',
-    headerBgColor: '#000',
+    headerBgColor: '#1976d2',
+    fontFamily: 'Roboto',
     headerFontColor: '#fff',
     headerFontSize: '15px',
-    botBubbleColor: '#000',
-    botFontColor: '#fff',
+    botBubbleColor: '#fff',
+    botFontColor: '#000',
     userBubbleColor: '#fff',
     userFontColor: '#4a4a4a',
 };
