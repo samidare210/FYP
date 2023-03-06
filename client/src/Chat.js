@@ -8,8 +8,6 @@ import DrawerContext from "./components/DrawerContext";
 import AppBar from "./components/Appbar";
 import Drawer from "./components/Drawer";
 import Main from "./components/Main";
-import Chatbox from "./components/Chatbox";
-import Chatbot from "./components/Chatbot";
 import SpeechToText from "./components/SpeechToText";
 
 const Chat = () => {
@@ -24,6 +22,7 @@ const Chat = () => {
         <Main>
           <Mui.Stack spacing={1}>
             <div style={{ height: "400px" }}>
+              <SpeechToText />
             </div>
           </Mui.Stack>
         </Main>
