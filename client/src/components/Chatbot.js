@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {Box,Button,CssBaseline,Divider,ThemeProvider,Typography,createTheme,} from '@mui/material';
+import {Box,Button,CssBaseline,Divider,Link,ThemeProvider,Typography,createTheme,} from '@mui/material';
 import {ActionRequest,AudioActionResponse,ChatController,FileActionResponse,MuiChat,} from 'chat-ui-react';
 
 const muiTheme = createTheme({
@@ -28,18 +28,25 @@ const muiTheme = createTheme({
         <Box sx={{ height: '100%', backgroundColor: 'gray' }}>
           <Box
             sx={{
-              height: '100%',
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: 'white',
+              height: '100%',
+              maxWidth: '640px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              bgcolor: 'background.default',
             }}
           >
-            <Typography >
-              This is a chatbot. You can type something and the bot will echo it.
+            <Typography sx={{ p: 1 }}>
+              Welcome to{' '}
+              <Link href="/">
+                chat-ui-react
+              </Link>{' '}
+              demo site.
             </Typography>
             <Divider />
-            <Box sx={{ flex : 1, marginBottom: '10px', border: '1px solid #ccc', height: '600px' }}>
-            <MuiChat chatController={chatCtl} />
+            <Box sx={{ flex: '1 1 0%', minHeight: 0 }}>
+              <MuiChat chatController={chatCtl} />
             </Box>
           </Box>
         </Box>
@@ -95,96 +102,96 @@ const muiTheme = createTheme({
       avatar: '-',
     });
   
-    // await chatCtl.addMessage({
-    //   type: 'text',
-    //   content: `What is your favorite fruit?`,
-    //   self: false,
-    //   avatar: '-',
-    // });
-    // const mulSel = await chatCtl.setActionRequest({
-    //   type: 'multi-select',
-    //   options: [
-    //     {
-    //       value: 'apple',
-    //       text: 'Apple',
-    //     },
-    //     {
-    //       value: 'orange',
-    //       text: 'Orange',
-    //     },
-    //     {
-    //       value: 'none',
-    //       text: 'None',
-    //     },
-    //   ],
-    // });
-    // await chatCtl.addMessage({
-    //   type: 'text',
-    //   content: `You have selected '${mulSel.value}'.`,
-    //   self: false,
-    //   avatar: '-',
-    // });
+    await chatCtl.addMessage({
+      type: 'text',
+      content: `What is your favorite fruit?`,
+      self: false,
+      avatar: '-',
+    });
+    const mulSel = await chatCtl.setActionRequest({
+      type: 'multi-select',
+      options: [
+        {
+          value: 'apple',
+          text: 'Apple',
+        },
+        {
+          value: 'orange',
+          text: 'Orange',
+        },
+        {
+          value: 'none',
+          text: 'None',
+        },
+      ],
+    });
+    await chatCtl.addMessage({
+      type: 'text',
+      content: `You have selected '${mulSel.value}'.`,
+      self: false,
+      avatar: '-',
+    });
   
-    // await chatCtl.addMessage({
-    //   type: 'text',
-    //   content: `What is your favorite picture?`,
-    //   self: false,
-    //   avatar: '-',
-    // });
-    // const file = await chatCtl.setActionRequest({
-    //   type: 'file',
-    //   accept: 'image/*',
-    //   multiple: true,
-    // });
+    await chatCtl.addMessage({
+      type: 'text',
+      content: `What is your favorite picture?`,
+      self: false,
+      avatar: '-',
+    });
+    const file = await chatCtl.setActionRequest({
+      type: 'file',
+      accept: 'image/*',
+      multiple: true,
+    });
     
-    // await chatCtl.addMessage({
-    //   type: 'jsx',
-    //   content: (
-    //     <div>
-    //       {file.files.map((f) => (
-    //         <img
-    //           key={file.files.indexOf(f)}
-    //           src={window.URL.createObjectURL(f)}
-    //           alt="File"
-    //           style={{ width: '100%', height: 'auto' }}
-    //         />
-    //       ))}
-    //     </div>
-    //   ),
-    //   self: false,
-    //   avatar: '-',
-    // });
+    await chatCtl.addMessage({
+      type: 'jsx',
+      content: (
+        <div>
+          {file.files.map((f) => (
+            <img
+              key={file.files.indexOf(f)}
+              src={window.URL.createObjectURL(f)}
+              alt="File"
+              style={{ width: '100%', height: 'auto' }}
+            />
+          ))}
+        </div>
+      ),
+      self: false,
+      avatar: '-',
+    });
   
-    // await chatCtl.addMessage({
-    //   type: 'text',
-    //   content: `Please enter your voice.`,
-    //   self: false,
-    //   avatar: '-',
-    // });
-    // const audio = (await chatCtl
-    //   .setActionRequest({
-    //     type: 'audio',
-    //   })
-    //   .catch(() => ({
-    //     type: 'audio',
-    //     value: 'Voice input failed.',
-    //     avatar: '-',
-    //   })))
-    // await (audio.audio
-    //   ? chatCtl.addMessage({
-    //       type: 'jsx',
-    //       content: (
-    //         <a href={window.URL.createObjectURL(audio.audio)}>Audio downlaod</a>
-    //       ),
-    //       self: false,
-    //       avatar: '-',
-    //     })
-    //   : chatCtl.addMessage({
-    //       type: 'text',
-    //       content: audio.value,
-    //       self: false,
-    //       avatar: '-',
-    //     }));
+    await chatCtl.addMessage({
+      type: 'text',
+      content: `Please enter your voice.`,
+      self: false,
+      avatar: '-',
+    });
+    const audio = (await chatCtl
+      .setActionRequest({
+        type: 'audio',
+      })
+      .catch(() => ({
+        type: 'audio',
+        value: 'Voice input failed.',
+        avatar: '-',
+      })))
+    await (audio.audio
+      ? chatCtl.addMessage({
+          type: 'jsx',
+          content: (
+            <a href={window.URL.createObjectURL(audio.audio)}>Audio downlaod</a>
+          ),
+          self: false,
+          avatar: '-',
+        })
+      : chatCtl.addMessage({
+          type: 'text',
+          content: audio.value,
+          self: false,
+          avatar: '-',
+        }));
   
     await chatCtl.addMessage({
       type: 'text',
