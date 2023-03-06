@@ -28,7 +28,6 @@ const languages = [
 const theme = {
     background: '#f5f8fb',
     headerBgColor: '#1976d2',
-    fontFamily: 'Roboto',
     headerFontColor: '#fff',
     headerFontSize: '15px',
     botBubbleColor: '#fff',
