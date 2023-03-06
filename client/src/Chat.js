@@ -24,11 +24,6 @@ const Chat = () => {
         <Main>
           <Mui.Stack spacing={1}>
             <div style={{ height: "400px" }}>
-<<<<<<< HEAD
-              <SpeechToText />
-=======
-              <Chatbox />
->>>>>>> parent of 48a8940 (modify)
             </div>
           </Mui.Stack>
         </Main>
