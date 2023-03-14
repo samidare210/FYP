@@ -121,19 +121,11 @@ function searchKeywords(inputValue) {
         if (valueToLower.match(/hi|hello|hey/i)) {
             return 'help';
         }
-        
-        if (valueToLower.match(/where is/i)) {
-            return searchLocation(inputValue);
-        }
 
-        if (valueToLower.match(/direction to/i)) {
+        if (valueToLower.match(/where is|direction to|go to/i)) {
             return searchLocation(inputValue);
         } else if (valueToLower.match(/direction/i)) {
             return 'response_01';
-        }
-
-        if (valueToLower.match(/go to/i)) {
-            return searchLocation(inputValue);
         }
     } else {
         return 'error';
@@ -182,6 +174,8 @@ function emitLocations() {
         locationPair.to = pendingLocation;
         socket.emit('msg_chatbot', locationPair);
     } else {
+        locationPair.from = currentLocation;
+        locationPair.to = pendingLocation;
         socket.emit('msg_chatbot', locationPair);
     }
 }
