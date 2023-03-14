@@ -64,15 +64,15 @@ export default function Drawer(props) {
 
       <Mui.List>
 
-      <Link to="/Chat" style={{ color: 'inherit', textDecoration: 'none'}}>
+        <Link to="/ChatBot" style={{ color: 'inherit', textDecoration: 'none'}}>
           <Mui.ListItemButton>
             <Mui.ListItemIcon>
               <ChatIcon />
             </Mui.ListItemIcon>
-            <Mui.ListItemText primary='Chat' />
+            <Mui.ListItemText primary='ChatBot' />
           </Mui.ListItemButton>
         </Link>
-        
+          
         <Link to="/" style={{ color: 'inherit', textDecoration: 'none'}}>
           <Mui.ListItemButton>
             <Mui.ListItemIcon>

@@ -6,7 +6,7 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 app.use(cors())
 
-const host = '192.168.1.105'
+const host = '192.168.1.106'
 const port_client = '3000'
 const port_server = '3001'
 
@@ -280,6 +280,8 @@ rclnodejs.init().then(() => {
 		'sensor_msgs/msg/BatteryState',
 		'diablo/sensor/Battery',
 		(status) => {
+			battery_status = status
+
 			// DEBUG
 			console.log(`Received message No. ${++status_count}`, status)
 		}
