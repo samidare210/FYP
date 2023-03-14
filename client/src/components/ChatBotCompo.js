@@ -170,14 +170,10 @@ function checkArrival() {
 function emitLocations() {
     if (currentLocation == null) {
         currentLocation = "start";
-        locationPair.from = currentLocation;
-        locationPair.to = pendingLocation;
-        socket.emit('msg_chatbot', locationPair);
-    } else {
-        locationPair.from = currentLocation;
-        locationPair.to = pendingLocation;
-        socket.emit('msg_chatbot', locationPair);
     }
+    locationPair.from = currentLocation;
+    locationPair.to = pendingLocation;
+    socket.emit('msg_chatbot', locationPair);
 }
 
 function emitBackToStart() {
