@@ -104,12 +104,14 @@ const steps = [
     }
 ];
 
-const keywords = /(hi|hello|hey|where is|direction to|direction|go to)/i;
+// Define the keywords and locations
+const keywords = /(hi|hello|hey|where is|direction to|direction|go to|to other|to another|to go|run to)/i;
 const locations = /(a204a|a204b|a204c|a204d|a204e")/i;
 
 var currentLocation = null;
 var pendingLocation = null;
 
+// Define the location path
 const locationPair = {
     from: "",
     to: ""
@@ -118,15 +120,17 @@ const locationPair = {
 function searchKeywords(inputValue) {
     let valueToLower = inputValue.toLowerCase();
     if (keywords.test(valueToLower)) {
+        // Check if the user is greeting the chatbot
         if (valueToLower.match(/hi|hello|hey/i)) {
             return 'help';
         }
-
-        if (valueToLower.match(/where is|direction to|go to/i)) {
+        // Check if the user is asking for directions
+        if (valueToLower.match(/where is|direction to|go to|to other|to another|to go|run to/i)) {
             return searchLocation(inputValue);
         } else if (valueToLower.match(/direction/i)) {
             return 'response_01';
         }
+    // Exception
     } else {
         return 'error';
     }
@@ -188,7 +192,7 @@ const ChatBotCompo = ({ onTranscriptChange }) => {
 
     const recognition = new WebkitSpeechRecognition();
     recognition.maxSpeechInputTime = 5000; // set timeout to 5 seconds
-    recognition.continuous = true;
+    recognition.continuous = true; // Set the recognition to continuous.
     recognition.interimResults = true;
     recognition.lang = language.code; // Set the language of recognition to the currently selected language.
 
