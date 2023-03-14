@@ -159,6 +159,12 @@ rclnodejs.init().then(() => {
 			console.log(TURN_LEFT)
 			console.log(TURN_RIGHT)
 		})
+
+		// ChatBot Message
+		socket.on('msg_chatbot', (locationPair) => {
+			
+			console.log(locationPair);
+		})
 	
 		setInterval(() => {
 			var max = 5

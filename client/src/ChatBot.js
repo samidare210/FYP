@@ -8,6 +8,7 @@ import DrawerContext from "./components/DrawerContext";
 import AppBar from "./components/Appbar";
 import Drawer from "./components/Drawer";
 import Main from "./components/Main";
+import ChatBotCompo from "./components/ChatBotCompo";
 
 const Chat = () => {
 
@@ -17,12 +18,9 @@ const Chat = () => {
         <Mui.CssBaseline />
         <AppBar />
         <Drawer />
-
         <Main>
           <Mui.Stack spacing={1}>
-            <div style={{ height: "400px" }}>
-              
-            </div>
+            <ChatBotCompo />
           </Mui.Stack>
         </Main>
       </Mui.Box>
