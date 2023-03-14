@@ -16,7 +16,7 @@ export default function ListItemCtrl() {
     setBatteryState(arg);
   })
 
-  const percentage = 72;
+  const percentage = batteryState.percentage;
 
   const [open, setOpen] = React.useState(false);
 
