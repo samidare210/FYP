@@ -6,7 +6,7 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 app.use(cors())
 
-const host = '192.168.1.106'
+const host = '192.168.1.109'
 const port_client = '3000'
 const port_server = '3001'
 
@@ -96,6 +96,55 @@ function genRandomValue(max) {
 	return (Math.random() * max * (Math.round(Math.random()) ? 1 : -1)).toFixed(2)
 }
 
+const arc_pubEvents = [
+	'/nav/state/config',
+	'/mission/record',
+	'/mission/start'
+]
+
+const arc_subEvents = [
+	'/nav/state',
+	'/mission/list'
+]
+
+var map = 'Map_01'
+var mission = null;
+
+const missions = [
+	{ from: 'start' , to: [
+		{ loc: 'a204a', mission: 'Mission_01' }, 
+		{ loc: 'a204b', mission: 'Mission_02' }, 
+		{ loc: 'a204c', mission: 'Mission_03' }, 
+	]},
+	{ from: 'a204a', to: [
+		{ loc: 'start', mission: 'Mission_04' }, 
+		{ loc: 'a204b', mission: 'Mission_05' }, 
+		{ loc: 'a204c', mission: 'Mission_06' }, 
+	]},
+	{ from: 'a204b', to: [
+		{ loc: 'start', mission: 'Mission_07' }, 
+		{ loc: 'a204a', mission: 'Mission_08' }, 
+		{ loc: 'a204c', mission: 'Mission_09' }, 
+	]},
+	{ from: 'a204c', to: [
+		{ loc: 'start', mission: 'Mission_10' }, 
+		{ loc: 'a204a', mission: 'Mission_11' }, 
+		{ loc: 'a204b', mission: 'Mission_12' },
+	]},
+]
+
+function getMission(from, to) {
+	let fromObj = missions.find((item) => item.from === from);
+
+	if (fromObj) {
+		let toObj = fromObj.to.find((item) => item.loc === to);
+		if (toObj) {
+			return toObj.mission;
+		}
+	}
+	return null;
+}
+
 rclnodejs.init().then(() => {
 
 	// Teleop
@@ -160,10 +209,35 @@ rclnodejs.init().then(() => {
 			console.log(TURN_RIGHT)
 		})
 
+
+
 		// ChatBot Message
-		socket.on('msg_chatbot', (locationPair) => {
-			
-			console.log(locationPair);
+		socket.on('msg_path', (path) => {
+			console.log(path.from);
+			console.log(path.to);
+
+			mission = getMission(path.from, path.to);
+			console.log(mission);
+
+			if (mission != null) {
+				socket.emit('msg_missionFound', true);
+				socket.emit('/nav/state/config', "{ data: 'START' }");
+				console.log('nav state started...');
+			} else {
+				socket.emit('msg_missionFound', false);
+				console.log('mission not found...');
+			}
+		})
+
+		socket.on('msg_guiding', () => {
+			socket.emit('/mission/start', `{ mission_id: '${mission}', map_id: '${map}' }`);
+			console.log(`{ mission_id: '${mission}', map_id: '${map}' }`);
+		})
+
+		socket.on('/nav/state', (state) => {
+			if (state === 'STOP') {
+				socket.emit('msg_arrived');
+			}
 		})
 	
 		setInterval(() => {

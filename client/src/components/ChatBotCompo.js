@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import io from 'socket.io-client';
 import ChatBot from 'react-simple-chatbot';
 
 // Socket
@@ -58,8 +57,7 @@ const steps = [
     },
     {
         id: 'guiding',
-        waitAction: true,
-        message: 'Follow me.',
+        message: 'Please follow me.',
         trigger: () => {
             startGuiding();
             return checkArrival();
@@ -97,91 +95,117 @@ const steps = [
             return emitBackToStart(); 
         }
     },
+
+    // Exception : Failed to find keyword
     {
-        id: 'error',
+        id: 'error_01',
         message: 'Sorry, I didn\'t understand. Please try again.',
+        trigger: 'userInput'
+    },
+
+    // Exception : Failed to find mission
+    {
+        id: 'error_02',
+        message: 'My apologies, I have failed to find the path corresponds to your reqested location.',
         trigger: 'userInput'
     }
 ];
 
 // Define the keywords and locations
-const keywords = /(hi|hello|hey|where is|direction to|direction|go to|to other|to another|to go|run to)/i;
-const locations = /(a204a|a204b|a204c|a204d|a204e")/i;
+const keywords = /(hi|hello|hey|where is|direction to|direction|go to)/i;
+const locations = /(a204a|a204b|a204c)/i;
 
 var currentLocation = null;
 var pendingLocation = null;
 
 // Define the location path
-const locationPair = {
+const path = {
     from: "",
     to: ""
-} 
-
-function searchKeywords(inputValue) {
-    let valueToLower = inputValue.toLowerCase();
-    if (keywords.test(valueToLower)) {
-        // Check if the user is greeting the chatbot
-        if (valueToLower.match(/hi|hello|hey/i)) {
-            return 'help';
-        }
-        // Check if the user is asking for directions
-        if (valueToLower.match(/where is|direction to|go to|to other|to another|to go|run to/i)) {
-            return searchLocation(inputValue);
-        } else if (valueToLower.match(/direction/i)) {
-            return 'response_01';
-        }
-    // Exception
-    } else {
-        return 'error';
-    }
 }
 
-function searchLocation(inputValue) {
-    let location;
-    if (inputValue.match(locations)) {
-        location = inputValue.match(locations)[0].toLowerCase();
-        setPendingLocation(location);
-        emitLocations();
-        socket.on("msg_missionFound", (missionFound) => {
-            if (missionFound === true) {
-                return 'guiding';
-            } else {
-                return 'error';
-            }
-        })
-        return 'leading';
-    } else {
-        return 'error';
-    }
-}
-
+// Set current location of the robot
 function setCurrentLocation(location) {
     currentLocation = location;
 }
 
+// Set pending locatin of the robot
 function setPendingLocation(location) {
     pendingLocation = location;
 }
 
+function searchKeywords(inputValue) {
+    let valueToLower = inputValue.toLowerCase();
+    if (keywords.test(valueToLower)) {
+
+        // Check if the user is greeting the chatbot
+        if (valueToLower.match(/hi|hello|hey/i)) {
+            return 'help';
+        }
+
+        // Check if the user is asking for directions
+        if (valueToLower.match(/where is|direction to|go to/i)) {
+            var missionStatus = searchLocation(inputValue).then((result) => {
+                return result;
+            });
+            console.log(missionStatus);
+            return missionStatus;
+        } else if (valueToLower.match(/direction/i)) {
+            return 'response_01';
+        }
+
+    // Exception
+    } else {
+        return 'error_01';
+    }
+}
+
+async function searchLocation(inputValue) {
+    let location;
+    if (inputValue.match(locations)) {
+        location = inputValue.match(locations)[0].toLowerCase();
+        setPendingLocation(location);
+        emitPath();
+        const found = await new Promise((resolve) => {
+            socket.on('msg_missionFound', (found) => {
+                resolve(found);
+            })
+        });
+        if (found === true) {
+            console.log(found);
+            return 'guilding';
+        } else {
+            return 'error_02';
+        }
+    } else {
+        return 'error_01';
+    }
+}
+
 function startGuiding() {
-    socket.emit('msg_guiding', 'start');
+    socket.emit('msg_guiding');
 }
 
 function checkArrival() {
-
+    // socket.on('msg_arrived', () => {
+    //     return 'arrived';
+    // }); 
+    return 'arrived';
 }
 
-function emitLocations() {
+function emitPath() {
     if (currentLocation == null) {
         currentLocation = "start";
     }
-    locationPair.from = currentLocation;
-    locationPair.to = pendingLocation;
-    socket.emit('msg_chatbot', locationPair);
+    path.from = currentLocation;
+    path.to = pendingLocation;
+    socket.emit('msg_path', path);
 }
 
 function emitBackToStart() {
-    socket.emit('msg_chatbot', locationPair);
+    path.from = currentLocation;
+    path.to = 'start';
+    socket.emit('msg_path', path);
     return 'greet';
 }
 
