@@ -39,8 +39,10 @@ const steps = [
     {
         id: 'userInput',
         user: true,
-        trigger: ({ value }) => {
-            return searchKeywords(value);
+        trigger: async ({ value }) => {
+            const result = await searchKeywords(value);
+            console.log(result);
+            return result;
         }
     },
     {
@@ -134,7 +136,7 @@ function setPendingLocation(location) {
     pendingLocation = location;
 }
 
-function searchKeywords(inputValue) {
+async function searchKeywords(inputValue) {
     let valueToLower = inputValue.toLowerCase();
     if (keywords.test(valueToLower)) {
 
@@ -145,9 +147,7 @@ function searchKeywords(inputValue) {
 
         // Check if the user is asking for directions
         if (valueToLower.match(/where is|direction to|go to/i)) {
-            var missionStatus = searchLocation(inputValue).then((result) => {
-                return result;
-            });
+            const missionStatus = await searchLocation(inputValue);
             console.log(missionStatus);
             return missionStatus;
         } else if (valueToLower.match(/direction/i)) {
@@ -172,8 +172,7 @@ async function searchLocation(inputValue) {
             })
         });
         if (found === true) {
-            console.log(found);
-            return 'guilding';
+            return 'guiding';
         } else {
             return 'error_02';
         }
