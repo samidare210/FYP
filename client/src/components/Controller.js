@@ -21,7 +21,7 @@ import ReactNipple from "react-nipple";
 import HoldBtn from "./HoldBtn";
 
 // Socket
-import { socket } from "../Socket"
+import { socket } from "../SocketControls"
 
 const ToggleButton = styled(Mui.ToggleButton)(() => ({
   "&.Mui-selected, &.Mui-selected:hover": {

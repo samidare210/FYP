@@ -4,7 +4,7 @@ import React from 'react'
 import * as Mui from '@mui/material'
 
 // Socket
-import { socket } from "../Socket"
+import { socket } from "../SocketControls"
 
 export default function HoldBtn(props) {
   const [isHold, setIsHold] = React.useState(false)

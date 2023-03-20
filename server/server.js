@@ -6,9 +6,9 @@ const { Server } = require('socket.io')
 const cors = require('cors')
 app.use(cors())
 
-const host = '192.168.1.109'
+const host = '192.168.4.7'
 const port_client = '3000'
-const port_server = '3001'
+const port_server = '3003'
 
 const io = new Server(server, {
 	cors: {

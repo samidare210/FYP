@@ -7,7 +7,7 @@ import ExpandLess from "@mui/icons-material/ExpandLess";
 import io from "socket.io-client";
 
 // Socket
-import { socket } from "../Socket"
+import { socket } from "../SocketControls"
 
 export default function ListItemCtrl() {
   const [batteryState, setBatteryState] = React.useState({});

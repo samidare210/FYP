@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ChatBot from 'react-simple-chatbot';
 
 // Socket
-import { socket } from "../Socket"
+import { socket } from "../SocketChatbot"
 
 let WebkitSpeechRecognition = window.webkitSpeechRecognition;
 
@@ -39,10 +39,13 @@ const steps = [
     {
         id: 'userInput',
         user: true,
-        trigger: async ({ value }) => {
-            const result = await searchKeywords(value);
-            console.log(result);
-            return result;
+        // trigger: async ({ value }) => {
+        //     const result = await searchKeywords(value);
+        //     console.log(result);
+        //     return result;
+        // }
+        trigger: ({ value }) => {
+            return searchKeywords(value);
         }
     },
     {
@@ -113,6 +116,44 @@ const steps = [
     }
 ];
 
+var map = 'Map_01'
+var mission = null;
+
+const missions = [
+	{ from: 'start' , to: [
+		{ loc: 'a204a', mission: 'Mission_01' }, 
+		{ loc: 'a204b', mission: 'Mission_02' }, 
+		{ loc: 'a204c', mission: 'Mission_03' }, 
+	]},
+	{ from: 'a204a', to: [
+		{ loc: 'start', mission: 'Mission_04' }, 
+		{ loc: 'a204b', mission: 'Mission_05' }, 
+		{ loc: 'a204c', mission: 'Mission_06' }, 
+	]},
+	{ from: 'a204b', to: [
+		{ loc: 'start', mission: 'Mission_07' }, 
+		{ loc: 'a204a', mission: 'Mission_08' }, 
+		{ loc: 'a204c', mission: 'Mission_09' }, 
+	]},
+	{ from: 'a204c', to: [
+		{ loc: 'start', mission: 'Mission_10' }, 
+		{ loc: 'a204a', mission: 'Mission_11' }, 
+		{ loc: 'a204b', mission: 'Mission_12' },
+	]},
+]
+
+function getMission(from, to) {
+	let fromObj = missions.find((item) => item.from === from);
+
+	if (fromObj) {
+		let toObj = fromObj.to.find((item) => item.loc === to);
+		if (toObj) {
+			return toObj.mission;
+		}
+	}
+	return null;
+}
+
 // Define the keywords and locations
 const keywords = /(hi|hello|hey|where is|direction to|direction|go to)/i;
 const locations = /(a204a|a204b|a204c)/i;
@@ -136,7 +177,53 @@ function setPendingLocation(location) {
     pendingLocation = location;
 }
 
-async function searchKeywords(inputValue) {
+// async function searchKeywords(inputValue) {
+//     let valueToLower = inputValue.toLowerCase();
+//     if (keywords.test(valueToLower)) {
+
+//         // Check if the user is greeting the chatbot
+//         if (valueToLower.match(/hi|hello|hey/i)) {
+//             return 'help';
+//         }
+
+//         // Check if the user is asking for directions
+//         if (valueToLower.match(/where is|direction to|go to/i)) {
+//             const missionStatus = await searchLocation(inputValue);
+//             console.log(missionStatus);
+//             return missionStatus;
+//         } else if (valueToLower.match(/direction/i)) {
+//             return 'response_01';
+//         }
+
+//     // Exception
+//     } else {
+//         return 'error_01';
+//     }
+// }
+
+// async function searchLocation(inputValue) {
+//     let location;
+//     if (inputValue.match(locations)) {
+//         location = inputValue.match(locations)[0].toLowerCase();
+//         setPendingLocation(location);
+//         emitPath();
+//         const found = await new Promise((resolve) => {
+//             socket.on('msg_missionFound', (found) => {
+//                 resolve(found);
+//             })
+//         });
+//         if (found === true) {
+//             return 'guiding';
+//         } else {
+//             return 'error_02';
+//         }
+//     } else {
+//         return 'error_01';
+//     }
+// }
+
+// Testing Functions
+function searchKeywords(inputValue) {
     let valueToLower = inputValue.toLowerCase();
     if (keywords.test(valueToLower)) {
 
@@ -147,9 +234,10 @@ async function searchKeywords(inputValue) {
 
         // Check if the user is asking for directions
         if (valueToLower.match(/where is|direction to|go to/i)) {
-            const missionStatus = await searchLocation(inputValue);
+            const missionStatus = searchLocation(inputValue);
             console.log(missionStatus);
             return missionStatus;
+
         } else if (valueToLower.match(/direction/i)) {
             return 'response_01';
         }
@@ -160,18 +248,17 @@ async function searchKeywords(inputValue) {
     }
 }
 
-async function searchLocation(inputValue) {
+function searchLocation(inputValue) {
     let location;
     if (inputValue.match(locations)) {
         location = inputValue.match(locations)[0].toLowerCase();
         setPendingLocation(location);
         emitPath();
-        const found = await new Promise((resolve) => {
-            socket.on('msg_missionFound', (found) => {
-                resolve(found);
-            })
-        });
-        if (found === true) {
+        mission = getMission(path.from, path.to);
+        console.log(mission);
+        if (mission !== null) {
+            socket.emit('/nav/state/config', 'START');
+            socket.emit('/mission/start', `{ mission_id: '${mission}', map_id: '${map}' }`);
             return 'guiding';
         } else {
             return 'error_02';
@@ -198,7 +285,7 @@ function emitPath() {
     }
     path.from = currentLocation;
     path.to = pendingLocation;
-    socket.emit('msg_path', path);
+    // socket.emit('msg_path', path);
 }
 
 function emitBackToStart() {

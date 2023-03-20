@@ -9,9 +9,6 @@ import AppBar from './components/Appbar'
 import Drawer from './components/Drawer'
 import Main from './components/Main'
 
-// Socket
-import { socket } from "./Socket"
-
 export default function BatteryStatus() { 
       return (
         <DrawerContext>

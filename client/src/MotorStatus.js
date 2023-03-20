@@ -14,7 +14,7 @@ import MotorState from './components/MotorState'
 import ApexChart from 'react-apexcharts'
 
 // Socket
-import { socket } from "./Socket"
+import { socket } from "./SocketControls"
 
 export default function MotorStatus() {
 
