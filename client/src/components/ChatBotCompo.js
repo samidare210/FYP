@@ -4,7 +4,7 @@ import ChatBot from 'react-simple-chatbot';
 // Socket
 import { socket } from "../SocketChatbot"
 
-let WebkitSpeechRecognition = window.webkitSpeechRecognition;
+// let WebkitSpeechRecognition = window.webkitSpeechRecognition;
 
 const config = {
     width: "800px"
@@ -75,7 +75,7 @@ const steps = [
     },
     {
         id: 'options',
-        message: 'Would you like to ask for more directions?',
+        message: 'Would you like me to lead you back to the start',
         trigger: 'sections'
     },
     {
@@ -121,9 +121,16 @@ var mission = null;
 
 const missions = [
 	{ from: 'start' , to: [
-		{ loc: 'a204a', mission: 'Mission_01' }, 
-		{ loc: 'a204b', mission: 'Mission_02' }, 
-		{ loc: 'a204c', mission: 'Mission_03' }, 
+		{ loc: 'a204a', mission: 'Mission_01', 
+            steps: ['l', 'r', 'l']}, 
+		{ loc: 'a204b', mission: 'Mission_02', 
+            steps: ['l', 'l', 'r']}, 
+		{ loc: 'a204c', mission: 'Mission_03', 
+            steps: ['r', 'l', 'r']},
+        { loc: 'a204d', mission: 'Mission_04', 
+            steps: ['r', 'r', 'l']},
+        { loc: 'a204e', mission: 'Mission_05', 
+            steps: ['l', 'l', 'l']} 
 	]},
 	{ from: 'a204a', to: [
 		{ loc: 'start', mission: 'Mission_04' }, 
@@ -177,6 +184,22 @@ function setPendingLocation(location) {
     pendingLocation = location;
 }
 
+// Set start to point path
+function setSTP() {
+    if (currentLocation == null) {
+        currentLocation = 'start';
+    }
+    path.from = currentLocation;
+    path.to = pendingLocation;
+}
+
+// Set point to start path
+function setPTS() {
+    path.from = currentLocation;
+    path.to = 'start';
+}
+
+// === Async Functions ===
 // async function searchKeywords(inputValue) {
 //     let valueToLower = inputValue.toLowerCase();
 //     if (keywords.test(valueToLower)) {
@@ -222,7 +245,7 @@ function setPendingLocation(location) {
 //     }
 // }
 
-// Testing Functions
+// === Testing Functions ===
 function searchKeywords(inputValue) {
     let valueToLower = inputValue.toLowerCase();
     if (keywords.test(valueToLower)) {
@@ -234,9 +257,7 @@ function searchKeywords(inputValue) {
 
         // Check if the user is asking for directions
         if (valueToLower.match(/where is|direction to|go to/i)) {
-            const missionStatus = searchLocation(inputValue);
-            console.log(missionStatus);
-            return missionStatus;
+            return searchLocation(inputValue);
 
         } else if (valueToLower.match(/direction/i)) {
             return 'response_01';
@@ -251,11 +272,14 @@ function searchKeywords(inputValue) {
 function searchLocation(inputValue) {
     let location;
     if (inputValue.match(locations)) {
+
         location = inputValue.match(locations)[0].toLowerCase();
         setPendingLocation(location);
-        emitPath();
+        setSTP();
+
         mission = getMission(path.from, path.to);
-        console.log(mission);
+        console.log(`{\n\tfrom:\t${path.from},\n\tto:\t${path.to},\n\tmission:\t${mission}\n}`);
+
         if (mission !== null) {
             socket.emit('/nav/state/config', 'START');
             socket.emit('/mission/start', `{ mission_id: '${mission}', map_id: '${map}' }`);
@@ -279,14 +303,14 @@ function checkArrival() {
     return 'arrived';
 }
 
-function emitPath() {
-    if (currentLocation == null) {
-        currentLocation = "start";
-    }
-    path.from = currentLocation;
-    path.to = pendingLocation;
-    // socket.emit('msg_path', path);
-}
+// function emitPath() {
+//     if (currentLocation == null) {
+//         currentLocation = "start";
+//     }
+//     path.from = currentLocation;
+//     path.to = pendingLocation;
+//     socket.emit('msg_path', path);
+// }
 
 function emitBackToStart() {
     path.from = currentLocation;
@@ -296,47 +320,47 @@ function emitBackToStart() {
 }
 
 const ChatBotCompo = ({ onTranscriptChange }) => {
-    const [isListening, setIsListening] = useState(false);
-    const [transcript, setTranscript] = useState('');
-    const [language, setLanguage] = useState(languages[0]); // Set the default language to English.
+    // const [isListening, setIsListening] = useState(false);
+    // const [transcript, setTranscript] = useState('');
+    // const [language, setLanguage] = useState(languages[0]); // Set the default language to English.
 
-    const recognition = new WebkitSpeechRecognition();
-    recognition.maxSpeechInputTime = 5000; // set timeout to 5 seconds
-    recognition.continuous = true; // Set the recognition to continuous.
-    recognition.interimResults = true;
-    recognition.lang = language.code; // Set the language of recognition to the currently selected language.
+    // const recognition = new WebkitSpeechRecognition();
+    // recognition.maxSpeechInputTime = 5000; // set timeout to 5 seconds
+    // recognition.continuous = true; // Set the recognition to continuous.
+    // recognition.interimResults = true;
+    // recognition.lang = language.code; // Set the language of recognition to the currently selected language.
 
-    recognition.onstart = () => {
-        setIsListening(true);
-    };
+    // recognition.onstart = () => {
+    //     setIsListening(true);
+    // };
 
-    recognition.onend = () => {
-        setIsListening(false);
-    };
+    // recognition.onend = () => {
+    //     setIsListening(false);
+    // };
 
-    recognition.onresult = (event) => {
-        const transcript = Array.from(event.results)
-            .map((result) => result[0])
-            .map((result) => result.transcript)
-            .join('');
-        setTranscript(transcript);
-        onTranscriptChange(transcript);
-    };
+    // recognition.onresult = (event) => {
+    //     const transcript = Array.from(event.results)
+    //         .map((result) => result[0])
+    //         .map((result) => result.transcript)
+    //         .join('');
+    //     setTranscript(transcript);
+    //     onTranscriptChange(transcript);
+    // };
 
-    const toggleListening = () => {
-        if (isListening) {
-            recognition.stop();
-        } else {
-            recognition.start();
-        }
-        setIsListening(!isListening);
-    };
+    // const toggleListening = () => {
+    //     if (isListening) {
+    //         recognition.stop();
+    //     } else {
+    //         recognition.start();
+    //     }
+    //     setIsListening(!isListening);
+    // };
 
-    const handleLanguageChange = (event) => {
-        const selectedLanguage = languages.find(language => language.code === event.target.value);
-        setLanguage(selectedLanguage);
-        recognition.lang = selectedLanguage.code; // Update the language of recognition when the language is changed.
-    };
+    // const handleLanguageChange = (event) => {
+    //     const selectedLanguage = languages.find(language => language.code === event.target.value);
+    //     setLanguage(selectedLanguage);
+    //     recognition.lang = selectedLanguage.code; // Update the language of recognition when the language is changed.
+    // };
 
     return (
         <div>
@@ -347,13 +371,13 @@ const ChatBotCompo = ({ onTranscriptChange }) => {
                 steps={steps}
                 {...config}
             />
-            <button onClick={toggleListening}>{isListening ? 'Stop' : 'Start'}</button>
+            {/* <button onClick={toggleListening}>{isListening ? 'Stop' : 'Start'}</button>
             <select value={language.code} onChange={handleLanguageChange}>
                 {languages.map(language => (
                     <option key={language.code} value={language.code}>{language.name}</option>
                 ))}
             </select>
-            <p>{transcript}</p>
+            <p>{transcript}</p> */}
         </div>
     );
 };
