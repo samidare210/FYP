@@ -1,15 +1,14 @@
 import React, { useState, createContext, useEffect } from 'react';
 import ChatBot from 'react-simple-chatbot';
 
+import { socket } from '../../SocketChatbot'; 
 import Guiding from './Guiding';
-
 import Directions from "./Directions";
 
-export const ChatBotContext = createContext();
+import './chatbot.css';
+import { borderRadius } from '@mui/system';
 
-const config = {
-    width: "800px"
-};
+export const ChatBotContext = createContext();
 
 /* 
     Steps
@@ -37,74 +36,74 @@ const missions = [
 	{ from: 'start' , to: [
 		{ loc: 'a204a', mission: 'Mission_01', 
             directions: [
-                { step: 'curr', desc: 'Current Location' },
-                { step: 'straight', desc: 'Head straight to' },
-                { step: 'turn left', desc: 'Turn left towards' },
-                { step: 'turn right', desc: 'Turn right towards' },
-                { step: 'slight left', desc: 'Slight left towards' },
-                { step: 'slight right', desc: 'Slight right towards' },
-                { step: 'destination', desc: 'Destination' },
+                { step: 'start', prim: 'Current Location', secd: 'Lab A204'},
+                { step: 'straight', prim: 'Head straight to', secd: '' },
+                { step: 'turn left', prim: 'Turn left towards', secd: '' },
+                { step: 'turn right', prim: 'Turn right towards', secd: '' },
+                { step: 'slight left', prim: 'Slight left towards', secd: '' },
+                { step: 'slight right', prim: 'Slight right towards', secd: '' },
+                { step: 'end', prim: 'Destination', secd: 'Room A204a' },
             ] 
         }, 
 		{ loc: 'a204b', mission: 'Mission_02', 
             directions: [
-                { step: 'curr', desc: 'Current Location' },
-                { step: 'straight', desc: 'Head straight to' },
-                { step: 'turn left', desc: 'Turn left towards' },
-                { step: 'turn right', desc: 'Turn right towards' },
-                { step: 'slight left', desc: 'Slight left towards' },
-                { step: 'slight right', desc: 'Slight right towards' },
-                { step: 'destination', desc: 'Destination' },
+                { step: 'start', prim: 'Current Location', secd: 'Lab A204'},
+                { step: 'straight', prim: 'Head straight to', secd: '' },
+                { step: 'turn left', prim: 'Turn left towards', secd: '' },
+                { step: 'turn right', prim: 'Turn right towards', secd: '' },
+                { step: 'slight left', prim: 'Slight left towards', secd: '' },
+                { step: 'slight right', prim: 'Slight right towards', secd: '' },
+                { step: 'end', prim: 'Destination', secd: 'Room A204a' },
             ] 
         }, 
 		{ loc: 'a204c', mission: 'Mission_03', 
             directions: [
-                { step: 'curr', desc: 'Current Location' },
-                { step: 'straight', desc: 'Head straight to' },
-                { step: 'turn left', desc: 'Turn left towards' },
-                { step: 'turn right', desc: 'Turn right towards' },
-                { step: 'slight left', desc: 'Slight left towards' },
-                { step: 'slight right', desc: 'Slight right towards' },
-                { step: 'destination', desc: 'Destination' },
+                { step: 'start', prim: 'Current Location', secd: 'Lab A204'},
+                { step: 'straight', prim: 'Head straight to', secd: '' },
+                { step: 'turn left', prim: 'Turn left towards', secd: '' },
+                { step: 'turn right', prim: 'Turn right towards', secd: '' },
+                { step: 'slight left', prim: 'Slight left towards', secd: '' },
+                { step: 'slight right', prim: 'Slight right towards', secd: '' },
+                { step: 'end', prim: 'Destination', secd: 'Room A204a' },
             ] 
         },
         { loc: 'a204d', mission: 'Mission_04', 
             directions: [
-                { step: 'curr', desc: 'Current Location' },
-                { step: 'straight', desc: 'Head straight to' },
-                { step: 'turn left', desc: 'Turn left towards' },
-                { step: 'turn right', desc: 'Turn right towards' },
-                { step: 'slight left', desc: 'Slight left towards' },
-                { step: 'slight right', desc: 'Slight right towards' },
-                { step: 'destination', desc: 'Destination' },
+                { step: 'start', prim: 'Current Location', secd: 'Lab A204'},
+                { step: 'straight', prim: 'Head straight to', secd: '' },
+                { step: 'turn left', prim: 'Turn left towards', secd: '' },
+                { step: 'turn right', prim: 'Turn right towards', secd: '' },
+                { step: 'slight left', prim: 'Slight left towards', secd: '' },
+                { step: 'slight right', prim: 'Slight right towards', secd: '' },
+                { step: 'end', prim: 'Destination', secd: 'Room A204a' },
             ] 
         },
         { loc: 'a204e', mission: 'Mission_05', 
             directions: [
-                { step: 'curr', desc: 'Current Location' },
-                { step: 'straight', desc: 'Head straight to' },
-                { step: 'turn left', desc: 'Turn left towards' },
-                { step: 'turn right', desc: 'Turn right towards' },
-                { step: 'slight left', desc: 'Slight left towards' },
-                { step: 'slight right', desc: 'Slight right towards' },
-                { step: 'destination', desc: 'Destination' },
+                { step: 'start', prim: 'Current Location', secd: 'Lab A204'},
+                { step: 'straight', prim: 'Head straight to', secd: '' },
+                { step: 'turn left', prim: 'Turn left towards', secd: '' },
+                { step: 'turn right', prim: 'Turn right towards', secd: '' },
+                { step: 'slight left', prim: 'Slight left towards', secd: '' },
+                { step: 'slight right', prim: 'Slight right towards', secd: '' },
+                { step: 'end', prim: 'Destination', secd: 'Room A204a' },
             ] 
         }
 	]},
 	{ from: 'a204a', to: [
-		{ loc: 'start', mission: 'Mission_04' }, 
+		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
 	{ from: 'a204b', to: [
-		{ loc: 'start', mission: 'Mission_07' }, 
+		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
 	{ from: 'a204c', to: [
-		{ loc: 'start', mission: 'Mission_10' }, 
+		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
     { from: 'a204d', to: [
-		{ loc: 'start', mission: 'Mission_10' }, 
+		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
     { from: 'a204e', to: [
-		{ loc: 'start', mission: 'Mission_10' }, 
+		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
 ]
 
@@ -161,14 +160,8 @@ function setPath(loc1, loc2) {
     path.to = loc2;
 }
 
-function backToStart() {
-    setPendingLocation('start');
-    setPath();
-    // socket.emit();
-}
-
-const ChatBotCompo = () => {
-
+const ChatBotCompo = () => { 
+    const [key, setKey] = useState(null);
     const [mission, setMission] = useState(null);
     const [directions, setDirections] = useState(null);
 
@@ -212,26 +205,42 @@ const ChatBotCompo = () => {
         return response;
     }
 
-    useEffect(() => {
-        console.log(directions);
-    }, [directions]);
+    const backToStart = () => {
+        setPendingLocation('start');
+        setPath(currentLocation, pendingLocation);
+        console.log(path);
 
-    const steps = [
-        { step: 'curr', desc: 'Current Location' },
-        { step: 'straight', desc: 'Head straight to' },
-        { step: 'turn left', desc: 'Turn left towards' },
-        { step: 'turn right', desc: 'Turn right towards' },
-        { step: 'slight left', desc: 'Slight left towards' },
-        { step: 'slight right', desc: 'Slight right towards' },
-        { step: 'destination', desc: 'Destination' },
-    ] 
+        let mission = null;
+        mission = getMission(path.from, path.to);
+        console.log(mission);
+
+        socket.emit('/nav/state/config', 'START');
+        console.log('Emitted signal to start navigation...');
+    
+        socket.emit('/mission/start/', `{ mission_id: '${mission}', map_id: '${map}' }`); 
+        console.log('Emitted signal to start mission...');
+
+        setKey(key + 1); // Reflash the chatbot
+
+        return 'reflash'
+    }
+
+    const avatarStyle = {
+        width: "60px",
+        height: "60px",
+        backgroundColor: "white",
+        borderRadius: "4px"
+    }
 
     return (
         <ChatBotContext.Provider value={{ mission, directions }}>
             <ChatBot
+                key={key}
                 headerTitle="Diablo Robot"
                 recognitionEnable={true}
                 recognitionLang="en"
+                hideHeader={true}
+                // avatarStyle={avatarStyle}
                 steps={[
                     {
                         id: 'greet',
@@ -294,11 +303,16 @@ const ChatBotCompo = () => {
                     }, 
                     {
                         id: 'backToStart',
-                        message: 'I will see you back at the start. Good Bye.',
+                        message: 'I will see you back at the start',
                         trigger: () => { 
                             backToStart();
                         }
                     }, 
+                    {
+                        id: 'reflash',
+                        message: 'Good Bye',
+                        end: true
+                    },
                     {   // Exception : Failed to find keyword
                         id: 'error_01',
                         message: "I'm sorry, I didn't understand. Please try again.",
@@ -320,9 +334,7 @@ const ChatBotCompo = () => {
                         trigger: 'userInput'
                     }
                 ]}
-                {...config}
             />
-            {/* <Directions directions={steps} /> */}
         </ChatBotContext.Provider>
     );
 };

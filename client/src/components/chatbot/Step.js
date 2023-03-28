@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, ListItemText } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
 import MyLocationIcon from '@mui/icons-material/MyLocation';
@@ -9,15 +9,16 @@ import TurnLeftIcon from '@mui/icons-material/TurnLeft';
 import TurnRightIcon from '@mui/icons-material/TurnRight';
 import TurnSlightLeftIcon from '@mui/icons-material/TurnSlightLeft';
 import TurnSlightRightIcon from '@mui/icons-material/TurnSlightRight';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 
-const Step = ({ step, desc }) => {
+const Step = ({ direction }) => {
 
   const stepContainer = {
     display: "flex",
     alignItems: "center",
     // background: "#f0f0f0",
     // borderRadius: 1,
-    // padding: "12px 16px",
+    padding: "4px 0",
     width: "100%",
   }
 
@@ -30,8 +31,8 @@ const Step = ({ step, desc }) => {
   }
 
   const getIcon = () => {
-    switch (step) {
-      case "curr": // Current Location
+    switch (direction.step) {
+      case "start":
         return < MyLocationIcon sx={icon} />
       case "straight": 
         return <StraightIcon sx={icon} />;
@@ -43,15 +44,20 @@ const Step = ({ step, desc }) => {
         return <TurnSlightLeftIcon sx={icon} />;
       case "slight right":
         return <TurnSlightRightIcon sx={icon} />;
-      default:
+      case "end":
         return <LocationOnIcon sx={icon} />;
+      default:
+        return <QuestionMarkIcon sx={icon} />;
     }
   };
 
   return (
     <Box sx={stepContainer}>
       {getIcon()}
-      <Typography>{desc}</Typography>
+      <ListItemText
+        primary={direction.prim}
+        secondary={direction.secd}
+      />
     </Box>
   );
 };

@@ -3,7 +3,6 @@ import { Box, List, ListItem, ListItemText, Typography, Button, Divider } from "
 import Step from "./Step";
 
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 import { ChatBotContext } from './ChatBotCompo';
 
@@ -23,26 +22,28 @@ const Directions = ({ triggerNextStep }) => {
           <>
             <ListItem key={index}>
               <ListItemText>
-                <Step step={direction.step} desc={direction.desc} />
+                <Step direction={direction} />
               </ListItemText>
             </ListItem>
             <Divider component="li" />
           </>
         ))}
       </List>
-      <Button 
-        variant="contained" 
-        startIcon={<PlayCircleFilledIcon />}
-        onClick={handleNextStep}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
       >
-        Start Guiding
-      </Button>
-      {/* <Button 
-        variant="outlined" 
-        startIcon={<CancelIcon />}
-      >
-        Cancel
-      </Button> */}
+        <Button 
+          variant="contained" 
+          startIcon={<PlayCircleFilledIcon />}
+          onClick={handleNextStep}
+        >
+          Start Guiding
+        </Button>
+      </Box>
     </Box>
   );
 };

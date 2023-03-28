@@ -29,7 +29,7 @@ export default function BatteryStatus() {
                     <Mui.Divider orientation='vertical' flexItem />
                   }
                 >
-                  
+                    
                   <Mui.Box sx={{ flexGrow: 1, border: 1 }}>
                     This is the battery status page.
                   </Mui.Box>
