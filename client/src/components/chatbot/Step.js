@@ -10,14 +10,13 @@ import TurnRightIcon from '@mui/icons-material/TurnRight';
 import TurnSlightLeftIcon from '@mui/icons-material/TurnSlightLeft';
 import TurnSlightRightIcon from '@mui/icons-material/TurnSlightRight';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import DirectionsWalkIcon from '@mui/icons-material/DirectionsWalk';
 
 const Step = ({ direction }) => {
 
   const stepContainer = {
     display: "flex",
     alignItems: "center",
-    // background: "#f0f0f0",
-    // borderRadius: 1,
     padding: "4px 0",
     width: "100%",
   }
@@ -25,7 +24,7 @@ const Step = ({ direction }) => {
   const icon = {
     display: "flex",
     alignItems: "center",
-    fontSize: 36,
+    fontSize: "60px",
     color: "#757575",
     mr: 2
   }
@@ -33,7 +32,7 @@ const Step = ({ direction }) => {
   const getIcon = () => {
     switch (direction.step) {
       case "start":
-        return < MyLocationIcon sx={icon} />
+        return <MyLocationIcon sx={icon} />;
       case "straight": 
         return <StraightIcon sx={icon} />;
       case "turn left":
@@ -55,8 +54,25 @@ const Step = ({ direction }) => {
     <Box sx={stepContainer}>
       {getIcon()}
       <ListItemText
-        primary={direction.prim}
-        secondary={direction.secd}
+        primary={
+          <Typography variant="body1" sx={{ fontSize: '20px' }}>
+            {direction.prim}
+          </Typography>
+        }
+        secondary={
+          <Typography 
+            variant="body2" 
+            color="text.secondary" 
+            sx={{ 
+              fontSize: '16px', 
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            
+            {direction.step == 'end' ? direction.secd : (<><DirectionsWalkIcon /> {'— '}{direction.secd}{'m.'}</>)}
+          </Typography>
+        }
       />
     </Box>
   );

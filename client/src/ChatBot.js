@@ -9,6 +9,7 @@ import AppBar from "./components/Appbar";
 import Drawer from "./components/Drawer";
 import Main from "./components/Main";
 import ChatBotCompo from "./components/chatbot/ChatBotCompo";
+import TextToSpeech from "./components/chatbot/TextToSpeech";
 
 const Chat = () => {
 

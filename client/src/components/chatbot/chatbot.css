@@ -8,29 +8,36 @@
 }
 
 .rsc-header {
-  height: 60px;
+  height: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #546e7a;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
+}
+
+.rsc-header-title {
   font-size: 20px;
 }
 
 .rsc-content {
   height: 60vh;
+  margin-top: 0;
   margin-bottom: 16px;
-  background-color: white;
-  border: 1px #78909c solid;
-  border-radius: 8px;
+  padding-top: 20px;
+  background-image: url("../../../public/bg-chat.png");
+  border-radius: 0 0 8px 8px;
   box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
 .rsc-input {
   height: 75px;
+  padding: 0 20px;
   font-size: 20px;
   background-color: #eceff1;
-  border: 1px #b0bec5 solid;
   border-radius: 8px;
-  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.5);
 }
 
 .rsc-submit-button {
@@ -38,23 +45,15 @@
   height: 75px;
 }
 
-.rsc-ts-bot {
-
-}
-
-.rsc-ts-bubble {
-  font-size: 20px;
-  border-radius: 8px;
-  padding: 10px 20px;
-  max-width: 70%;
-}
-
+/* Message Avatar */
 .rsc-ts-image-container {
   margin: 0;
   padding: 0;
+  width: 100px;
+  display: flex;
+  justify-content: center;
 }
 
-/* Message Avatar */
 .rsc-ts-image {
   width: 60px;
   height: 60px;
@@ -62,25 +61,70 @@
 }
 
 .rsc-ts-bot .rsc-ts-image {
-  background-color: #f9a825;
+  background-color: #424242;
+  padding: 14px 12px;
 }
 
 .rsc-ts-user .rsc-ts-image {
-  background-color: #a5d6a7;
+  background-color: #e8f5e9;
+  padding: 12px 12px;
 }
 
 /* Message Bubble */
-.rsc-ts-bubble-user {
-  background-color: #eee;
-  color: #333;
+.rsc-ts-bot {
+  margin-bottom: 8px;
+}
+
+.rsc-ts-user {
+  margin: 20px 0;
+}
+
+.rsc-ts-bubble {
+  margin: 0;
+  padding: 10px 20px;
+  max-width: 60%;
+  font-size: 20px;
+  border-radius: 8px;
 }
 
 .rsc-ts-bot .rsc-ts-bubble {
   background-color: #eeeeee;
-  color: #424242;
+  color: #616161;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
 }
 
 .rsc-ts-user .rsc-ts-bubble {
-  background-color: #43a047; 
+  background-color: #4caf50; 
   color: white;
+  box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25);
+}
+
+.rsc-cs {
+  margin: 0 40px 40px 40px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.25);
+}
+
+/* Option Styles */
+.rsc-os {
+  margin-bottom: 20px;
+}
+
+.rsc-os-options {
+  margin: 0;
+  padding: 0 0 0 100px;
+}
+
+.rsc-os-option {
+  margin: 0 10px 0 0;
+}
+
+.rsc-os-option-element {
+  padding: 10px 20px;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  background-color: #4caf50;
+  border-radius: 8px;
 }

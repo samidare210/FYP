@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Box, List, ListItem, ListItemText, Typography, Button, Divider } from "@mui/material";
 import Step from "./Step";
 
-import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 import { ChatBotContext } from './ChatBotCompo';
 
@@ -16,9 +16,10 @@ const Directions = ({ triggerNextStep }) => {
 
   return (
     <Box style={{ width: '100%' }}>
-      <Typography variant="h6">Directions:</Typography>
+      <Typography sx={{ fontSize: '24px' }}>Directions:</Typography>
       <List>
-        {directions.map((direction, index) => (
+          <Divider component="li" />
+          {directions.map((direction, index) => (
           <>
             <ListItem key={index}>
               <ListItemText>
@@ -38,8 +39,19 @@ const Directions = ({ triggerNextStep }) => {
       >
         <Button 
           variant="contained" 
-          startIcon={<PlayCircleFilledIcon />}
+          startIcon={
+            <PlayArrowIcon />
+          }
           onClick={handleNextStep}
+          sx={{
+            fontSize: '20px',
+            textTransform: 'capitalize',
+            backgroundColor: '#e53935',
+            borderRadius: '8px',
+            '&:hover': {
+              backgroundColor: '#ff5252',
+            },
+          }}
         >
           Start Guiding
         </Button>
