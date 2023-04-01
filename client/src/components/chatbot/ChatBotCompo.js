@@ -33,47 +33,47 @@ var map = 'Map_01'
 
 const missions = [
 	{ from: 'start' , to: [
-		{ loc: 'a204a', mission: 'Mission_01', 
+		{ loc: 'room 101', mission: 'Mission_01', 
             directions: [
-                { step: 'start', prim: 'Lab A204', secd: '10'},
+                { step: 'start', prim: 'Lab X', secd: '10'},
                 { step: 'straight', prim: 'Head straight to', secd: '20' },
                 { step: 'turn left', prim: 'Turn left towards', secd: '30' },
                 { step: 'turn right', prim: 'Turn right towards', secd: '40' },
                 { step: 'slight left', prim: 'Slight left towards', secd: '50' },
                 { step: 'slight right', prim: 'Slight right towards', secd: '60' },
-                { step: 'end', prim: 'Room A204a', secd: 'Destination' },
+                { step: 'end', prim: 'Room A', secd: 'Destination' },
             ] 
         }, 
-		{ loc: 'a204b', mission: 'Mission_02', 
+		{ loc: 'room 102', mission: 'Mission_02', 
             directions: [
-                { step: 'start', prim: 'Lab A204', secd: '10'},
+                { step: 'start', prim: 'Lab X', secd: '10'},
                 { step: 'straight', prim: 'Head straight to', secd: '20' },
                 { step: 'turn left', prim: 'Turn left towards', secd: '30' },
                 { step: 'turn right', prim: 'Turn right towards', secd: '40' },
                 { step: 'slight left', prim: 'Slight left towards', secd: '50' },
                 { step: 'slight right', prim: 'Slight right towards', secd: '60' },
-                { step: 'end', prim: 'Room A204b', secd: 'Destination' },
+                { step: 'end', prim: 'Room B', secd: 'Destination' },
             ] 
         }, 
-		{ loc: 'a204c', mission: 'Mission_03', 
+		{ loc: 'room 103', mission: 'Mission_03', 
             directions: [
-                { step: 'start', prim: 'Lab A204', secd: '10'},
+                { step: 'start', prim: 'Lab X', secd: '10'},
                 { step: 'straight', prim: 'Head straight to', secd: '20' },
                 { step: 'turn left', prim: 'Turn left towards', secd: '30' },
                 { step: 'turn right', prim: 'Turn right towards', secd: '40' },
                 { step: 'slight left', prim: 'Slight left towards', secd: '50' },
                 { step: 'slight right', prim: 'Slight right towards', secd: '60' },
-                { step: 'end', prim: 'Room A204c', secd: 'Destination' },
+                { step: 'end', prim: 'Room C', secd: 'Destination' },
             ] 
         },
 	]},
-	{ from: 'a204a', to: [
+	{ from: 'room 101', to: [
 		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
-	{ from: 'a204b', to: [
+	{ from: 'room 102', to: [
 		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
-	{ from: 'a204c', to: [
+	{ from: 'room 103', to: [
 		{ loc: 'start', mission: 'Mission_0' }, 
 	]},
 ]
@@ -104,7 +104,7 @@ function getDirections(from, to) {
 
 // Define the keywords and locations
 const keywords = /(where is|direction to|go to)/i;
-const locations = /(a204a|a204b|a204c|a204d|a204e)/i;
+const locations = /(room 101|room 102|room 103)/i;
 
 var currentLocation = null;
 var pendingLocation = null;
@@ -197,19 +197,12 @@ const ChatBotCompo = () => {
         return 'reflash'
     }
 
-    const avatarStyle = {
-        width: "60px",
-        height: "60px",
-        backgroundColor: "white",
-        borderRadius: "4px"
-    }
-
     return (
         <ChatBotContext.Provider value={{ mission, directions }}>
             <ChatBot
                 key={key}
                 headerTitle="Diablo Robot"
-                recognitionEnable={false}
+                recognitionEnable={true}
                 recognitionLang="en"
                 botAvatar="https://en.directdrive.com/public/uploads/images/20220221/cdb6e9eb92407c33c3c7d7e58004f615.png"
                 userAvatar="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png"
@@ -255,7 +248,7 @@ const ChatBotCompo = () => {
                     },
                     {
                         id: 'options',
-                        message: 'Would you like me to lead you back to the start',
+                        message: 'Would you like to send me back to the start?',
                         trigger: 'sections'
                     },
                     {
@@ -263,7 +256,7 @@ const ChatBotCompo = () => {
                         options: [
                             { 
                                 value: 1, 
-                                label: 'Yes', 
+                                label: 'Yes, you may now go.', 
                                 trigger: 'backToStart'
                             },
                         ]
@@ -271,6 +264,11 @@ const ChatBotCompo = () => {
                     {
                         id: 'backToStart',
                         message: 'I will see you back at the start',
+                        trigger: 'emitBackToStart'
+                    }, 
+                    {
+                        id: 'emitBackToStart',
+                        message: '.',
                         trigger: () => { 
                             backToStart();
                         }

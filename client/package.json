@@ -30,7 +30,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export HOST=192.168.1.106 && PORT=3000 && react-scripts start",
+    "start": "HTTPS=true SSL_CRT_FILE=../ssl/192.168.1.106.pem SSL_KEY_FILE=../ssl/192.168.1.106-key.pem react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
