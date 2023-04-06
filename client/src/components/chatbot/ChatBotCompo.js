@@ -29,11 +29,9 @@ export const ChatBotContext = createContext();
     5. Added support to phone and tablet ratio.
 */
 
-var map = 'Map_01'
-
 const missions = [
 	{ from: 'start' , to: [
-		{ loc: 'room 101', mission: 'Mission_01', 
+		{ loc: 'room 101', mission: 'Mission_1680515746', 
             directions: [
                 { step: 'start', prim: 'Lab X', secd: '10'},
                 { step: 'straight', prim: 'Head straight to', secd: '20' },
@@ -232,7 +230,7 @@ const ChatBotCompo = () => {
                     },
                     {
                         id: 'guiding',
-                        component: <Guiding mission={mission} map={map} />,
+                        component: <Guiding mission={mission}/>,
                         asMessage: true,
                         waitAction: true,
                         replace: true,
