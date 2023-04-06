@@ -5,7 +5,6 @@ import { ChatBotContext } from './ChatBotCompo';
 
 const Guiding = ({ triggerNextStep, ...props }) => {
     const [missionLst, setMissionLst] = useState([]);
-    const [navState, setNavState] = useState('');
     const { mission } = useContext(ChatBotContext);
 
     useEffect(() => {
@@ -20,7 +19,7 @@ const Guiding = ({ triggerNextStep, ...props }) => {
 		socket.on('/nav/state', (state) => {			
 			console.log(`Received nav state: `, state)
             if (state === 'STOP') {
-                onsole.log('Navigation state has stopped.');
+                console.log('Navigation state has stopped.');
                 triggerNextStep();
             }
 		})

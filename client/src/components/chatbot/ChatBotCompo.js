@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import ChatBot from 'react-simple-chatbot';
 
 import { socket } from '../../SocketChatbot'; 
@@ -8,26 +8,6 @@ import Directions from "./Directions";
 import './chatbot.css';
 
 export const ChatBotContext = createContext();
-
-/* 
-    Steps
-    1. greet
-    2. help
-    3. userInput -> searchKeywords() -> searchLocation() -> getMission() -> guilding
-    4. guilding -> startMission() -> checkMission() -> arrived
-    7. arrived
-    8. options
-
-    <showDirection />
-    startGuiding
-
-    Tasks
-    1. Fix bug related to passing mission values to variable
-    2. Added steps feature for chatbot
-    3. Added speech to text (*similar to google search)
-    4. Added language selections
-    5. Added support to phone and tablet ratio.
-*/
 
 const missions = [
 	{ from: 'start' , to: [
@@ -174,20 +154,39 @@ const ChatBotCompo = () => {
         return response;
     }
 
+    const [missionLst, setMissionLst] = useState([])
+    useEffect(() => {
+
+        // Check mission list
+        socket.on('/mission/list', ({lst}) => {
+            console.log(`Received mission list: `, lst);
+            setMissionLst(lst);
+        })
+
+		// Check the nav state (START, STOP)
+		socket.on('/nav/state', (state) => {			
+			console.log(`Received nav state: `, state)
+		})
+    }, [])
+
     const backToStart = () => {
         setPendingLocation('start');
         setPath(currentLocation, pendingLocation);
         console.log(path);
 
-        let mission = null;
-        mission = getMission(path.from, path.to);
-        console.log(mission);
+        let mid = getMission(path.from, path.to);
+        console.log(mid);
 
-        socket.emit('/nav/state/config', 'START');
-        console.log('Emitted signal to start navigation...');
-    
-        socket.emit('/mission/start/', `{ mission_id: '${mission}', map_id: '${map}' }`); 
-        console.log('Emitted signal to start mission...');
+        const filtered = missionLst.filter(({mission_id}) =>  mission_id === mid);
+        if (filtered.length === 0) {
+            alert(`[Error]: No mission named ${mid} found`);
+        } else {
+            socket.emit('/nav/state/config', 'START'); 
+            console.log('Emitted signal to start navigation...');
+        
+            socket.emit('/mission/start', mid); 
+            console.log('Emitted signal to start mission...', mid);
+        }
 
         setCurrentLocation(null);
         setKey(key + 1); // Reflash the chatbot
