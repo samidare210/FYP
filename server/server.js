@@ -3,10 +3,27 @@ const app = express()
 const server = require('http').createServer(app)
 const { Server } = require('socket.io')
 
+
+// Configure webcam
+const webcamOptions = {
+  width: 640,
+  height: 480,
+  quality: 100,
+  delay: 0,
+  saveShots: false,
+  output: 'jpeg',
+  device: false,
+  callbackReturn: 'base64'
+};
+
+const Webcam = require('node-webcam');
+const webcam = Webcam.create(webcamOptions);
+
+
 const cors = require('cors')
 app.use(cors())
 
-const host = '192.168.1.106'
+const host = '192.168.229.77'
 const port_client = '3000'
 const port_server = '3001'
 
@@ -19,22 +36,6 @@ const io = new Server(server, {
 
 const rclnodejs = require('rclnodejs')
 const { kill } = require('process')
-
-// Original Ctrl ID
-const CMD_GO_FORWARD = 0x08
-const CMD_GO_LEFT = 0x04
-const CMD_ROLL_RIGHT = 0x09
-
-const CMD_HEIGH_MODE = 0x01
-const CMD_BODY_UP = 0x11
-
-const CMD_STAND_UP = 0x02
-const CMD_STAND_DOWN = 0x12
-
-const CMD_PITCH = 0x03
-const CMD_PITCH_MODE = 0x13
-
-const CMD_SPEED_MODE = 0x05
 
 // Default Values
 var value_height = 0
@@ -94,55 +95,6 @@ var value = {
 // Generate random values
 function genRandomValue(max) {
 	return (Math.random() * max * (Math.round(Math.random()) ? 1 : -1)).toFixed(2)
-}
-
-const arc_pubEvents = [
-	'/nav/state/config',
-	'/mission/record',
-	'/mission/start'
-]
-
-const arc_subEvents = [
-	'/nav/state',
-	'/mission/list'
-]
-
-var map = 'Map_01'
-var mission = null;
-
-const missions = [
-	{ from: 'start' , to: [
-		{ loc: 'a204a', mission: 'Mission_01' }, 
-		{ loc: 'a204b', mission: 'Mission_02' }, 
-		{ loc: 'a204c', mission: 'Mission_03' }, 
-	]},
-	{ from: 'a204a', to: [
-		{ loc: 'start', mission: 'Mission_04' }, 
-		{ loc: 'a204b', mission: 'Mission_05' }, 
-		{ loc: 'a204c', mission: 'Mission_06' }, 
-	]},
-	{ from: 'a204b', to: [
-		{ loc: 'start', mission: 'Mission_07' }, 
-		{ loc: 'a204a', mission: 'Mission_08' }, 
-		{ loc: 'a204c', mission: 'Mission_09' }, 
-	]},
-	{ from: 'a204c', to: [
-		{ loc: 'start', mission: 'Mission_10' }, 
-		{ loc: 'a204a', mission: 'Mission_11' }, 
-		{ loc: 'a204b', mission: 'Mission_12' },
-	]},
-]
-
-function getMission(from, to) {
-	let fromObj = missions.find((item) => item.from === from);
-
-	if (fromObj) {
-		let toObj = fromObj.to.find((item) => item.loc === to);
-		if (toObj) {
-			return toObj.mission;
-		}
-	}
-	return null;
 }
 
 rclnodejs.init().then(() => {
@@ -209,8 +161,6 @@ rclnodejs.init().then(() => {
 			console.log(TURN_RIGHT)
 		})
 
-
-
 		// ChatBot Message
 		socket.on('msg_path', (path) => {
 			console.log(path.from);
@@ -265,6 +215,16 @@ rclnodejs.init().then(() => {
 			socket.emit('msg_batteryStatus', battery_status)
 			socket.emit('msg_motorStatus', motor_status)
 		}, 1000)
+
+		setInterval(() => {
+			webcam.capture('dummy', (err, data) => {
+				if (err) {
+					console.error('Error capturing image:', err);
+					return;
+				}
+				socket.emit('webcam_image', data);
+			});
+		}, 100);
 	})
 
 	// Handle locomotion
@@ -381,11 +341,14 @@ rclnodejs.init().then(() => {
 			motor_status = status
 
 			// DEBUG
-			// console.log(`Received message No. ${++status_count}`, status)
+			console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
 	status_nodejs.spin()
 })
+
+
+
 
 // Set server to listen to port 3001
 server.listen(port_server, () => { console.log(`[${host}:${port_server}] | Server is running...`)})

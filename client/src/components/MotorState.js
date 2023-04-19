@@ -25,7 +25,7 @@ export default function MotorState() {
 		right_leg_length: 0
 	})
 
-	socket.on('msg_motorStatus', (arg) => {
+	socket.on('msg_test', (arg) => {
 		setMotorState({ ...arg })
 	})
 

@@ -11,37 +11,37 @@ export const ChatBotContext = createContext();
 
 const missions = [
 	{ from: 'start' , to: [
-		{ loc: 'room 101', mission: 'Mission_1680515746', 
+		{ loc: 'room 101', mission: 'Mission_01', 
             directions: [
-                { step: 'start', prim: 'Lab X', secd: '10'},
-                { step: 'straight', prim: 'Head straight to', secd: '20' },
-                { step: 'turn left', prim: 'Turn left towards', secd: '30' },
-                { step: 'turn right', prim: 'Turn right towards', secd: '40' },
-                { step: 'slight left', prim: 'Slight left towards', secd: '50' },
-                { step: 'slight right', prim: 'Slight right towards', secd: '60' },
-                { step: 'end', prim: 'Room A', secd: 'Destination' },
+                { step: 'start', prim: 'Start', secd: '10'},
+                { step: 'straight', prim: 'Head straight', secd: '20' },
+                { step: 'turn left', prim: 'Turn left', secd: '30' },
+                { step: 'turn right', prim: 'Turn right', secd: '40' },
+                { step: 'slight left', prim: 'Slight left', secd: '50' },
+                { step: 'slight right', prim: 'Slight right', secd: '60' },
+                { step: 'end', prim: 'Room 101', secd: 'Destination' },
             ] 
         }, 
 		{ loc: 'room 102', mission: 'Mission_02', 
             directions: [
-                { step: 'start', prim: 'Lab X', secd: '10'},
-                { step: 'straight', prim: 'Head straight to', secd: '20' },
-                { step: 'turn left', prim: 'Turn left towards', secd: '30' },
-                { step: 'turn right', prim: 'Turn right towards', secd: '40' },
-                { step: 'slight left', prim: 'Slight left towards', secd: '50' },
-                { step: 'slight right', prim: 'Slight right towards', secd: '60' },
-                { step: 'end', prim: 'Room B', secd: 'Destination' },
+                { step: 'start', prim: 'Start', secd: '10'},
+                { step: 'straight', prim: 'Head straight', secd: '20' },
+                { step: 'turn left', prim: 'Turn left', secd: '30' },
+                { step: 'turn right', prim: 'Turn right', secd: '40' },
+                { step: 'slight left', prim: 'Slight left', secd: '50' },
+                { step: 'slight right', prim: 'Slight right', secd: '60' },
+                { step: 'end', prim: 'Room 102', secd: 'Destination' },
             ] 
         }, 
 		{ loc: 'room 103', mission: 'Mission_03', 
             directions: [
-                { step: 'start', prim: 'Lab X', secd: '10'},
-                { step: 'straight', prim: 'Head straight to', secd: '20' },
-                { step: 'turn left', prim: 'Turn left towards', secd: '30' },
-                { step: 'turn right', prim: 'Turn right towards', secd: '40' },
-                { step: 'slight left', prim: 'Slight left towards', secd: '50' },
-                { step: 'slight right', prim: 'Slight right towards', secd: '60' },
-                { step: 'end', prim: 'Room C', secd: 'Destination' },
+                { step: 'start', prim: 'Start', secd: '10'},
+                { step: 'straight', prim: 'Head straight', secd: '20' },
+                { step: 'turn left', prim: 'Turn left', secd: '30' },
+                { step: 'turn right', prim: 'Turn right', secd: '40' },
+                { step: 'slight left', prim: 'Slight left', secd: '50' },
+                { step: 'slight right', prim: 'Slight right', secd: '60' },
+                { step: 'end', prim: 'Room 103', secd: 'Destination' },
             ] 
         },
 	]},
@@ -111,7 +111,7 @@ function setPath(loc1, loc2) {
 
 const ChatBotCompo = () => { 
     const [key, setKey] = useState(null);
-    const [mission, setMission] = useState(null);
+    const [missionId, setMissionId] = useState(null);
     const [directions, setDirections] = useState(null);
 
     const searchKeywords = (value) => {
@@ -138,7 +138,7 @@ const ChatBotCompo = () => {
                     console.log(mission);
 
                     if (mission !== null) { // Start step 'guiding'
-                        setMission(mission);
+                        setMissionId(mission);
                         setDirections(getDirections(path.from, path.to));
                         response = 'directions';
                     } else {    // Exception
@@ -154,20 +154,23 @@ const ChatBotCompo = () => {
         return response;
     }
 
-    const [missionLst, setMissionLst] = useState([])
-    useEffect(() => {
+    const [missionList, setMissionList] = useState([])
+    // useEffect(() => {
 
-        // Check mission list
-        socket.on('/mission/list', ({lst}) => {
-            console.log(`Received mission list: `, lst);
-            setMissionLst(lst);
-        })
+    //     // Check mission list
+    //     socket.on('/mission/list', ({list}) => {
+    //         console.log(`Received mission list: `, list);
+    //         setMissionList(list);
+    //     })
 
-		// Check the nav state (START, STOP)
-		socket.on('/nav/state', (state) => {			
-			console.log(`Received nav state: `, state)
-		})
-    }, [])
+	// 	// Check the nav state (START, STOP)
+	// 	socket.on('/nav/state', (state) => {			
+	// 		console.log(`Received nav state: `, state)
+    //         if (state === 'STOP') {
+    //             console.log('Navigation state has stopped.');
+    //         }
+	// 	})
+    // }, [])
 
     const backToStart = () => {
         setPendingLocation('start');
@@ -177,16 +180,16 @@ const ChatBotCompo = () => {
         let mid = getMission(path.from, path.to);
         console.log(mid);
 
-        const filtered = missionLst.filter(({mission_id}) =>  mission_id === mid);
-        if (filtered.length === 0) {
-            alert(`[Error]: No mission named ${mid} found`);
-        } else {
-            socket.emit('/nav/state/config', 'START'); 
-            console.log('Emitted signal to start navigation...');
+        // const filtered = missionList.filter(({mission_id}) =>  mission_id === mid);
+        // if (filtered.length === 0) {
+        //     alert(`[Error]: No mission named ${mid} found`);
+        // } else {
+        //     socket.emit('/nav/state/config', 'START'); 
+        //     console.log('Emitted signal to start navigation...');
         
-            socket.emit('/mission/start', mid); 
-            console.log('Emitted signal to start mission...', mid);
-        }
+        //     socket.emit('/mission/start', mid); 
+        //     console.log('Emitted signal to start mission...', mid);
+        // }
 
         setCurrentLocation(null);
         setKey(key + 1); // Reflash the chatbot
@@ -195,7 +198,7 @@ const ChatBotCompo = () => {
     }
 
     return (
-        <ChatBotContext.Provider value={{ mission, directions }}>
+        <ChatBotContext.Provider value={{ directions, missionId, missionList }}>
             <ChatBot
                 key={key}
                 headerTitle="Diablo Robot"
@@ -229,7 +232,7 @@ const ChatBotCompo = () => {
                     },
                     {
                         id: 'guiding',
-                        component: <Guiding mission={mission}/>,
+                        component: <Guiding />,
                         asMessage: true,
                         waitAction: true,
                         replace: true,

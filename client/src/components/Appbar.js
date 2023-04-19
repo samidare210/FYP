@@ -53,7 +53,7 @@ export default function Appbar() {
 	return (
 		<AppBar position="fixed" open={open}>
 			<Mui.Toolbar>
-			<Mui.IconButton
+			{/* <Mui.IconButton
 					color="inherit"
 					aria-label="open drawer"
 					onClick={() => {
@@ -76,7 +76,7 @@ export default function Appbar() {
 					}}
 				>
 					<MenuIcon />
-				</Mui.IconButton>
+				</Mui.IconButton> */}
 				<Mui.IconButton
 					color="inherit"
 					aria-label="open drawer"

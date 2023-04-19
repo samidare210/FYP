@@ -37,7 +37,7 @@ export default function MotorStatus() {
   ])
 
 
-  socket.on('msg_motorStatus', (arg) => {
+  socket.on('msg_test', (arg) => {
     setData([...data, { x: currentTime.getTime(), y: arg.left_wheel_vel }])
     setDataRight([...dataRight, { x: currentTime.getTime(), y: arg.right_wheel_vel }])
     setSeries([{ data: data }, { data: dataRight }])
