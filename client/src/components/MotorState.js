@@ -25,9 +25,19 @@ export default function MotorState() {
 		right_leg_length: 0
 	})
 
-	socket.on('msg_test', (arg) => {
-		setMotorState({ ...arg })
+	socket.on('msg_motorStatus', (arg) => {
+		setMotorState({ ...roundOffValues(arg) })
 	})
+
+	const roundOffValues = (obj) => {
+		const result = {}
+		for (const key in obj) {
+			if (obj.hasOwnProperty(key)) {
+				result[key] = Math.round(obj[key] * 100) / 100
+			}
+		}
+		return result;
+	}
 
 	const style = {
 		width: 200

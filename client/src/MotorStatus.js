@@ -36,10 +36,23 @@ export default function MotorStatus() {
     { data: dataRight }
   ])
 
+  socket.on('msg_motorStatus', (arg) => { 
 
-  socket.on('msg_test', (arg) => {
-    setData([...data, { x: currentTime.getTime(), y: arg.left_wheel_vel }])
-    setDataRight([...dataRight, { x: currentTime.getTime(), y: arg.right_wheel_vel }])
+    setData([
+      ...data, { 
+        x: currentTime.getTime(), 
+        y: Math.round(arg.left_wheel_vel * 100) / 100
+      }
+    ])
+
+    setDataRight([
+      ...dataRight, { 
+        x: currentTime.getTime(), 
+        y: Math.round(arg.right_wheel_vel * 100) / 100
+        
+      }
+    ])
+
     setSeries([{ data: data }, { data: dataRight }])
   })
 
@@ -102,8 +115,8 @@ export default function MotorStatus() {
       range: 100000
     },
     yaxis: {
-      max: 5,
-      min: -5,
+      max: 7,
+      min: -7,
       axisTicks: { show: false },
       axisBorder: { show: true }
     },

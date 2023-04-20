@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography, ListItemText } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import LocationOnIcon from '@mui/icons-material/LocationOn';

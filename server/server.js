@@ -3,27 +3,10 @@ const app = express()
 const server = require('http').createServer(app)
 const { Server } = require('socket.io')
 
-
-// Configure webcam
-const webcamOptions = {
-  width: 640,
-  height: 480,
-  quality: 100,
-  delay: 0,
-  saveShots: false,
-  output: 'jpeg',
-  device: false,
-  callbackReturn: 'base64'
-};
-
-const Webcam = require('node-webcam');
-const webcam = Webcam.create(webcamOptions);
-
-
 const cors = require('cors')
 app.use(cors())
 
-const host = '192.168.229.77'
+const host = '192.168.1.105'
 const port_client = '3000'
 const port_server = '3001'
 
@@ -160,35 +143,6 @@ rclnodejs.init().then(() => {
 			console.log(TURN_LEFT)
 			console.log(TURN_RIGHT)
 		})
-
-		// ChatBot Message
-		socket.on('msg_path', (path) => {
-			console.log(path.from);
-			console.log(path.to);
-
-			mission = getMission(path.from, path.to);
-			console.log(mission);
-
-			if (mission != null) {
-				socket.emit('msg_missionFound', true);
-				socket.emit('/nav/state/config', "{ data: 'START' }");
-				console.log('nav state started...');
-			} else {
-				socket.emit('msg_missionFound', false);
-				console.log('mission not found...');
-			}
-		})
-
-		socket.on('msg_guiding', () => {
-			socket.emit('/mission/start', `{ mission_id: '${mission}', map_id: '${map}' }`);
-			console.log(`{ mission_id: '${mission}', map_id: '${map}' }`);
-		})
-
-		socket.on('/nav/state', (state) => {
-			if (state === 'STOP') {
-				socket.emit('msg_arrived');
-			}
-		})
 	
 		setInterval(() => {
 			var max = 5
@@ -215,16 +169,6 @@ rclnodejs.init().then(() => {
 			socket.emit('msg_batteryStatus', battery_status)
 			socket.emit('msg_motorStatus', motor_status)
 		}, 1000)
-
-		setInterval(() => {
-			webcam.capture('dummy', (err, data) => {
-				if (err) {
-					console.error('Error capturing image:', err);
-					return;
-				}
-				socket.emit('webcam_image', data);
-			});
-		}, 100);
 	})
 
 	// Handle locomotion
@@ -341,14 +285,11 @@ rclnodejs.init().then(() => {
 			motor_status = status
 
 			// DEBUG
-			console.log(`Received message No. ${++status_count}`, status)
+			// console.log(`Received message No. ${++status_count}`, status)
 		}
 	)
 	status_nodejs.spin()
 })
-
-
-
 
 // Set server to listen to port 3001
 server.listen(port_server, () => { console.log(`[${host}:${port_server}] | Server is running...`)})
