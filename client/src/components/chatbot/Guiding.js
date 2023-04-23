@@ -33,10 +33,10 @@ const Guiding = ({ triggerNextStep }) => {
     startMission(mission);
 
     // *testing only
-    // setTimeout(function() {
-    //     console.log('Navigation state has stopped.');
-    //     triggerNextStep();
-    // }, 10000)
+    setTimeout(function() {
+        console.log('Navigation state has stopped.');
+        triggerNextStep();
+    }, 10000)
 
     return (
         <>
