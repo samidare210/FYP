@@ -9,7 +9,6 @@ import AppBar from "./components/Appbar";
 import Drawer from "./components/Drawer";
 import Main from "./components/Main";
 import ChatBotCompo from "./components/chatbot/ChatBotCompo";
-import MyChatBot from "./components/chatbot/MyChatBot";
 
 const Chat = () => {
 
@@ -22,7 +21,6 @@ const Chat = () => {
         <Main>
           <Mui.Stack spacing={1}>
             <ChatBotCompo />
-            {/* <MyChatBot /> */}
           </Mui.Stack>
         </Main>
       </Mui.Box>
