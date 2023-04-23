@@ -30,7 +30,7 @@ const Guiding = ({ triggerNextStep }) => {
         }
     }
 
-    // startMission(mission);
+    startMission(mission);
 
     // *testing only
     // setTimeout(function() {
