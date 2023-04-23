@@ -48,9 +48,9 @@ export default function Controller() {
   };
 
   if (stand == true) {
-    socket.emit("msg_send", "stand");
+    socket.emit("msg_mode", "stand");
   } else {
-    socket.emit("msg_send", "prone")
+    socket.emit("msg_mode", "prone")
   }
 
   const handleLHSNip = (data) => {
