@@ -39,13 +39,13 @@ export default function Appbar() {
 	useEffect(() => {
 
 		// Check mission list
-		socket.on('/mission/list', ({list}) => {			
+		socket.on('/mission/list', ({ list }) => {
 			console.log(`received mission list: `, list)
 			setMissionList(list)
 		})
 
 		// Check the nav state (START, STOP)
-		socket.on('/nav/state', (state) => {			
+		socket.on('/nav/state', (state) => {
 			console.log(`received nav state: `, state)
 		})
 	}, [])
@@ -53,7 +53,7 @@ export default function Appbar() {
 	return (
 		<AppBar position="fixed" open={open}>
 			<Mui.Toolbar>
-			{/* <Mui.IconButton
+				{/* <Mui.IconButton
 					color="inherit"
 					aria-label="open drawer"
 					onClick={() => {
